@@ -9,7 +9,7 @@ interface ContactModalProps {
 
 const EMAILJS_SERVICE_ID = 'service_r0a31im';
 const EMAILJS_TEMPLATE_ID = 'template_ejjweko';
-const EMAILJS_PUBLIC_KEY = 'W2WpH7FIN5lyuO_IF';
+const EMAILJS_PUBLIC_KEY = 'W2WpH7FlN5IyuO_lF';
 
 export const ContactModal: React.FC<ContactModalProps> = ({
   isOpen,
