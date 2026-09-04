@@ -58,16 +58,22 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
     }
   };
 
-  // Structured Data (WebApplication + FAQPage)
+  // Structured Data (SoftwareApplication + FAQPage)
   const webAppSchema = {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
+    '@type': 'SoftwareApplication',
     name: calc.title,
     url: `https://zenfittools.com${calc.routePath}`,
     description: calc.shortDescription,
     applicationCategory: 'HealthApplication',
     operatingSystem: 'All',
     browserRequirements: 'Requires JavaScript. Requires HTML5.',
+    author: {
+      '@type': 'Organization',
+      name: 'ZenFit Tools',
+      url: 'https://zenfittools.com/about',
+      email: 'zenfittools@gmail.com',
+    },
     offers: {
       '@type': 'Offer',
       price: '0.00',

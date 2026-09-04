@@ -6,6 +6,7 @@ import { CalculatorPage } from './pages/CalculatorPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { LegalPage } from './pages/LegalPage';
 import { ContactPage } from './pages/ContactPage';
+import { AboutPage } from './pages/AboutPage';
 import { CALCULATORS_CATALOG, CATEGORIES_CATALOG } from './data/calculatorsData';
 
 export const routes: RouteRecord[] = [
@@ -55,6 +56,10 @@ export const routes: RouteRecord[] = [
       {
         path: 'methodology',
         element: <LegalPage docType="methodology" />,
+      },
+      {
+        path: 'about',
+        element: <AboutPage />,
       },
       {
         path: 'contact',

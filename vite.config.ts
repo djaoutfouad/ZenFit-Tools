@@ -54,6 +54,7 @@ export default defineConfig(() => {
           '/cookies',
           '/disclaimer',
           '/methodology',
+          '/about',
           '/contact',
         ];
       },

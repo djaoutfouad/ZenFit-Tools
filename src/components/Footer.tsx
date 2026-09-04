@@ -165,6 +165,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
             {/* Static Legal Page Links */}
             <div className="flex flex-wrap items-center gap-4 text-slate-400">
+              <Link to="/about" className="hover:text-amber-400 transition-colors">
+                About Us
+              </Link>
+              <span>•</span>
               <Link to="/privacy" className="hover:text-amber-400 transition-colors">
                 Privacy Policy
               </Link>
