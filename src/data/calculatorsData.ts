@@ -44,6 +44,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate your precise Total Daily Energy Expenditure (TDEE) and basal metabolic rate using Mifflin-St Jeor and Katch-McArdle equations.',
     category: 'metabolism',
     badge: 'Core Metric',
+    personaImageUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Sports Dietitian & Caloric Metabolism Lead',
     formulaSummary: 'TDEE = BMR × Physical Activity Level (PAL)',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>1. Mifflin-St Jeor Basal Metabolic Rate (BMR):</strong></p>
@@ -96,6 +98,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate gram-accurate protein, carbohydrate, and dietary fat ratios tailored to fat loss, muscle hypertrophy, or ketogenic protocols.',
     category: 'metabolism',
     badge: 'Nutrition Suite',
+    personaImageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Clinical Sports Nutritionist',
     formulaSummary: 'Caloric Budget = (Protein × 4 kcal) + (Carbohydrate × 4 kcal) + (Fats × 9 kcal)',
     detailedFormulaHtml: `
       <p class="mb-3">Energy density per macronutrient:</p>
@@ -146,6 +150,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Empirical body circumference method adopted by the United States Department of Defense for accurate body composition assessment.',
     category: 'body_composition',
     badge: 'Clinical Anthropometry',
+    personaImageUrl: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Clinical Anthropometry Specialist',
     formulaSummary: 'Logarithmic circumference regression modeling height, neck, waist, and hips',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>US Navy Circumference Equations (Hodgdon & Beckett, 1984):</strong></p>
@@ -195,6 +201,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate your maximum single-rep strength using 6 peer-reviewed formulas and view customized percentage-based training loads.',
     category: 'performance',
     badge: 'Power & Strength',
+    personaImageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Strength & Powerlifting Coach',
     formulaSummary: 'Brzycki, Epley, Lombardi, Mayhew, O\'Conner, and Wathan empirical models',
     detailedFormulaHtml: `
       <ul class="list-disc pl-5 space-y-1 mb-4 text-slate-700">
@@ -246,6 +254,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Determine your 5 cardiovascular physiological training zones based on Tanaka age-predicted maximum and Karvonen Heart Rate Reserve.',
     category: 'performance',
     badge: 'Cardiovascular Suite',
+    personaImageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Cardiovascular Conditioning Director',
     formulaSummary: 'Tanaka Max HR = 208 - (0.7 × Age) | Karvonen Target = Rest HR + [% × (Max HR - Rest HR)]',
     detailedFormulaHtml: `
       <p class="mb-2"><strong>Tanaka Equation (2001):</strong> Max HR = 208 - (0.7 × Age)</p>
@@ -292,6 +302,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Convert split paces (min/km & min/mile) and predict 5K, 10K, Half, and Full Marathon times using Pete Riegel’s fatigue equation.',
     category: 'performance',
     badge: 'Endurance Science',
+    personaImageUrl: 'https://images.unsplash.com/photo-1483721074576-805b8c8fa250?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Endurance & Marathon Pacing Lead',
     formulaSummary: 'Riegel Fatigue Model: T₂ = T₁ × (D₂ / D₁)¹·⁰⁶',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Pete Riegel Endurance Equation:</strong></p>
@@ -338,6 +350,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Plan circadian feeding windows (16:8, 18:6, 20:4, OMAD) and map physiological metabolic checkpoints from ketosis to peak autophagy.',
     category: 'biohacking',
     badge: 'Circadian Biology',
+    personaImageUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Circadian Biology & Fasting Researcher',
     formulaSummary: 'Temporal feeding boundaries & cellular lysosomal autophagy progression',
     detailedFormulaHtml: `
       <p class="mb-3">Chronobiological stages of fasting:</p>
@@ -390,6 +404,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate volumetric fluid requirements based on body mass, exercise sweat rate, environmental climate, and electrolyte dynamics.',
     category: 'biohacking',
     badge: 'Electrolyte Balance',
+    personaImageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Fluid & Electrolyte Balance Specialist',
     formulaSummary: 'Fluid Requirement = (Body Mass × 35 ml/kg) + Exercise Sweat Loss + Climate Adjustment',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Baseline Daily Hydration:</strong> 35 ml fluid per kg of body mass</p>
@@ -436,6 +452,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate optimal creatine monohydrate loading vs steady saturation protocols and daily maintenance doses based on lean body mass.',
     category: 'biohacking',
     badge: 'Ergogenic Aids',
+    personaImageUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Sports Pharmacokinetics & Ergogenics Advisor',
     formulaSummary: 'Loading: 0.3 g/kg/day (divided 4×) for 5-7 days | Maintenance: 0.03-0.05 g/kg/day',
     detailedFormulaHtml: `
       <ul class="list-disc pl-5 space-y-2 mb-4 text-slate-700">
@@ -484,6 +502,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate Fat-Free Mass Index (FFMI) and normalized FFMI to evaluate genetic muscle-building limits based on Kouri et al. benchmarks.',
     category: 'body_composition',
     badge: 'Natural Limit Benchmarks',
+    personaImageUrl: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Natural Physique & Anthropometry Analyst',
     formulaSummary: 'FFMI = LBM (kg) / Height (m)² | Normalized = FFMI + 6.1 × (1.8 - Height)',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Standard FFMI Equation:</strong></p>
@@ -532,6 +552,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Compare Devine, Robinson, Miller, and Hamwi clinical equations with wrist circumference bone frame size calibrations.',
     category: 'body_composition',
     badge: 'Anthropometry',
+    personaImageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Skeletal Biometrics & Clinical Evaluator',
     formulaSummary: 'Devine, Robinson, Miller, & Hamwi clinical formulas + r-value frame ratio',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Standard Clinical Formulas (Over 5 feet / 60 inches):</strong></p>
@@ -583,6 +605,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Estimate your genetic ceiling for natural drug-free lean mass and maximum muscle girths using Casey Butt and Martin Berkhan models.',
     category: 'body_composition',
     badge: 'Genetic Limits',
+    personaImageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Drug-Free Muscle Hypertrophy Researcher',
     formulaSummary: 'Casey Butt Skeletal Frame Model & Berkhan Leangains Equation',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>1. Martin Berkhan Formula (at 5-6% contest body fat):</strong></p>
@@ -630,6 +654,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Assess deep visceral intra-abdominal adiposity and cardiometabolic risk using the clinically validated Ashwell Shape Chart methodology.',
     category: 'body_composition',
     badge: 'Cardiometabolic Health',
+    personaImageUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Cardiometabolic Risk Screening Lead',
     formulaSummary: 'WHtR = Waist Circumference / Height | Target: Keep your waist to less than half your height',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Waist-to-Height Ratio:</strong> WHtR = Waist Circumference / Height (same units)</p>
@@ -680,6 +706,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate exercise energy expenditure for 35+ sports and strength activities using the Compendium of Physical Activities MET database.',
     category: 'performance',
     badge: 'Energy Expenditure',
+    personaImageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Metabolic Kinetics & Biomechanics Specialist',
     formulaSummary: 'Calories = (MET × 3.5 × Body Mass in kg / 200) × Duration in Minutes',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Standard ACSM Metabolic Equation:</strong></p>
@@ -726,6 +754,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Time your sleep and wake alarms in exact 90-minute ultradian cycles to bypass sleep inertia and maximize deep restorative slow-wave sleep.',
     category: 'biohacking',
     badge: 'Neuro-Restoration',
+    personaImageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Sleep Architecture & Neuro-Restoration Specialist',
     formulaSummary: '90-Minute Ultradian Sleep Cycle + 14-Minute Average Sleep Latency',
     detailedFormulaHtml: `
       <p class="mb-3">Each complete ultradian sleep cycle lasts approximately 90 minutes, transitioning through:</p>
@@ -777,6 +807,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Side-by-side comparative analysis of Mifflin-St Jeor, Revised Harris-Benedict, Katch-McArdle, and Schofield WHO equations.',
     category: 'metabolism',
     badge: 'Clinical Comparison',
+    personaImageUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Clinical Indirect Calorimetry Researcher',
     formulaSummary: 'Comparative matrix across 4 clinical BMR prediction methodologies',
     detailedFormulaHtml: `
       <ul class="list-disc pl-5 space-y-1 mb-4 text-slate-700">
@@ -826,6 +858,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Optimize Muscle Protein Synthesis (MPS) by calculating per-meal leucine thresholds, meal distribution frequency, and nocturnal micellar casein.',
     category: 'metabolism',
     badge: 'Anabolic Optimization',
+    personaImageUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Muscle Protein Synthesis (MPS) Lead',
     formulaSummary: 'Per-Meal Dose = 0.40 - 0.55 g/kg | Leucine Threshold = 2.7 - 3.2g per bolus',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>Anabolic Leucine Trigger Concept:</strong></p>
@@ -872,6 +906,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Plan concurrent adipose reduction and skeletal muscle hypertrophy with periodized caloric budgeting and high-protein partitioning.',
     category: 'metabolism',
     badge: 'Body Recomposition',
+    personaImageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Concurrent Hypertrophy & Fat Loss Coach',
     formulaSummary: 'Iso-caloric to Mild Deficit (-10% to 0%) + Protein at 2.2 - 2.6 g/kg',
     detailedFormulaHtml: `
       <p class="mb-3">Energy partitioning relies on the Hall Energy Flux and Forbes Adipose Model:</p>
@@ -921,6 +957,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     shortDescription: 'Calculate clinical Karvonen Heart Rate Reserve zones factoring individual resting bradycardia for precision endurance prescription.',
     category: 'performance',
     badge: 'Cardio Physiology',
+    personaImageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=600&q=80',
+    personaRole: 'Aerobic Reserve & Karvonen Zone Specialist',
     formulaSummary: 'Target HR = Resting HR + [% Intensity × (Max HR - Resting HR)]',
     detailedFormulaHtml: `
       <p class="mb-3"><strong>The Karvonen Heart Rate Reserve (HRR) Method:</strong></p>

@@ -34,7 +34,7 @@ export const Hero: React.FC<HeroProps> = ({
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-65 scale-105 transition-transform duration-1000"
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop")',
+            'url("https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=2070&auto=format&fit=crop")',
         }}
         aria-hidden="true"
       />

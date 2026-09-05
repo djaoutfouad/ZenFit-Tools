@@ -26,6 +26,8 @@ export interface CalculatorMeta {
   scientificReferences: string[];
   safetyDisclosures: string[];
   faqs: FAQItem[];
+  personaImageUrl?: string;
+  personaRole?: string;
 }
 
 export type LegalDocType = 'privacy' | 'terms' | 'cookies' | 'disclaimer' | 'methodology';
