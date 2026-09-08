@@ -1,0 +1,6 @@
+{
+  "name": "ZenFit Tools",
+  "description": "Premium fitness, health, nutrition, and biohacking analytics suite with 19 elite physiological calculators, scientific formulas, and circadian training tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
