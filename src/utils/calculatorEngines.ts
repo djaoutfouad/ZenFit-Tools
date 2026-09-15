@@ -544,17 +544,17 @@ export function calculateIntermittentFasting(
     },
     {
       hoursRange: '18 - 24 Hours',
-      name: 'Cellular Autophagy & Mitophagy Trigger',
-      status: 'Deep Recycling',
-      description: 'mTOR pathway is deeply inhibited; AMPK activates. Cellular lysosomal degradation recycles damaged proteins and senescent mitochondria.',
-      marker: 'AMPK Upregulation & Autophagy',
+      name: 'Nutrient Sensing & AMPK Signaling',
+      status: 'Cellular Adaptation',
+      description: 'Cellular nutrient sensors respond to reduced nutrient availability. Autophagy timing in humans is variable and influenced by activity, nutrition, and genetics.',
+      marker: 'AMPK Signaling & Adaptation',
     },
     {
       hoursRange: '24+ Hours',
-      name: 'Maximum Autophagy & Peak HGH Surge',
-      status: 'Biological Rejuvenation',
-      description: 'Human Growth Hormone rises up to 500% to protect lean muscle tissue from proteolysis while systemic inflammation plunges.',
-      marker: '5x HGH Secretion & Stem Cell Signaling',
+      name: 'Extended Fasting Phase',
+      status: 'Extended Metabolic Shift',
+      description: 'Theoretical metabolic shifts in extended fasting. Autophagy baseline varies widely among individuals and cannot be directly measured by time alone.',
+      marker: 'Extended Fasting Adaptation',
     },
   ];
 
@@ -879,24 +879,24 @@ export function calculateWHtR(
   const whtr = Math.round((waistCm / heightCm) * 100) / 100;
   let classification = 'Healthy Weight Boundary';
   let riskLevel: 'Low' | 'Moderate' | 'High' | 'Very High' = 'Low';
-  let clinicalInsight = 'Waist circumference is within the optimal cardioprotective threshold (less than half your height).';
+  let clinicalInsight = 'Waist circumference is within the typical screening threshold (less than half your height).';
 
   if (whtr < 0.4) {
-    classification = 'Take Care / Abnormally Lean';
+    classification = 'Take Care / Lean Boundary';
     riskLevel = 'Moderate';
-    clinicalInsight = 'Very low visceral fat store. May indicate nutritional deficit or lean wasting.';
+    clinicalInsight = 'Lower ratio boundary. WHtR is a screening indicator associated with cardiometabolic risk; discuss concerning results with a healthcare professional.';
   } else if (whtr <= 0.49) {
-    classification = 'Optimal / Healthy Cardiometabolic Profile';
+    classification = 'Optimal / Healthy Screening Profile';
     riskLevel = 'Low';
-    clinicalInsight = 'Excellent Ashwell shape indicator. Minimal deep intra-abdominal visceral adipose accumulation.';
+    clinicalInsight = 'Within recommended screening boundary (waist less than half your height). WHtR is a screening indicator associated with cardiometabolic risk.';
   } else if (whtr <= 0.59) {
     classification = 'Increased Risk / Central Adiposity';
     riskLevel = 'High';
-    clinicalInsight = 'Elevated visceral fat surrounding abdominal organs. Associated with early insulin resistance and arterial stiffness.';
+    clinicalInsight = 'Elevated central waist ratio relative to height. WHtR is a screening indicator associated with cardiometabolic risk; discuss concerning results with a healthcare professional.';
   } else {
     classification = 'Substantially High Health Risk';
     riskLevel = 'Very High';
-    clinicalInsight = 'Significant visceral fat burden strongly correlated with Type 2 diabetes, metabolic syndrome, and hypertension.';
+    clinicalInsight = 'Substantially high central ratio. WHtR is a screening indicator associated with cardiometabolic risk and does not provide a diagnosis; discuss concerning results with a qualified healthcare professional.';
   }
 
   return {
@@ -1015,7 +1015,7 @@ export function calculateSleepCycles(
   return {
     recommendedTimes: results,
     latencyMinutes,
-    circadianArchitecture: 'A complete ultradian cycle encompasses N1 light transition, N2 spindle sleep, N3 slow-wave deep sleep (cellular physical repair & growth hormone), and REM sleep (synaptic consolidation). Waking mid-cycle causes sleep inertia.',
+    circadianArchitecture: 'An approximate sleep-cycle model. Individual sleep cycles vary, so this result is educational and not a medical assessment.',
   };
 }
 
@@ -1081,8 +1081,8 @@ export function calculateBMRComparative(
     meanBMR: mean,
     deltaMaxMin: Math.round(maxVal - minVal),
     clinicalRecommendation: km
-      ? 'Katch-McArdle is favored when accurate body fat percentage is known, as lean metabolic mass drives ~95% of basal caloric burn.'
-      : 'Mifflin-St Jeor is the current gold standard recognized by the Academy of Nutrition and Dietetics with ±10% clinical accuracy.',
+      ? 'Katch-McArdle utilizes lean mass to estimate resting metabolic requirements when body composition is known.'
+      : 'Mifflin-St Jeor is a widely recognized reference equation published by the Academy of Nutrition and Dietetics for general population estimation.',
   };
 }
 

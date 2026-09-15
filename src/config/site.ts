@@ -9,7 +9,7 @@
 
 export const SITE_URL = (import.meta.env.VITE_SITE_URL as string) || 'https://zenfit-tools.pages.dev';
 export const SITE_NAME = 'ZenFit Tools';
-export const SITE_TAGLINE = 'Evidence-Based Sports Science & Clinical Physiology Suite';
+export const SITE_TAGLINE = 'Evidence-Based Sports Science & Physiology Suite';
 export const CONTACT_EMAIL = 'zenfittools@gmail.com';
 
 /**

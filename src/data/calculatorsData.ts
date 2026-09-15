@@ -79,7 +79,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
       },
       {
         question: 'Which equation is more accurate: Mifflin-St Jeor or Katch-McArdle?',
-        answer: 'Mifflin-St Jeor is the gold standard for individuals whose body fat percentage is unknown. However, for lean athletes and resistance-trained lifters with known body composition, Katch-McArdle is more physiologically specific for resistance-trained individuals because it calculates metabolic burn directly from metabolically active lean muscle mass rather than total scale weight.'
+        answer: 'Mifflin-St Jeor is a widely utilized reference formula for individuals whose body fat percentage is unknown. However, for lean athletes and resistance-trained lifters with known body composition, Katch-McArdle is more physiologically specific for resistance-trained individuals because it calculates metabolic burn directly from metabolically active lean muscle mass rather than total scale weight.'
       },
       {
         question: 'What caloric deficit should I set for safe, sustained fat loss?',
@@ -238,7 +238,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
       },
       {
         question: 'Which formula is most reliable for heavy compound lifts?',
-        answer: 'The Brzycki and Epley equations are the most extensively validated in sports science literature for bench press, back squat, and deadlift tests between 2 and 6 repetitions.'
+        answer: 'The Brzycki and Epley equations are the most extensively studied and utilized in sports science literature for bench press, back squat, and deadlift tests between 2 and 6 repetitions.'
       },
       {
         question: 'How should I translate 1RM percentages into hypertrophy training?',
@@ -265,7 +265,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     detailedFormulaHtml: `
       <p class="mb-2"><strong>Tanaka Equation (2001):</strong> Max HR = 208 - (0.7 × Age)</p>
       <p class="mb-3"><strong>Karvonen Heart Rate Reserve (HRR):</strong> Target HR = Resting HR + [% Intensity × (Max HR - Resting HR)]</p>
-      <p class="text-sm text-slate-600">Calculates precise thresholds for Zone 1 (Recovery 50-60%), Zone 2 (Base Aerobic 60-70%), Zone 3 (Tempo 70-80%), Zone 4 (Threshold 80-90%), and Zone 5 (VO2 Max 90-100%).</p>
+      <p class="text-sm text-slate-600">Calculates estimated thresholds for Zone 1 (Recovery 50-60%), Zone 2 (Base Aerobic 60-70%), Zone 3 (Tempo 70-80%), Zone 4 (Threshold 80-90%), and Zone 5 (VO2 Max 90-100%).</p>
     `,
     scientificGuidelines: [
       'American Heart Association (AHA) Exercise Standards for Testing and Training',
@@ -353,7 +353,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     slug: 'intermittent-fasting-window-autophagy-timer',
     routePath: '/calculators/intermittent-fasting-autophagy',
     title: 'Intermittent Fasting Window & Autophagy Timer',
-    shortDescription: 'Plan circadian feeding windows (16:8, 18:6, 20:4, OMAD) and map physiological metabolic checkpoints from ketosis to peak autophagy.',
+    shortDescription: 'Plan daily feeding windows (16:8, 18:6, 20:4, OMAD) and explore general educational fasting milestones and metabolic adaptations.',
     category: 'biohacking',
     badge: 'Circadian Biology',
     readTime: '5 min read',
@@ -367,8 +367,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
         <li><strong>4-8h:</strong> Euglycemic Stabilization & Glucagon Release</li>
         <li><strong>8-12h:</strong> Hepatic Glycogen Depletion</li>
         <li><strong>12-18h:</strong> Beta-Oxidation & Ketone Generation</li>
-        <li><strong>18-24h:</strong> AMPK Activation & Autophagy Trigger</li>
-        <li><strong>24h+:</strong> Peak Autophagy & Human Growth Hormone (HGH) Surge</li>
+        <li><strong>18-24h:</strong> AMPK Activation & Cellular Nutrient Signaling</li>
+        <li><strong>24h+:</strong> Extended Fasting & Cellular Adaptation (Theoretical Milestones)</li>
       </ul>
     `,
     scientificGuidelines: [
@@ -381,7 +381,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
       'Alirezaei M, et al. Short-term fasting induces profound neuronal autophagy. Autophagy. 2010;6(6):702-710.'
     ],
     safetyDisclosures: [
-      'Pregnant or nursing mothers, individuals with a history of eating disorders, and Type 1 diabetics must not undertake extended fasts without physician clearance.',
+      'This is an educational fasting-time estimator. Autophagy occurs at different baseline levels and cannot be directly measured by this calculator. Human timing is uncertain and varies with health, age, sex, nutrition, sleep, activity, and other factors. The displayed milestones are general educational context, not medical measurements or recommendations.',
+      'Medical Warning: Fasting is strictly not advised without professional medical supervision for pregnant or breastfeeding individuals, those with Type 1 or Type 2 diabetes, individuals taking blood-glucose-lowering medications or insulin, individuals with a history of eating disorders, or those with underlying medical conditions.',
       'Maintain electrolyte balance (sodium, potassium, magnesium) with unflavored mineral salts during fasting periods exceeding 16 hours.'
     ],
     faqs: [
@@ -390,8 +391,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
         answer: 'Any caloric intake, particularly amino acids (leucine, methionine) or carbohydrates, triggers insulin secretion and reactivates the mammalian target of rapamycin (mTORC1), which shuts down autophagy. Black coffee, plain green tea, and water do not break a metabolic fast.'
       },
       {
-        question: 'When does cellular autophagy peak during a fast?',
-        answer: 'In humans, baseline basal autophagy is always occurring at low rates. Significant upregulation occurs around 16 to 18 hours of fasting, reaching peak physiological stimulation between 24 and 48 hours as liver glycogen is exhausted and AMPK signaling peaks.'
+        question: 'When does cellular autophagy occur during a fast?',
+        answer: 'Autophagy is a continuous cellular housekeeping process that occurs at baseline levels throughout life and cannot be directly measured by this calculator. Human timing is uncertain and varies with health, age, sex, nutrition, sleep, activity, and other factors. The displayed milestones are general educational context, not medical measurements or recommendations.'
       },
       {
         question: 'Will intermittent fasting cause muscle loss?',
@@ -508,7 +509,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     slug: 'lean-body-mass-ffmi-calculator',
     routePath: '/calculators/lean-body-mass-ffmi',
     title: 'Lean Body Mass (LBM) & FFMI Calculator',
-    shortDescription: 'Calculate Fat-Free Mass Index (FFMI) and normalized FFMI to evaluate genetic muscle-building limits based on Kouri et al. benchmarks.',
+    shortDescription: 'Calculate Fat-Free Mass Index (FFMI) and normalized FFMI to evaluate natural muscularity benchmarks based on Kouri et al. cohorts.',
     category: 'body_composition',
     badge: 'Natural Limit Benchmarks',
     readTime: '5 min read',
@@ -613,9 +614,9 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     slug: 'maximum-muscular-potential-estimator',
     routePath: '/calculators/maximum-muscular-potential',
     title: 'Maximum Muscular Potential Estimator',
-    shortDescription: 'Estimate your genetic ceiling for natural drug-free lean mass and maximum muscle girths using Casey Butt and Martin Berkhan models.',
+    shortDescription: 'Estimate your natural reference range for drug-free lean mass and maximum muscle girths using Casey Butt and Martin Berkhan models.',
     category: 'body_composition',
-    badge: 'Genetic Limits',
+    badge: 'Hypertrophy Models',
     readTime: '6 min read',
     personaImageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80',
     personaRole: 'Drug-Free Hypertrophy & Frame Analyst',
@@ -636,8 +637,8 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
       'Forbes GB. Lean body mass and fat in obese subjects. J Clin Invest. 1964.'
     ],
     safetyDisclosures: [
-      'Achieving within 95% of your natural genetic ceiling requires 5 to 10 years of consistent progressive overload, rigorous nutritional tracking, and optimal sleep architecture.',
-      'Anabolic-androgenic compounds bypass these physiological feedback mechanisms by activating satellite cell donation and supraphysiological myonuclear domain expansion.'
+      'These are approximate reference estimates based on selected models. They are not a confirmed genetic limit, diagnosis, prediction, or guarantee. Individual results vary substantially with genetics, age, training history, nutrition, health, and measurement error.',
+      'Anabolic-androgenic compounds alter physiological pathways beyond natural drug-free reference ranges.'
     ],
     faqs: [
       {
@@ -649,12 +650,12 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
         answer: 'Pioneered by Martin Berkhan of Leangains after coaching hundreds of natural bodybuilding competitors, it states: Max Bodyweight in kg (at 5-6% body fat) = Height in cm - 100. For example, a 180cm lifter can reach ~80 kg shredded.'
       },
       {
-        question: 'Can someone surpass Casey Butt’s natural maximum without PEDs?',
-        answer: 'Casey Butt’s formulas were derived from elite drug-free bodybuilders and strength champions. Statistical outliers (top 0.1% genetic variance) might exceed predictions by 2-3%, but claiming 10-15% above the model without pharmaceutical enhancement is biologically impossible.'
+        question: 'Can someone surpass Casey Butt’s model estimates naturally?',
+        answer: 'Casey Butt’s formulas were derived from historical cohorts of elite drug-free bodybuilders and strength champions. Statistical outliers and individual skeletal variations may exceed or fall below these estimates. These figures represent an estimated natural reference range, not an absolute boundary.'
       },
       {
-        question: 'How long does it take a natural lifter to approach their genetic ceiling?',
-        answer: 'According to the Lyle McDonald and Alan Aragon rate-of-gain models, a lifter can gain ~10-12 kg of muscle in year one, ~5-6 kg in year two, ~2-3 kg in year three, and only 1-1.5 kg per year thereafter.'
+        question: 'How long does it take a natural lifter to approach their estimated natural reference range?',
+        answer: 'Theoretical models such as those by Lyle McDonald and Alan Aragon outline diminishing rates of muscle hypertrophy over years of consistent progressive training. However, these annual numbers are illustrative benchmarks rather than fixed rules or promises. Actual progression rates vary widely depending on genetic response, consistency, training quality, and nutrition.'
       }
     ]
   },
@@ -663,7 +664,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     slug: 'waist-to-height-ratio-health-risk-calculator',
     routePath: '/calculators/waist-to-height-ratio-whtr',
     title: 'Waist-to-Height Ratio (WHtR) & Health Risk Calculator',
-    shortDescription: 'Assess deep visceral intra-abdominal adiposity and cardiometabolic risk using the clinically validated Ashwell Shape Chart methodology.',
+    shortDescription: 'Screen central adiposity and cardiometabolic risk using the Ashwell Shape Chart methodology. WHtR is a screening indicator associated with cardiometabolic risk.',
     category: 'body_composition',
     badge: 'Cardiometabolic Health',
     readTime: '3 min read',
@@ -676,7 +677,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
         <li><strong>< 0.40:</strong> Take Care / Underweight (Increased non-cardiac mortality risk)</li>
         <li><strong>0.40 - 0.49:</strong> Healthy Weight Boundary / Low Cardiometabolic Risk</li>
         <li><strong>0.50 - 0.59:</strong> Increased Risk / Elevated Central Adiposity</li>
-        <li><strong>≥ 0.60:</strong> Substantially High Risk / Significant Visceral Adipose Burden</li>
+        <li><strong>≥ 0.60:</strong> Substantially High Risk / Significant Central Distribution</li>
       </ul>
     `,
     scientificGuidelines: [
@@ -689,25 +690,25 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
       'Browning LM, et al. A systematic review of waist-to-height ratio as a screening tool for the prediction of cardiovascular disease and diabetes. Nutr Res Rev. 2010;23(2):247-269.'
     ],
     safetyDisclosures: [
-      'Measure waist circumference midway between the lowest palpable rib and the top of the iliac crest (pelvic bone) at the end of normal expiration.',
-      'WHtR is a screening metric. A high WHtR should prompt follow-up clinical lab tests including fasting blood glucose, HbA1c, and a comprehensive lipid panel (ApoB, Triglyceride-to-HDL ratio).'
+      'WHtR is a screening indicator associated with cardiometabolic risk. It does not directly measure visceral fat and does not provide a diagnosis. Discuss concerning results with a qualified healthcare professional.',
+      'Measure waist circumference midway between the lowest palpable rib and the top of the iliac crest (pelvic bone) at the end of normal expiration.'
     ],
     faqs: [
       {
-        question: 'Why is Waist-to-Height Ratio considered a more sensitive cardiometabolic screening tool than BMI?',
-        answer: 'Body Mass Index (BMI) fails to distinguish between lean skeletal muscle and adipose tissue, routinely misclassifying muscular athletes as "overweight" or "obese." WHtR specifically tracks abdominal visceral adiposity—the metabolically active fat surrounding internal organs that drives insulin resistance, systemic inflammation, and atherosclerosis.'
+        question: 'Why is Waist-to-Height Ratio used as a cardiometabolic screening tool?',
+        answer: 'Body Mass Index (BMI) does not distinguish between lean muscle and fat distribution. WHtR is a screening indicator associated with central body fat distribution and cardiometabolic risk patterns, though it does not directly measure visceral fat.'
       },
       {
         question: 'What is the "Ashwell Rule" for waist circumference?',
-        answer: 'Dr. Margaret Ashwell coined the golden public health rule: "Keep your waist circumference to less than half your height." A ratio below 0.50 is strongly correlated with longevity and normal cardiometabolic markers.'
+        answer: 'Dr. Margaret Ashwell popularized the public health guideline: "Keep your waist circumference to less than half your height." A ratio below 0.50 is associated with healthy population cardiovascular benchmarks.'
       },
       {
-        question: 'Why is visceral fat more dangerous than subcutaneous fat?',
-        answer: 'Unlike harmless subcutaneous fat stored beneath the skin on thighs and arms, deep visceral fat drains fatty acids directly into the portal vein into the liver. It secretes inflammatory cytokines (TNF-alpha, IL-6), increases hepatic steatosis, and triggers arterial hypertension.'
+        question: 'Why is central abdominal fat monitored in health screenings?',
+        answer: 'WHtR is a screening indicator associated with cardiometabolic risk. It does not directly measure visceral fat and does not provide a diagnosis. Discuss concerning results with a qualified healthcare professional.'
       },
       {
         question: 'How quickly can lifestyle changes reduce waist-to-height ratio?',
-        answer: 'Visceral fat is metabolically active and more sensitive to catecholamines than subcutaneous fat. A moderate caloric deficit coupled with resistance training and reduction in refined sugars/alcohol often reduces waist circumference within 4 to 8 weeks.'
+        answer: 'Central adipose distribution responds positively to lifestyle changes. A moderate caloric deficit coupled with resistance training and reduction in refined sugars and alcohol often improves waist circumference within 4 to 8 weeks.'
       }
     ]
   },
@@ -765,22 +766,22 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     slug: 'sleep-cycle-circadian-wake-up-estimator',
     routePath: '/calculators/sleep-cycle-circadian-wake-up',
     title: 'Sleep Cycle & Circadian Wake-Up Estimator',
-    shortDescription: 'Time your sleep and wake alarms in exact 90-minute ultradian cycles to bypass sleep inertia and maximize deep restorative slow-wave sleep.',
+    shortDescription: 'Explore bedtime and wake times using an approximate sleep-cycle model. Individual sleep cycles vary, so this result is educational and not a medical assessment.',
     category: 'biohacking',
-    badge: 'Neuro-Restoration',
+    badge: 'Sleep Timing',
     readTime: '4 min read',
     personaImageUrl: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
-    personaRole: 'Sleep Architecture & Neuro-Restoration Specialist',
-    formulaSummary: '90-Minute Ultradian Sleep Cycle + 14-Minute Average Sleep Latency',
+    personaRole: 'Sleep Architecture Specialist',
+    formulaSummary: 'Approximate 90-Minute Sleep Cycle Model + 14-Minute Average Sleep Latency',
     detailedFormulaHtml: `
-      <p class="mb-3">Each complete ultradian sleep cycle lasts approximately 90 minutes, transitioning through:</p>
+      <p class="mb-3">An approximate sleep-cycle model assumes average cycles of roughly 90 minutes (which vary naturally between individuals and throughout the night), transitioning through:</p>
       <ul class="list-disc pl-5 space-y-1 mb-4 text-slate-700">
         <li><strong>N1 (Light Sleep):</strong> 5-10 mins, alpha-to-theta transition</li>
         <li><strong>N2 (True Sleep):</strong> 45-55 mins, sleep spindles and K-complexes</li>
-        <li><strong>N3 (Slow-Wave / Deep Sleep):</strong> 20-25 mins, delta waves, growth hormone release, physical tissue repair</li>
-        <li><strong>REM (Rapid Eye Movement):</strong> 10-25 mins, dreaming, synaptic memory consolidation</li>
+        <li><strong>N3 (Slow-Wave / Deep Sleep):</strong> 20-25 mins, delta waves, physical tissue repair</li>
+        <li><strong>REM (Rapid Eye Movement):</strong> 10-25 mins, dreaming, memory consolidation</li>
       </ul>
-      <p class="text-sm text-slate-600">Calculates wake-up and bedtimes accounting for 14 minutes of physiological sleep latency.</p>
+      <p class="text-sm text-slate-600">Calculates wake-up and bedtimes accounting for 14 minutes of average sleep latency.</p>
     `,
     scientificGuidelines: [
       'American Academy of Sleep Medicine (AASM) & Sleep Research Society Consensus Statement on Recommended Sleep',
@@ -946,7 +947,7 @@ export const CALCULATORS_CATALOG: CalculatorMeta[] = [
     ],
     safetyDisclosures: [
       'True body recomposition requires patient longitudinal tracking; scale weight may remain flat for 8-12 weeks while waist circumference drops and muscle density increases.',
-      'Advanced lifters with >5 years of structured training will experience much slower recomposition rates than beginners or returning athletes due to proximity to their genetic ceiling.'
+      'Advanced lifters with >5 years of structured training will experience much slower recomposition rates than beginners or returning athletes due to proximity to their estimated natural reference range.'
     ],
     faqs: [
       {

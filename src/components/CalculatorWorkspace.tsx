@@ -1717,7 +1717,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="space-y-2">
                       <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                        Biological Fasting Stages
+                        Educational Fasting Milestones
                       </h4>
                       {res.stages.slice(2, 6).map((st) => (
                         <div key={st.hoursRange} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
@@ -1730,6 +1730,9 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                           </span>
                         </div>
                       ))}
+                      <p className="text-[11px] text-slate-500 p-2.5 bg-slate-50 border border-slate-200 rounded-xl mt-2 leading-relaxed">
+                        This is an educational fasting-time estimator. Autophagy occurs at different baseline levels and cannot be directly measured by this calculator. Human timing is uncertain and varies with health, age, sex, nutrition, sleep, activity, and other factors. The displayed milestones are general educational context, not medical measurements or recommendations.
+                      </p>
                     </div>
                   </div>
                 );
@@ -1887,7 +1890,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div>
                       <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                        Casey Butt Maximum Drug-Free Circumference Potentials
+                        Casey Butt Estimated Natural Circumference Range
                       </h4>
                       <div className="grid grid-cols-3 gap-2 text-center text-xs">
                         <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
@@ -1903,6 +1906,9 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                           <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.maxMeasurementsCm.thigh} cm` : `${Math.round(res.maxMeasurementsCm.thigh / 2.54 * 10) / 10} in`}</span>
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500 mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl leading-relaxed">
+                        These are approximate reference estimates based on selected models. They are not a confirmed genetic limit, diagnosis, prediction, or guarantee. Individual results vary substantially with genetics, age, training history, nutrition, health, and measurement error.
+                      </p>
                     </div>
                   </div>
                 );
@@ -1932,6 +1938,9 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       </p>
                       <p className="text-slate-500">
                         Recommended healthy waist boundary for your height: <strong>{unitSystem === 'metric' ? `${res.targetWaistCm.min} - ${res.targetWaistCm.max} cm` : `${Math.round(res.targetWaistCm.min / 2.54)} - ${Math.round(res.targetWaistCm.max / 2.54)} inches`}</strong>.
+                      </p>
+                      <p className="text-[11px] text-slate-500 pt-1 border-t border-slate-200 leading-relaxed">
+                        WHtR is a screening indicator associated with cardiometabolic risk. It does not directly measure visceral fat and does not provide a diagnosis. Discuss concerning results with a qualified healthcare professional.
                       </p>
                     </div>
                   </div>
@@ -1971,7 +1980,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         {sleepMode === 'wake_at' ? 'Recommended Bedtimes' : 'Optimal Wake-Up Times'}
                       </span>
                       <p className="text-xs text-slate-500 mt-1">
-                        Based on 90-minute ultradian cycles + 14-minute average sleep latency
+                        An approximate sleep-cycle model. Individual sleep cycles vary, so this result is educational and not a medical assessment.
                       </p>
                     </div>
 
