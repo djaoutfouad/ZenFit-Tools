@@ -2199,7 +2199,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
             </div>
 
             <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-6">
-              <span>Verified 100% Client-Side Computation</span>
+              <span>In-Browser Computation</span>
               <button
                 onClick={onOpenContact}
                 className="text-amber-600 hover:text-amber-700 font-semibold"

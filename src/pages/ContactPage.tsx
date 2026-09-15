@@ -244,7 +244,7 @@ export const ContactPage: React.FC = () => {
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Dr. Alex Vance"
+                      placeholder="Alex Vance"
                       className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                   </div>
@@ -300,6 +300,9 @@ export const ContactPage: React.FC = () => {
                   <Send className="w-4 h-4" />
                   <span>{status === 'sending' ? 'Dispatching Message...' : 'Send Message'}</span>
                 </button>
+                <p className="text-[11px] text-slate-500 text-center mt-3">
+                  Calculator inputs are processed in your browser. Contact-form data is handled by EmailJS according to our Privacy Policy.
+                </p>
               </form>
             )}
           </div>

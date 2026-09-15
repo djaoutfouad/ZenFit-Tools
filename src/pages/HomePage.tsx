@@ -174,16 +174,16 @@ export const HomePage: React.FC = () => {
               </span>
               <div>
                 <h3 className="text-lg font-bold text-slate-900">
-                  Validated Sports Science &amp; Peer-Reviewed Standards
+                  Educational Sports Science &amp; Published Research Standards
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Rigorous clinical formulas derived from ACSM, ISSN, DoD, and PubMed peer reviews
+                  Formulas derived from published literature including ACSM, ISSN, DoD, and PubMed references
                 </p>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Every tool within ZenFit Tools is engineered from verified empirical literature. From Mifflin-St Jeor metabolic calorimetry and Hodgdon-Beckett logarithmic anthropometry to Casey Butt's muscular potential formulas and Tanaka heart rate kinetics, we eliminate speculative gym-lore in favor of peer-reviewed mathematical certainty.
+              Every tool within ZenFit Tools is engineered from published sports science and nutritional literature. From Mifflin-St Jeor metabolic equations and Hodgdon-Beckett circumference methods to Casey Butt's muscular models and Tanaka heart rate formulas, calculations provide educational estimates based on published formulas and references rather than speculative gym-lore.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-4">

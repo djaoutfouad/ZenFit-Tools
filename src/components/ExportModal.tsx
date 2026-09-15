@@ -170,7 +170,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <span>Excel &amp; Google Sheets ready (UTF-8 BOM)</span>
             </span>
           </div>
-          <span className="font-semibold text-slate-700">100% Private Client-Side Export</span>
+          <span className="font-semibold text-slate-700">Client-Side Export</span>
         </div>
       </div>
     </div>

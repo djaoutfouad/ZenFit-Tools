@@ -134,7 +134,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
           <div className="flex items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                {categoryCalculators.length} Validated Calculators in this Suite
+                {categoryCalculators.length} Educational Calculators in this Suite
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 mt-1">
                 Select any calculator below to open its dedicated analytics console.

@@ -58,8 +58,8 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
-          Nineteen validated sports medicine, metabolic, and anthropometric calculators.
-          Instant client-side precision, peer-reviewed formulas, and zero server latency.
+          Educational sports science, nutrition, and metabolic calculators based on published formulas and references.
+          Client-side calculations with transparent methodology.
         </p>
 
         {/* Search Bar */}
@@ -114,7 +114,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
           <div className="flex items-center justify-center gap-1.5">
             <Activity className="w-3.5 h-3.5 text-amber-400" />
-            <span>Zero Data Harvesting</span>
+            <span>In-Browser Processing</span>
           </div>
           <div className="flex items-center justify-center gap-1.5">
             <Award className="w-3.5 h-3.5 text-amber-400" />

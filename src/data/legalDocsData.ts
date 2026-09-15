@@ -23,7 +23,7 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
     slug: 'privacy',
     routePath: '/privacy',
     title: 'Privacy Policy',
-    metaDescription: 'ZenFit Tools GDPR & CCPA privacy policy. 100% client-side computations ensure your personal biometric data never leaves your browser.',
+    metaDescription: 'ZenFit Tools privacy policy. Calculator inputs are processed in your browser to maintain data privacy.',
     effectiveDate: 'Effective Date: January 1, 2026 · Last Updated: September 2026',
     sections: [
       {
@@ -33,10 +33,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
         ],
       },
       {
-        heading: '2. 100% Client-Side Computational Sandbox',
+        heading: '2. Browser-Based Calculator Processing',
         paragraphs: [
           'All 19 calculators provided on ZenFit Tools (including body weight, circumferences, body fat percentages, maximal heart rates, one-rep maxes, running paces, and fasting timers) execute entirely within your local browser runtime via JavaScript.',
-          'Your physiological inputs, personal biometric metrics, and daily logs are NEVER transmitted to, stored on, processed by, or harvested on remote web servers or external third-party databases. You retain absolute sovereign ownership of your health inputs.',
+          'Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to the Privacy Policy. Your physiological inputs, personal biometric metrics, and daily calculations are processed locally on your device.',
         ],
       },
       {
@@ -151,10 +151,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
       {
         heading: '1. Evidence-Based Physiological Foundations',
         paragraphs: [
-          'ZenFit Tools rejects arbitrary rules of thumb in favor of validated clinical formulas published in leading exercise science and clinical nutrition journals. Every calculator implements exact peer-reviewed mathematical models:',
+          'ZenFit Tools provides educational calculators based on published formulas and references in exercise science and clinical nutrition literature. Each calculator implements published mathematical models with recognized limitations:',
         ],
         bullets: [
-          'Metabolic Burn: Mifflin-St Jeor (1990) and Katch-McArdle equations validated by the Academy of Nutrition and Dietetics.',
+          'Metabolic Burn: Mifflin-St Jeor (1990) and Katch-McArdle equations evaluated in published nutritional literature.',
           'Circumference Anthropometry: US Navy Hodgdon & Beckett (1984) logarithmic regression model adopted by the US Department of Defense.',
           'Muscular Limits & FFMI: Kouri et al. (1995) 157-athlete baseline study and Dr. Casey Butt’s anthropometric frame analysis.',
           'Cardiovascular Zones: Tanaka et al. (2001) meta-analysis of 18,712 subjects combined with Karvonen Heart Rate Reserve equations.',

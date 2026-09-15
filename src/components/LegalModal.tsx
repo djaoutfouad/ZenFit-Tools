@@ -122,9 +122,9 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               <p>
                 At <strong>ZenFit Tools</strong> (accessible via our digital properties, contact: <strong>zenfittools@gmail.com</strong>), the privacy of our visitors is of paramount importance. This Privacy Policy document outlines the types of personal and non-personal data collected, recorded, and processed in full compliance with the European General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA), and global privacy standards.
               </p>
-              <h5 className="font-semibold text-slate-900 pt-2">1. 100% Client-Side Computation Privacy</h5>
+              <h5 className="font-semibold text-slate-900 pt-2">1. In-Browser Calculator Processing</h5>
               <p>
-                All 19 calculators provided on ZenFit Tools (including body weight, body fat percentages, heart rates, running paces, and fasting windows) execute strictly inside your local web browser using client-side JavaScript. <strong>Your physiological inputs, personal biometric parameters, and fitness metrics are never transmitted to, stored on, or harvested by our servers.</strong>
+                Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to this Privacy Policy. All 19 calculators execute locally within your web browser using client-side JavaScript, and your physiological calculator inputs are not transmitted to or stored on remote calculation servers.
               </p>
               <h5 className="font-semibold text-slate-900 pt-2">2. Google AdSense & Third-Party Advertising</h5>
               <p>
@@ -191,10 +191,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({
             <div id="content-methodology" className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900">Scientific Methodology & Formulas</h4>
               <p>
-                ZenFit Tools is built upon validated human physiological formulas published in leading peer-reviewed sports science and clinical nutrition journals. Every tool is grounded in reproducible empirical models:
+                ZenFit Tools provides educational calculators based on published formulas and references in sports science and nutritional research literature. These equations provide population-level estimates with recognized individual limitations:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                <li><strong>Metabolism:</strong> Mifflin-St Jeor (1990) and Katch-McArdle equations validated by the American Dietetic Association.</li>
+                <li><strong>Metabolism:</strong> Mifflin-St Jeor (1990) and Katch-McArdle equations evaluated in published nutritional literature.</li>
                 <li><strong>Circumference Anthropometry:</strong> US Department of Defense Hodgdon & Beckett (1984) logarithmic regression model.</li>
                 <li><strong>Muscular Limits & FFMI:</strong> Kouri et al. (1995) 157-athlete natural baseline study and Dr. Casey Butt’s bone-structure frame equations.</li>
                 <li><strong>Cardiovascular Zones:</strong> Tanaka et al. (2001) meta-analysis of 18,712 subjects paired with Karvonen Heart Rate Reserve equations.</li>

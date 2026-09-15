@@ -152,7 +152,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           <div className="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong>100% Client-Side Privacy Architecture:</strong> ZenFit Tools performs all mathematical and biological calculations entirely within your device’s web browser. No personal health records, weight metrics, body fat estimations, or fitness inputs are ever transmitted to or stored on remote web servers.
+              <strong>Data Privacy &amp; Processing:</strong> Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to the Privacy Policy.
             </p>
           </div>
 
