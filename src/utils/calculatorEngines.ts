@@ -92,6 +92,9 @@ export function calculateMacros(
   weightKg: number,
   mealsCount: number = 4
 ): MacroResult {
+  const safeCalories = Math.max(500, Math.min(15000, Number.isFinite(calories) ? calories : 2000));
+  const safeMeals = Math.max(1, Math.min(10, Math.floor(mealsCount) || 1));
+
   let pRatio = 0.3;
   let fRatio = 0.3;
   let cRatio = 0.4;
@@ -127,16 +130,16 @@ export function calculateMacros(
       break;
   }
 
-  const pCal = calories * pRatio;
-  const fCal = calories * fRatio;
-  const cCal = calories * cRatio;
+  const pCal = safeCalories * pRatio;
+  const fCal = safeCalories * fRatio;
+  const cCal = safeCalories * cRatio;
 
   const proteinGrams = Math.round(pCal / 4);
   const fatGrams = Math.round(fCal / 9);
   const carbGrams = Math.round(cCal / 4);
 
   return {
-    calories,
+    calories: safeCalories,
     proteinGrams,
     proteinCalories: Math.round(pCal),
     proteinPct: Math.round(pRatio * 100),
@@ -147,10 +150,10 @@ export function calculateMacros(
     carbCalories: Math.round(cCal),
     carbPct: Math.round(cRatio * 100),
     perMeal: {
-      protein: Math.round((proteinGrams / mealsCount) * 10) / 10,
-      fat: Math.round((fatGrams / mealsCount) * 10) / 10,
-      carbs: Math.round((carbGrams / mealsCount) * 10) / 10,
-      calories: Math.round(calories / mealsCount),
+      protein: Math.round((proteinGrams / safeMeals) * 10) / 10,
+      fat: Math.round((fatGrams / safeMeals) * 10) / 10,
+      carbs: Math.round((carbGrams / safeMeals) * 10) / 10,
+      calories: Math.round(safeCalories / safeMeals),
     },
   };
 }
@@ -364,33 +367,56 @@ export interface RunningPaceResult {
   racePredictions: Array<{ distance: string; distKm: number; predictedTime: string; predictedPace: string }>;
 }
 
+/**
+ * Formats seconds into MM:SS running pace.
+ * Guarantees seconds are rolled over if rounded to 60 (e.g. 5m 60s becomes 6:00).
+ */
+export function formatRunningPace(secs: number): string {
+  if (!Number.isFinite(secs) || secs < 0) return '0:00';
+  let m = Math.floor(secs / 60);
+  let s = Math.round(secs % 60);
+  if (s >= 60) {
+    m += 1;
+    s = 0;
+  }
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+/**
+ * Formats total seconds into human-readable race duration (e.g. '1h 45m 20s' or '6m 0s').
+ * Guarantees seconds and minutes roll over cleanly if rounded to 60 (e.g. 360s -> 6m 0s, 420s -> 7m 0s).
+ * Prevents defective strings like '6m 60s'.
+ */
+export function formatRunningTime(totalSec: number): string {
+  if (!Number.isFinite(totalSec) || totalSec < 0) return '0m 0s';
+  let h = Math.floor(totalSec / 3600);
+  const rem = totalSec % 3600;
+  let m = Math.floor(rem / 60);
+  let s = Math.round(rem % 60);
+  if (s >= 60) {
+    m += 1;
+    s = 0;
+  }
+  if (m >= 60) {
+    h += 1;
+    m = 0;
+  }
+  if (h > 0) {
+    return `${h}h ${m}m ${s}s`;
+  }
+  return `${m}m ${s}s`;
+}
+
 export function calculateRunningPace(
   distKm: number,
   hours: number,
   minutes: number,
   seconds: number
 ): RunningPaceResult {
-  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-  const safeDist = Math.max(0.1, distKm);
+  const totalSeconds = Math.max(1, (hours || 0) * 3600 + (minutes || 0) * 60 + (seconds || 0));
+  const safeDist = Math.max(0.1, distKm || 0.1);
   const secPerKm = totalSeconds / safeDist;
   const secPerMile = secPerKm * 1.60934;
-
-  const formatPace = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = Math.round(secs % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  };
-
-  const formatTime = (totalSec: number) => {
-    const h = Math.floor(totalSec / 3600);
-    const rem = totalSec % 3600;
-    const m = Math.floor(rem / 60);
-    const s = Math.round(rem % 60);
-    if (h > 0) {
-      return `${h}h ${m}m ${s}s`;
-    }
-    return `${m}m ${s}s`;
-  };
 
   const speedKmh = Math.round((safeDist / (totalSeconds / 3600)) * 10) / 10;
   const speedMph = Math.round((speedKmh / 1.60934) * 10) / 10;
@@ -410,8 +436,8 @@ export function calculateRunningPace(
     return {
       distance: r.name,
       distKm: r.km,
-      predictedTime: formatTime(predSec),
-      predictedPace: `${formatPace(pPerKm)} /km`,
+      predictedTime: formatRunningTime(predSec),
+      predictedPace: `${formatRunningPace(pPerKm)} /km`,
     };
   });
 
@@ -420,8 +446,8 @@ export function calculateRunningPace(
   const vo2 = Math.round((-4.60 + 0.182258 * velocityMetersMin + 0.000104 * Math.pow(velocityMetersMin, 2)) * 10) / 10;
 
   return {
-    pacePerKm: `${formatPace(secPerKm)} /km`,
-    pacePerMile: `${formatPace(secPerMile)} /mi`,
+    pacePerKm: `${formatRunningPace(secPerKm)} /km`,
+    pacePerMile: `${formatRunningPace(secPerMile)} /mi`,
     speedKmh,
     speedMph,
     vo2MaxEst: Math.max(20, Math.min(85, vo2)),
@@ -804,13 +830,14 @@ export function calculateMuscularPotential(
   const wIn = wristCm / 2.54;
   const aIn = ankleCm / 2.54;
 
+  // Casey Butt formula: Max LBM (lbs) = H^1.5 * ( sqrt(W)/22.6670 + sqrt(A)/17.0104 ) * ( 1 + %bf/224 )
   const maxLbmLb =
     Math.pow(hIn, 1.5) *
     (Math.sqrt(wIn) / 22.667 + Math.sqrt(aIn) / 17.0104) *
-    (1 / 224);
+    (1 + 10 / 224);
 
-  // Fallback if formula parameters are out of nominal range
-  const safeMaxLbmKg = Math.max(50, Math.round((maxLbmLb * 0.453592) * 10) / 10);
+  // Convert to metric kg
+  const safeMaxLbmKg = Math.round((maxLbmLb * 0.453592) * 10) / 10;
   const maxWeightAt10Pct = Math.round((safeMaxLbmKg / 0.9) * 10) / 10;
 
   // Max natural drug-free circumference potentials (Casey Butt formulas, converted to cm)
@@ -1078,14 +1105,17 @@ export function calculateProteinDistribution(
   goal: 'hypertrophy' | 'fat_loss' | 'maintenance' | 'endurance',
   mealsCount: number = 4
 ): ProteinDistributionResult {
+  const safeMeals = Math.max(1, Math.min(8, Math.floor(mealsCount) || 1));
+  const safeWeight = Math.max(30, Math.min(300, Number.isFinite(weightKg) ? weightKg : 75));
+
   let gPerKg = 2.0;
   if (goal === 'hypertrophy') gPerKg = 2.2;
   if (goal === 'fat_loss') gPerKg = 2.4; // higher to mitigate catabolism
   if (goal === 'endurance') gPerKg = 1.6;
   if (goal === 'maintenance') gPerKg = 1.8;
 
-  const totalProtein = Math.round(weightKg * gPerKg);
-  const perMealGrams = Math.round(totalProtein / mealsCount);
+  const totalProtein = Math.round(safeWeight * gPerKg);
+  const perMealGrams = Math.round(totalProtein / safeMeals);
 
   const mealTemplates = [
     { title: 'Morning MPS Anchor', timing: 'Within 90 mins of waking', sources: 'Whole eggs, whey isolate, egg whites, Greek yogurt' },
@@ -1097,8 +1127,8 @@ export function calculateProteinDistribution(
   ];
 
   const meals = [];
-  for (let i = 0; i < mealsCount; i++) {
-    const template = mealTemplates[i] || { title: `Meal ${i + 1}`, timing: `Every ${Math.round(14 / mealsCount)} hours`, sources: 'Complete biological protein' };
+  for (let i = 0; i < safeMeals; i++) {
+    const template = mealTemplates[i] || { title: `Meal ${i + 1}`, timing: `Every ${Math.round(14 / safeMeals)} hours`, sources: 'Complete biological protein' };
     // Leucine is approximately 8% to 11% of high-quality animal/dairy protein
     const leucine = Math.round(perMealGrams * 0.09 * 10) / 10;
     meals.push({
@@ -1111,11 +1141,13 @@ export function calculateProteinDistribution(
     });
   }
 
+  const primaryLeucine = meals[0]?.leucineEstimateGrams || Math.round(perMealGrams * 0.09 * 10) / 10;
+
   return {
     totalDailyGrams: totalProtein,
     gramsPerKg: gPerKg,
     meals,
-    leucineThresholdSummary: `Each meal provides approximately ${meals[0].leucineEstimateGrams}g of leucine, exceeding the critical ~2.7g-3.0g trigger needed to fully initiate intracellular mTORC1 phosphorylation.`,
+    leucineThresholdSummary: `Each meal provides approximately ${primaryLeucine}g of leucine, exceeding the critical ~2.7g-3.0g trigger needed to fully initiate intracellular mTORC1 phosphorylation.`,
   };
 }
 
@@ -1137,6 +1169,9 @@ export function calculateBodyRecomposition(
   experienceLevel: 'beginner' | 'intermediate' | 'advanced',
   preference: 'slight_deficit' | 'pure_maintenance' | 'slight_surplus'
 ): RecompPlannerResult {
+  const safeTdee = Math.max(800, Math.min(10000, Number.isFinite(tdee) ? Math.round(tdee) : 2400));
+  const safeWeight = Math.max(30, Math.min(300, Number.isFinite(weightKg) ? weightKg : 75));
+
   let deltaPct = 0;
   let strategyName = 'Iso-Caloric Strict Recomposition (0% Delta)';
   let rationale = 'Zero net energy change forces physiological energy partition: fat stores subsidize muscle protein synthesis.';
@@ -1151,9 +1186,9 @@ export function calculateBodyRecomposition(
     rationale = 'Minimal adipose spillover with maximized glycogen replenishment and neuromuscular recovery.';
   }
 
-  const targetCal = Math.round(tdee * (1 + deltaPct));
-  const weeklyDelta = (targetCal - tdee) * 7;
-  const proteinGrams = Math.round(weightKg * 2.3);
+  const targetCal = Math.round(safeTdee * (1 + deltaPct));
+  const weeklyDelta = (targetCal - safeTdee) * 7;
+  const proteinGrams = Math.round(safeWeight * 2.3);
 
   // Recomp potential is heavily modulated by training status (Aragon & Schoenfeld)
   let potentialMultiplier = 1.0;
@@ -1166,7 +1201,7 @@ export function calculateBodyRecomposition(
   const projectedLeanGainKg = Math.round((1.8 * potentialMultiplier) * 10) / 10;
 
   return {
-    maintenanceCalories: tdee,
+    maintenanceCalories: safeTdee,
     targetDailyCalories: targetCal,
     weeklyCalorieDelta: weeklyDelta,
     dailyProteinGrams: proteinGrams,

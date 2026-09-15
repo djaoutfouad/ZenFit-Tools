@@ -1,4 +1,4 @@
-import React, { useState, useId } from 'react';
+import React, { useState, useMemo, useId } from 'react';
 import {
   CalculatorMeta,
   UnitSystem,
@@ -26,6 +26,7 @@ import {
   calculateHRR,
   EXERCISE_MET_LIST,
 } from '../utils/calculatorEngines';
+import { validateCalculatorInputs } from '../utils/calculatorValidation';
 import { AdSenseSlot } from './AdSenseSlot';
 import {
   Sparkles,
@@ -38,6 +39,7 @@ import {
   ChevronUp,
   ShieldCheck,
   AlertTriangle,
+  AlertCircle,
   FileCheck,
   Scale,
   Flame,
@@ -138,6 +140,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
   // Recomp specific
   const [recompPreference, setRecompPreference] = useState<'slight_deficit' | 'pure_maintenance' | 'slight_surplus'>('pure_maintenance');
   const [recompExperience, setRecompExperience] = useState<'beginner' | 'intermediate' | 'advanced'>('intermediate');
+  const [recompTdee, setRecompTdee] = useState<number>(2400);
 
   // UI state
   const [copied, setCopied] = useState<boolean>(false);
@@ -159,6 +162,104 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
   const toggleFaq = (idx: number) => {
     setExpandedFaqIndex(expandedFaqIndex === idx ? null : idx);
   };
+
+  // Centralized robust validation check for current calculator
+  const validationResult = useMemo(() => {
+    return validateCalculatorInputs(calc.id, {
+      gender,
+      age,
+      weight,
+      height,
+      weightKg,
+      heightCm,
+      bodyFatPct,
+      activityMultiplier,
+      macroCalories,
+      macroGoal,
+      macroMeals,
+      neckCirc,
+      waistCirc,
+      hipCirc,
+      neckCm,
+      waistCm,
+      hipCm,
+      liftWeight,
+      liftKg,
+      liftReps,
+      restingHeartRate,
+      runDistance,
+      runDistKm,
+      runHours,
+      runMinutes,
+      runSeconds,
+      fastProtocol,
+      fastStartTime,
+      workoutDuration,
+      sweatIntensity,
+      climate,
+      creatineIntensity,
+      wristCirc,
+      ankleCirc,
+      wristCm,
+      ankleCm,
+      selectedExerciseId,
+      exerciseDurationMin,
+      sleepMode,
+      sleepTime,
+      proteinGoal,
+      proteinMeals,
+      recompPreference,
+      recompExperience,
+      recompTdee,
+    });
+  }, [
+    calc.id,
+    gender,
+    age,
+    weight,
+    height,
+    weightKg,
+    heightCm,
+    bodyFatPct,
+    activityMultiplier,
+    macroCalories,
+    macroGoal,
+    macroMeals,
+    neckCirc,
+    waistCirc,
+    hipCirc,
+    neckCm,
+    waistCm,
+    hipCm,
+    liftWeight,
+    liftKg,
+    liftReps,
+    restingHeartRate,
+    runDistance,
+    runDistKm,
+    runHours,
+    runMinutes,
+    runSeconds,
+    fastProtocol,
+    fastStartTime,
+    workoutDuration,
+    sweatIntensity,
+    climate,
+    creatineIntensity,
+    wristCirc,
+    ankleCirc,
+    wristCm,
+    ankleCm,
+    selectedExerciseId,
+    exerciseDurationMin,
+    sleepMode,
+    sleepTime,
+    proteinGoal,
+    proteinMeals,
+    recompPreference,
+    recompExperience,
+    recompTdee,
+  ]);
 
   const getCurrentExportInputState = (): ExportInputState => ({
     gender,
@@ -205,6 +306,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
     proteinMeals,
     recompPreference,
     recompExperience,
+    recompTdee,
   });
 
   const exportData = generateExportData(calc, unitSystem, getCurrentExportInputState());
@@ -215,6 +317,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
    * including timestamps and unit settings.
    */
   const handleExportResults = () => {
+    if (validationResult.hasErrors) return;
     const data = generateExportData(calc, unitSystem, getCurrentExportInputState());
     downloadTextFile(data.summaryText, `${data.filenameBase}.txt`);
     setExportSuccess(true);
@@ -222,20 +325,24 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
   };
 
   const handleCopySummary = () => {
+    if (validationResult.hasErrors) return;
     navigator.clipboard.writeText(exportData.summaryText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownloadTxt = () => {
+    if (validationResult.hasErrors) return;
     handleExportResults();
   };
 
   const handleDownloadCsv = () => {
+    if (validationResult.hasErrors) return;
     downloadCsvFile(exportData.csvText, `${exportData.filenameBase}.csv`);
   };
 
   const handleCopyResults = (text: string) => {
+    if (validationResult.hasErrors) return;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -327,12 +434,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {/* Gender selector for applicable calculators */}
               {['tdee', 'navy_body_fat', 'ideal_weight', 'bmr_comparative'].includes(calc.id) && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <span id="gender-label" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Biological Sex
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  </span>
+                  <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="gender-label">
                     <button
+                      id="gender-toggle-male"
                       type="button"
+                      aria-label="Biological Sex: Male"
+                      aria-pressed={gender === 'male'}
                       onClick={() => setGender('male')}
                       className={`py-2 px-3 text-xs font-bold rounded-xl border transition-all ${
                         gender === 'male'
@@ -343,7 +453,10 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       Male
                     </button>
                     <button
+                      id="gender-toggle-female"
                       type="button"
+                      aria-label="Biological Sex: Female"
+                      aria-pressed={gender === 'female'}
                       onClick={() => setGender('female')}
                       className={`py-2 px-3 text-xs font-bold rounded-xl border transition-all ${
                         gender === 'female'
@@ -361,17 +474,26 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {['tdee', 'heart_rate_zones', 'bmr_comparative', 'hrr_zones'].includes(calc.id) && (
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    <span>Age</span>
-                    <span className="text-amber-600 font-mono">{age} yrs</span>
+                    <label htmlFor="input-age">Age</label>
+                    <span id="age-display" className="text-amber-600 font-mono">{age} yrs</span>
                   </div>
                   <input
+                    id="input-age"
+                    name="age"
                     type="range"
                     min={15}
                     max={85}
                     value={age}
+                    aria-label="Age in years"
+                    aria-describedby="age-display"
                     onChange={(e) => setAge(Number(e.target.value))}
                     className="w-full accent-amber-500 cursor-pointer"
                   />
+                  {validationResult.fieldErrors.age && (
+                    <p id="error-age" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.age}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -379,23 +501,34 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {['tdee', 'macros', 'navy_body_fat', 'hydration', 'creatine', 'ffmi', 'calories_burned', 'bmr_comparative', 'protein_timing', 'body_recomposition'].includes(calc.id) && (
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    <span>Body Weight</span>
+                    <label htmlFor="input-weight">Body Weight</label>
                     <span className="text-amber-600 font-mono">
                       {weight} {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
+                      id="input-weight"
+                      name="weight"
                       type="number"
                       step={0.5}
                       value={weight}
-                      onChange={(e) => setWeight(Math.max(30, Number(e.target.value)))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      aria-label={`Body Weight in ${unitSystem === 'metric' ? 'kilograms' : 'pounds'}`}
+                      aria-describedby={validationResult.fieldErrors.weight ? 'error-weight' : undefined}
+                      onChange={(e) => setWeight(Number(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.weight ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
                     <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
                       {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                   </div>
+                  {validationResult.fieldErrors.weight && (
+                    <p id="error-weight" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.weight}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -403,23 +536,34 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {['tdee', 'navy_body_fat', 'ffmi', 'ideal_weight', 'muscular_potential', 'whtr', 'bmr_comparative'].includes(calc.id) && (
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    <span>Height</span>
+                    <label htmlFor="input-height">Height</label>
                     <span className="text-amber-600 font-mono">
                       {height} {unitSystem === 'metric' ? 'cm' : 'in'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
+                      id="input-height"
+                      name="height"
                       type="number"
                       step={1}
                       value={height}
-                      onChange={(e) => setHeight(Math.max(100, Number(e.target.value)))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      aria-label={`Body Height in ${unitSystem === 'metric' ? 'centimeters' : 'inches'}`}
+                      aria-describedby={validationResult.fieldErrors.height ? 'error-height' : undefined}
+                      onChange={(e) => setHeight(Number(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.height ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
                     <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
                       {unitSystem === 'metric' ? 'cm' : 'in'}
                     </span>
                   </div>
+                  {validationResult.fieldErrors.height && (
+                    <p id="error-height" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.height}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -427,28 +571,40 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {['tdee', 'ffmi', 'bmr_comparative', 'body_recomposition'].includes(calc.id) && (
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    <span>Body Fat Percentage (Optional / Estimate)</span>
-                    <span className="text-amber-600 font-mono">{bodyFatPct}%</span>
+                    <label htmlFor="input-body-fat">Body Fat Percentage (Optional / Estimate)</label>
+                    <span id="body-fat-display" className="text-amber-600 font-mono">{bodyFatPct}%</span>
                   </div>
                   <input
+                    id="input-body-fat"
+                    name="bodyFatPct"
                     type="range"
                     min={4}
                     max={45}
                     step={0.5}
                     value={bodyFatPct}
+                    aria-label="Body Fat Percentage"
+                    aria-describedby="body-fat-display"
                     onChange={(e) => setBodyFatPct(Number(e.target.value))}
                     className="w-full accent-amber-500 cursor-pointer"
                   />
+                  {validationResult.fieldErrors.bodyFatPct && (
+                    <p id="error-body-fat" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.bodyFatPct}
+                    </p>
+                  )}
                 </div>
               )}
 
               {/* TDEE Activity Multiplier */}
               {calc.id === 'tdee' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="select-activity-multiplier" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Physical Activity Level
                   </label>
                   <select
+                    id="select-activity-multiplier"
+                    name="activityMultiplier"
+                    aria-label="Physical Activity Level"
                     value={activityMultiplier}
                     onChange={(e) => setActivityMultiplier(Number(e.target.value))}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -466,38 +622,55 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'macros' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-macro-calories" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Target Daily Calories
                     </label>
                     <input
+                      id="input-macro-calories"
+                      name="macroCalories"
                       type="number"
                       step={50}
                       value={macroCalories}
-                      onChange={(e) => setMacroCalories(Math.max(1000, Number(e.target.value)))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      aria-label="Target Daily Calories in kcal"
+                      aria-describedby={validationResult.fieldErrors.macroCalories ? 'error-macro-cal' : undefined}
+                      onChange={(e) => setMacroCalories(Number(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.macroCalories ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.macroCalories && (
+                      <p id="error-macro-cal" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.macroCalories}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-macro-goal" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Macronutrient Protocol Goal
                     </label>
                     <select
+                      id="select-macro-goal"
+                      name="macroGoal"
+                      aria-label="Macronutrient Protocol Goal"
                       value={macroGoal}
                       onChange={(e) => setMacroGoal(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                     >
                       <option value="fat_loss">Fat Loss / Caloric Deficit (High Protein)</option>
-                      <option value="maintenance">Maintenance & Longevity (Balanced 30/30/40)</option>
+                      <option value="maintenance">Maintenance &amp; Longevity (Balanced 30/30/40)</option>
                       <option value="muscle_gain">Hypertrophy / Lean Bulking (Carb Rich)</option>
                       <option value="keto">Ketogenic (70% Fat, 25% Protein, 5% Carb)</option>
                       <option value="endurance">Endurance Athlete (55% Carb Energy)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-macro-meals" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Daily Meals Split
                     </label>
                     <select
+                      id="select-macro-meals"
+                      name="macroMeals"
+                      aria-label="Daily Meals Split"
                       value={macroMeals}
                       onChange={(e) => setMacroMeals(Number(e.target.value))}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -507,6 +680,11 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <option value={5}>5 Meals / Day</option>
                       <option value={6}>6 Small Feeds / Day</option>
                     </select>
+                    {validationResult.fieldErrors.macroMeals && (
+                      <p id="error-macro-meals" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.macroMeals}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -515,41 +693,71 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'navy_body_fat' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-neck-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Neck Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                     </label>
                     <input
+                      id="input-neck-circ"
+                      name="neckCirc"
                       type="number"
                       step={0.2}
                       value={neckCirc}
+                      aria-label={`Neck Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                       onChange={(e) => setNeckCirc(Number(e.target.value))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.neckCirc ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.neckCirc && (
+                      <p id="error-neck-circ" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.neckCirc}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-waist-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Waist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                     </label>
                     <input
+                      id="input-waist-circ"
+                      name="waistCirc"
                       type="number"
                       step={0.5}
                       value={waistCirc}
+                      aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                       onChange={(e) => setWaistCirc(Number(e.target.value))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.waistCirc && (
+                      <p id="error-waist-circ" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.waistCirc}
+                      </p>
+                    )}
                   </div>
                   {gender === 'female' && (
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      <label htmlFor="input-hip-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Hip Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                       </label>
                       <input
+                        id="input-hip-circ"
+                        name="hipCirc"
                         type="number"
                         step={0.5}
                         value={hipCirc}
+                        aria-label={`Hip Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                         onChange={(e) => setHipCirc(Number(e.target.value))}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                          validationResult.fieldErrors.hipCirc ? 'border-rose-500' : 'border-slate-300'
+                        }`}
                       />
+                      {validationResult.fieldErrors.hipCirc && (
+                        <p id="error-hip-circ" className="text-xs text-rose-600 mt-1" role="alert">
+                          {validationResult.fieldErrors.hipCirc}
+                        </p>
+                      )}
                     </div>
                   )}
                 </>
@@ -559,30 +767,49 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'one_rep_max' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-lift-weight" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Weight Lifted ({unitSystem === 'metric' ? 'kg' : 'lbs'})
                     </label>
                     <input
+                      id="input-lift-weight"
+                      name="liftWeight"
                       type="number"
                       step={2.5}
                       value={liftWeight}
-                      onChange={(e) => setLiftWeight(Math.max(1, Number(e.target.value)))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      aria-label={`Weight Lifted in ${unitSystem === 'metric' ? 'kg' : 'lbs'}`}
+                      onChange={(e) => setLiftWeight(Number(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.liftWeight ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.liftWeight && (
+                      <p id="error-lift-weight" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.liftWeight}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      <span>Reps Completed (1 - 15)</span>
-                      <span className="text-amber-600 font-mono">{liftReps} reps</span>
+                      <label htmlFor="input-lift-reps">Reps Completed (1 - 15)</label>
+                      <span id="reps-display" className="text-amber-600 font-mono">{liftReps} reps</span>
                     </div>
                     <input
+                      id="input-lift-reps"
+                      name="liftReps"
                       type="range"
                       min={1}
                       max={15}
                       value={liftReps}
+                      aria-label="Repetitions Completed (1 to 15)"
+                      aria-describedby="reps-display"
                       onChange={(e) => setLiftReps(Number(e.target.value))}
                       className="w-full accent-amber-500 cursor-pointer"
                     />
+                    {validationResult.fieldErrors.liftReps && (
+                      <p id="error-lift-reps" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.liftReps}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -591,17 +818,26 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {['heart_rate_zones', 'hrr_zones'].includes(calc.id) && (
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    <span>Resting Heart Rate (Measured in Morning)</span>
-                    <span className="text-amber-600 font-mono">{restingHeartRate} BPM</span>
+                    <label htmlFor="input-resting-hr">Resting Heart Rate (Measured in Morning)</label>
+                    <span id="resting-hr-display" className="text-amber-600 font-mono">{restingHeartRate} BPM</span>
                   </div>
                   <input
+                    id="input-resting-hr"
+                    name="restingHeartRate"
                     type="range"
                     min={40}
                     max={100}
                     value={restingHeartRate}
+                    aria-label="Resting Heart Rate in Beats Per Minute"
+                    aria-describedby="resting-hr-display"
                     onChange={(e) => setRestingHeartRate(Number(e.target.value))}
                     className="w-full accent-amber-500 cursor-pointer"
                   />
+                  {validationResult.fieldErrors.restingHeartRate && (
+                    <p id="error-resting-hr" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.restingHeartRate}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -609,58 +845,82 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'running_pace' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-run-distance" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Distance ({unitSystem === 'metric' ? 'Kilometers' : 'Miles'})
                     </label>
                     <input
+                      id="input-run-distance"
+                      name="runDistance"
                       type="number"
                       step={0.1}
                       value={runDistance}
-                      onChange={(e) => setRunDistance(Math.max(0.1, Number(e.target.value)))}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      aria-label={`Running Distance in ${unitSystem === 'metric' ? 'km' : 'miles'}`}
+                      onChange={(e) => setRunDistance(Number(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.runDistance ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.runDistance && (
+                      <p id="error-run-dist" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.runDistance}
+                      </p>
+                    )}
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      <label htmlFor="input-run-hours" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Hours
                       </label>
                       <input
+                        id="input-run-hours"
+                        name="runHours"
                         type="number"
                         min={0}
                         max={24}
                         value={runHours}
+                        aria-label="Running Time Hours"
                         onChange={(e) => setRunHours(Number(e.target.value))}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      <label htmlFor="input-run-minutes" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Minutes
                       </label>
                       <input
+                        id="input-run-minutes"
+                        name="runMinutes"
                         type="number"
                         min={0}
                         max={59}
                         value={runMinutes}
+                        aria-label="Running Time Minutes"
                         onChange={(e) => setRunMinutes(Number(e.target.value))}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      <label htmlFor="input-run-seconds" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Seconds
                       </label>
                       <input
+                        id="input-run-seconds"
+                        name="runSeconds"
                         type="number"
                         min={0}
                         max={59}
                         value={runSeconds}
+                        aria-label="Running Time Seconds"
                         onChange={(e) => setRunSeconds(Number(e.target.value))}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                   </div>
+                  {validationResult.fieldErrors.runTime && (
+                    <p id="error-run-time" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.runTime}
+                    </p>
+                  )}
                 </>
               )}
 
@@ -668,10 +928,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'intermittent_fasting' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-fast-protocol" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Fasting Protocol
                     </label>
                     <select
+                      id="select-fast-protocol"
+                      name="fastProtocol"
+                      aria-label="Intermittent Fasting Protocol"
                       value={fastProtocol}
                       onChange={(e) => setFastProtocol(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -684,15 +947,25 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-fast-start-time" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Fasting Start Time (Last Evening Meal)
                     </label>
                     <input
+                      id="input-fast-start-time"
+                      name="fastStartTime"
                       type="time"
                       value={fastStartTime}
+                      aria-label="Fasting Start Time"
                       onChange={(e) => setFastStartTime(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.fastStartTime ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.fastStartTime && (
+                      <p id="error-fast-start-time" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.fastStartTime}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -702,24 +975,36 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <>
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      <span>Daily Exercise Duration</span>
-                      <span className="text-amber-600 font-mono">{workoutDuration} mins</span>
+                      <label htmlFor="input-workout-duration">Daily Exercise Duration</label>
+                      <span id="workout-duration-display" className="text-amber-600 font-mono">{workoutDuration} mins</span>
                     </div>
                     <input
+                      id="input-workout-duration"
+                      name="workoutDuration"
                       type="range"
                       min={0}
                       max={180}
                       step={15}
                       value={workoutDuration}
+                      aria-label="Daily Exercise Duration in Minutes"
+                      aria-describedby="workout-duration-display"
                       onChange={(e) => setWorkoutDuration(Number(e.target.value))}
                       className="w-full accent-amber-500 cursor-pointer"
                     />
+                    {validationResult.fieldErrors.workoutDuration && (
+                      <p id="error-workout-duration" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.workoutDuration}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-sweat-intensity" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Sweat Rate Intensity
                     </label>
                     <select
+                      id="select-sweat-intensity"
+                      name="sweatIntensity"
+                      aria-label="Sweat Rate Intensity"
                       value={sweatIntensity}
                       onChange={(e) => setSweatIntensity(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -730,10 +1015,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-climate" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Environmental Climate
                     </label>
                     <select
+                      id="select-climate"
+                      name="climate"
+                      aria-label="Environmental Climate"
                       value={climate}
                       onChange={(e) => setClimate(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -750,10 +1038,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {/* Creatine inputs */}
               {calc.id === 'creatine' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="select-creatine-intensity" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Training Specialization
                   </label>
                   <select
+                    id="select-creatine-intensity"
+                    name="creatineIntensity"
+                    aria-label="Training Specialization for Creatine"
                     value={creatineIntensity}
                     onChange={(e) => setCreatineIntensity(e.target.value as any)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -767,47 +1058,77 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {/* Wrist & Ankle circumferences */}
               {['ideal_weight', 'muscular_potential'].includes(calc.id) && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="input-wrist-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Wrist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
                   <input
+                    id="input-wrist-circ"
+                    name="wristCirc"
                     type="number"
                     step={0.1}
                     value={wristCirc}
+                    aria-label={`Wrist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                     onChange={(e) => setWristCirc(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      validationResult.fieldErrors.wristCirc ? 'border-rose-500' : 'border-slate-300'
+                    }`}
                   />
+                  {validationResult.fieldErrors.wristCirc && (
+                    <p id="error-wrist-circ" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.wristCirc}
+                    </p>
+                  )}
                 </div>
               )}
 
               {calc.id === 'muscular_potential' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="input-ankle-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Ankle Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
                   <input
+                    id="input-ankle-circ"
+                    name="ankleCirc"
                     type="number"
                     step={0.1}
                     value={ankleCirc}
+                    aria-label={`Ankle Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                     onChange={(e) => setAnkleCirc(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      validationResult.fieldErrors.ankleCirc ? 'border-rose-500' : 'border-slate-300'
+                    }`}
                   />
+                  {validationResult.fieldErrors.ankleCirc && (
+                    <p id="error-ankle-circ" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.ankleCirc}
+                    </p>
+                  )}
                 </div>
               )}
 
               {/* WHtR waist input */}
               {calc.id === 'whtr' && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="input-whtr-waist" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Waist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
                   <input
+                    id="input-whtr-waist"
+                    name="waistCirc"
                     type="number"
                     step={0.5}
                     value={waistCirc}
+                    aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
                     onChange={(e) => setWaistCirc(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
+                    }`}
                   />
+                  {validationResult.fieldErrors.waistCirc && (
+                    <p id="error-whtr-waist" className="text-xs text-rose-600 mt-1" role="alert">
+                      {validationResult.fieldErrors.waistCirc}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -815,10 +1136,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'calories_burned' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-exercise-id" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Select Exercise / Activity
                     </label>
                     <select
+                      id="select-exercise-id"
+                      name="selectedExerciseId"
+                      aria-label="Select Exercise Activity"
                       value={selectedExerciseId}
                       onChange={(e) => setSelectedExerciseId(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -832,18 +1156,27 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   </div>
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      <span>Duration</span>
-                      <span className="text-amber-600 font-mono">{exerciseDurationMin} mins</span>
+                      <label htmlFor="input-exercise-duration">Duration</label>
+                      <span id="exercise-dur-display" className="text-amber-600 font-mono">{exerciseDurationMin} mins</span>
                     </div>
                     <input
+                      id="input-exercise-duration"
+                      name="exerciseDurationMin"
                       type="range"
                       min={5}
                       max={180}
                       step={5}
                       value={exerciseDurationMin}
+                      aria-label="Exercise Duration in Minutes"
+                      aria-describedby="exercise-dur-display"
                       onChange={(e) => setExerciseDurationMin(Number(e.target.value))}
                       className="w-full accent-amber-500 cursor-pointer"
                     />
+                    {validationResult.fieldErrors.exerciseDurationMin && (
+                      <p id="error-exercise-dur" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.exerciseDurationMin}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -852,12 +1185,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'sleep_cycles' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <span id="sleep-direction-label" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Calculation Direction
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    </span>
+                    <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="sleep-direction-label">
                       <button
+                        id="btn-sleep-mode-wake"
                         type="button"
+                        aria-pressed={sleepMode === 'wake_at'}
+                        aria-label="Target Wake-up Time Mode"
                         onClick={() => setSleepMode('wake_at')}
                         className={`py-2 px-2 text-xs font-bold rounded-xl border transition-all ${
                           sleepMode === 'wake_at'
@@ -868,7 +1204,10 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         I want to wake up at...
                       </button>
                       <button
+                        id="btn-sleep-mode-now"
                         type="button"
+                        aria-pressed={sleepMode === 'sleep_now'}
+                        aria-label="Sleep Now Mode"
                         onClick={() => setSleepMode('sleep_now')}
                         className={`py-2 px-2 text-xs font-bold rounded-xl border transition-all ${
                           sleepMode === 'sleep_now'
@@ -881,15 +1220,25 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="input-sleep-time" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       {sleepMode === 'wake_at' ? 'Target Wake-Up Time' : 'Current Bedtime'}
                     </label>
                     <input
+                      id="input-sleep-time"
+                      name="sleepTime"
                       type="time"
                       value={sleepTime}
+                      aria-label={sleepMode === 'wake_at' ? 'Target Wake-Up Time' : 'Current Bedtime'}
                       onChange={(e) => setSleepTime(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        validationResult.fieldErrors.sleepTime ? 'border-rose-500' : 'border-slate-300'
+                      }`}
                     />
+                    {validationResult.fieldErrors.sleepTime && (
+                      <p id="error-sleep-time" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.sleepTime}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -898,10 +1247,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'protein_timing' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-protein-goal" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Physiological Goal
                     </label>
                     <select
+                      id="select-protein-goal"
+                      name="proteinGoal"
+                      aria-label="Physiological Goal for Protein Distribution"
                       value={proteinGoal}
                       onChange={(e) => setProteinGoal(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -913,10 +1265,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-protein-meals" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Daily Meal Boluses
                     </label>
                     <select
+                      id="select-protein-meals"
+                      name="proteinMeals"
+                      aria-label="Daily Meal Boluses"
                       value={proteinMeals}
                       onChange={(e) => setProteinMeals(Number(e.target.value))}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -926,6 +1281,11 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <option value={5}>5 Boluses (Advanced athlete)</option>
                       <option value={6}>6 Boluses (Bodybuilder protocol)</option>
                     </select>
+                    {validationResult.fieldErrors.proteinMeals && (
+                      <p id="error-protein-meals" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.proteinMeals}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -934,10 +1294,45 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               {calc.id === 'body_recomposition' && (
                 <>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      <label htmlFor="input-recomp-tdee">Baseline Maintenance TDEE</label>
+                      <span className="text-amber-600 font-mono">{recompTdee} kcal</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="input-recomp-tdee"
+                        name="recompTdee"
+                        aria-label="Baseline Maintenance Total Daily Energy Expenditure in kcal"
+                        aria-describedby="recomp-tdee-help"
+                        type="number"
+                        step={50}
+                        value={recompTdee}
+                        onChange={(e) => setRecompTdee(Number(e.target.value))}
+                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                          validationResult.fieldErrors.recompTdee ? 'border-rose-500' : 'border-slate-300'
+                        }`}
+                      />
+                      <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
+                        kcal
+                      </span>
+                    </div>
+                    <p id="recomp-tdee-help" className="text-[11px] text-slate-500 mt-1">
+                      Tested standard baseline: 2400 kcal (Deficit target: 2040, Iso-caloric: 2400, Surplus target: 2592).
+                    </p>
+                    {validationResult.fieldErrors.recompTdee && (
+                      <p id="error-recomp-tdee" className="text-xs text-rose-600 mt-1" role="alert">
+                        {validationResult.fieldErrors.recompTdee}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="select-recomp-experience" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Training Experience Status
                     </label>
                     <select
+                      id="select-recomp-experience"
+                      name="recompExperience"
+                      aria-label="Training Experience Status"
                       value={recompExperience}
                       onChange={(e) => setRecompExperience(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -948,10 +1343,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label htmlFor="select-recomp-preference" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Recomposition Priority Strategy
                     </label>
                     <select
+                      id="select-recomp-preference"
+                      name="recompPreference"
+                      aria-label="Recomposition Priority Strategy"
                       value={recompPreference}
                       onChange={(e) => setRecompPreference(e.target.value as any)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
@@ -974,12 +1372,21 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <Activity className="w-4 h-4 text-amber-500" />
                   Instant Biometric Computation
                 </h3>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   <button
                     id="export-results-btn"
                     onClick={handleExportResults}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-xs"
-                    title="Export calculation results as a formatted .txt summary file"
+                    disabled={validationResult.hasErrors}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+                      validationResult.hasErrors
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        : 'bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950'
+                    }`}
+                    title={
+                      validationResult.hasErrors
+                        ? 'Please resolve input errors before exporting'
+                        : 'Export calculation results as a formatted .txt summary file'
+                    }
                   >
                     {exportSuccess ? <Check className="w-3.5 h-3.5 text-slate-950" /> : <Download className="w-3.5 h-3.5 text-slate-950" />}
                     <span>{exportSuccess ? 'Downloaded .TXT!' : 'Export Results'}</span>
@@ -987,8 +1394,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <button
                     id="quick-copy-summary-btn"
                     onClick={handleCopySummary}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors shadow-2xs"
-                    title="Copy Formatted Text Summary to Clipboard"
+                    disabled={validationResult.hasErrors}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors shadow-2xs ${
+                      validationResult.hasErrors
+                        ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                    }`}
+                    title={validationResult.hasErrors ? 'Input errors detected' : 'Copy Formatted Text Summary to Clipboard'}
                   >
                     {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-500" />}
                     <span>{copied ? 'Copied!' : 'Copy Summary'}</span>
@@ -996,14 +1408,34 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <button
                     id="open-export-modal-btn"
                     onClick={() => setIsExportModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors shadow-2xs"
-                    title="More export options (CSV, preview)"
+                    disabled={validationResult.hasErrors}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors shadow-2xs ${
+                      validationResult.hasErrors
+                        ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                    }`}
+                    title={validationResult.hasErrors ? 'Input errors detected' : 'More export options (CSV, preview)'}
                   >
                     <Table className="w-3.5 h-3.5 text-emerald-600" />
                     <span className="hidden sm:inline">CSV &amp; Preview</span>
                   </button>
                 </div>
               </div>
+
+              {/* Validation alert banner if inputs are out of bounds */}
+              {validationResult.hasErrors && (
+                <div
+                  id="validation-error-banner"
+                  role="alert"
+                  className="mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-2.5 text-xs font-medium"
+                >
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="font-semibold block text-rose-900 mb-0.5">Please review your biometric inputs</strong>
+                    <span>{Object.values(validationResult.fieldErrors)[0] || 'One or more inputs are outside physiological norms.'}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Dynamic Result Renderers */}
               {calc.id === 'tdee' && (() => {

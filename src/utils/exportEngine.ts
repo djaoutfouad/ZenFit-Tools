@@ -67,6 +67,7 @@ export interface ExportInputState {
   proteinMeals: number;
   recompPreference: 'slight_deficit' | 'pure_maintenance' | 'slight_surplus';
   recompExperience: 'beginner' | 'intermediate' | 'advanced';
+  recompTdee?: number;
 }
 
 export interface ExportPayload {
@@ -444,7 +445,7 @@ export function generateExportData(
     addCsvRow('Result', 'Total Daily Protein', res.totalDailyGrams, 'grams');
     addCsvRow('Result', 'Protein Density', res.gramsPerKg, 'g/kg');
   } else if (calc.id === 'body_recomposition') {
-    const tdeeVal = calculateTDEE(s.gender, s.age, s.heightCm, s.weightKg, s.activityMultiplier).tdee;
+    const tdeeVal = s.recompTdee && s.recompTdee >= 800 ? s.recompTdee : calculateTDEE(s.gender, s.age, s.heightCm, s.weightKg, s.activityMultiplier).tdee;
     const res = calculateBodyRecomposition(s.weightKg, tdeeVal, s.recompExperience, s.recompPreference);
     const fatLossDisp = unitSystem === 'metric' ? `${res.projectedFatLossKg} kg` : `${Math.round(res.projectedFatLossKg * 2.20462 * 10) / 10} lbs`;
     const leanGainDisp = unitSystem === 'metric' ? `${res.projectedLeanGainKg} kg` : `${Math.round(res.projectedLeanGainKg * 2.20462 * 10) / 10} lbs`;
