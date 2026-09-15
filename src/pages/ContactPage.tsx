@@ -151,9 +151,9 @@ export const ContactPage: React.FC = () => {
                   <Clock className="w-4 h-4 text-amber-400" />
                   <span>Response within 24-48 hours</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-amber-400" />
-                  <span>Zero data tracking guarantee</span>
+                <div className="flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <span>Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy.</span>
                 </div>
               </div>
             </div>
@@ -301,7 +301,7 @@ export const ContactPage: React.FC = () => {
                   <span>{status === 'sending' ? 'Dispatching Message...' : 'Send Message'}</span>
                 </button>
                 <p className="text-[11px] text-slate-500 text-center mt-3">
-                  Calculator inputs are processed in your browser. Contact-form data is handled by EmailJS according to our Privacy Policy.
+                  Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy.
                 </p>
               </form>
             )}

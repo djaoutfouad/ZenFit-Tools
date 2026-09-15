@@ -174,7 +174,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
             </div>
 
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Calculators within the {category.title} category are based on published sports science formulas and population cohorts. All mathematical models run client-side to protect your personal privacy with zero server-side storage.
+              Calculators within the {category.title} category are based on published sports science formulas and population cohorts. All mathematical models run client-side to protect your personal privacy without requiring server-side storage.
             </p>
 
             <div className="pt-2">

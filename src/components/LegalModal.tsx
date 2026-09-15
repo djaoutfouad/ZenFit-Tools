@@ -124,7 +124,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               </p>
               <h5 className="font-semibold text-slate-900 pt-2">1. In-Browser Calculator Processing</h5>
               <p>
-                Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to this Privacy Policy. All 19 calculators execute locally within your web browser using client-side JavaScript, and your physiological calculator inputs are not transmitted to or stored on remote calculation servers.
+                Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy. All 19 calculators execute locally within your web browser using client-side JavaScript, and your physiological calculator inputs are not transmitted to or stored on remote calculation servers.
               </p>
               <h5 className="font-semibold text-slate-900 pt-2">2. Google AdSense & Third-Party Advertising</h5>
               <p>

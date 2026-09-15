@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Precision health, nutrition, and biohacking analytics suite engineered for athletes, coaches, and sports science enthusiasts. 100% browser-based calculations with zero telemetry or data harvesting.
+              Precision health, nutrition, and biohacking analytics suite engineered for athletes, coaches, and sports science enthusiasts. 100% browser-based calculations designed to keep your metrics private on your device.
             </p>
             <div className="pt-2">
               <a
@@ -152,7 +152,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           <div className="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong>Data Privacy &amp; Processing:</strong> Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to the Privacy Policy.
+              <strong>Data Privacy &amp; Processing:</strong> Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy.
             </p>
           </div>
 

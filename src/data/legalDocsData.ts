@@ -36,7 +36,7 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
         heading: '2. Browser-Based Calculator Processing',
         paragraphs: [
           'All 19 calculators provided on ZenFit Tools (including body weight, circumferences, body fat percentages, maximal heart rates, one-rep maxes, running paces, and fasting timers) execute entirely within your local browser runtime via JavaScript.',
-          'Calculator inputs are processed in your browser. Contact-form data is handled by the stated third-party service according to the Privacy Policy. Your physiological inputs, personal biometric metrics, and daily calculations are processed locally on your device.',
+          'Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy. Your physiological inputs, personal biometric metrics, and daily calculations are processed locally on your device.',
         ],
       },
       {
