@@ -13,7 +13,9 @@ interface AdSenseSlotProps {
   className?: string;
 }
 
-const SHOW_ADS = false;
+// AdSense is disabled by default and strictly disabled in development mode
+const isDev = Boolean(import.meta.env.DEV);
+const SHOW_ADS = !isDev && false;
 const ADSENSE_CLIENT_ID = 'ca-pub-XXXXXXXXXXXXXXXX';
 
 export const AdSenseSlot: React.FC<AdSenseSlotProps> = ({
@@ -21,7 +23,7 @@ export const AdSenseSlot: React.FC<AdSenseSlotProps> = ({
   id,
   className = '',
 }) => {
-  if (!SHOW_ADS) {
+  if (isDev || !SHOW_ADS) {
     return null;
   }
 

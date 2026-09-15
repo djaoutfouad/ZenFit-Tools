@@ -49,7 +49,7 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
       {
         heading: '4. Direct Communication & Inquiries',
         paragraphs: [
-          'When contacting us directly via zenfittools@gmail.com or our contact portal, we only process the sender name, email address, and message content for the explicit purpose of resolving your inquiry or feedback. We never sell, lease, or distribute your email address to commercial marketing firms.',
+          'When contacting us directly via zenfittools@gmail.com or our contact portal (powered by EmailJS client transmission), we only process the sender name, email address, and message content for the explicit purpose of responding to your inquiry or feedback. We never sell, lease, or distribute your email address to commercial marketing firms or third parties.',
         ],
       },
     ],
@@ -121,14 +121,14 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
       {
         heading: 'CRITICAL MEDICAL DISCLOSURE',
         paragraphs: [
-          'ZenFit Tools is an empirical mathematical and educational suite designed for healthy adults. It is NOT a medical device, clinical diagnostic instrument, or prescription health service.',
+          'ZenFit Tools is an empirical mathematical and educational suite designed for healthy adults. It is NOT a medical device, clinical diagnostic instrument, or prescription health service. All content on this platform is not medically reviewed and is provided strictly for informational and athletic estimation purposes.',
         ],
         warning: true,
       },
       {
         heading: '1. Theoretical Population Estimations',
         paragraphs: [
-          'The physiological calculations generated across all 19 tools (including Total Daily Energy Expenditure, Target Heart Rate Zones, Creatine Loading, Fasting Autophagy checkpoints, and One-Rep Max predictions) are theoretical mathematical approximations derived from peer-reviewed clinical cohorts and population averages.',
+          'The physiological calculations generated across all 19 tools (including Total Daily Energy Expenditure, Target Heart Rate Zones, Creatine Loading, Fasting Autophagy checkpoints, and One-Rep Max predictions) are theoretical mathematical approximations derived from published formulas and sports science research.',
           'Individual metabolic rates, cardiovascular responses, and muscular capacities naturally fluctuate due to genetics, prescription medications, thyroid function, age, and chronic conditions.',
         ],
       },
@@ -163,9 +163,9 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
         ],
       },
       {
-        heading: '2. Transparency & Academic Inquiries',
+        heading: '2. Transparency & Scientific Inquiries',
         paragraphs: [
-          'We maintain full transparency regarding all equations, coefficient multipliers, and clinical assumptions. For questions, citations, or academic inquiries, please contact our physiology research team at zenfittools@gmail.com.',
+          'We maintain full transparency regarding all equations, coefficient multipliers, and mathematical models. For questions, citations, or inquiries, please contact us at zenfittools@gmail.com.',
         ],
       },
     ],

@@ -12,13 +12,14 @@ import {
   ChevronRight,
   AlertCircle,
 } from 'lucide-react';
+import { getCanonicalUrl, SITE_NAME, CONTACT_EMAIL } from '../config/site';
 
 const EMAILJS_SERVICE_ID = 'service_r0a31im';
 const EMAILJS_TEMPLATE_ID = 'template_ejjweko';
 const EMAILJS_PUBLIC_KEY = 'W2WpH7FIN5lyuO_IF';
 
 export const ContactPage: React.FC = () => {
-  const officialEmail = 'zenfittools@gmail.com';
+  const officialEmail = CONTACT_EMAIL;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -77,12 +78,12 @@ export const ContactPage: React.FC = () => {
   const contactSchema = {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
-    name: 'Contact ZenFit Tools',
-    description: 'Get in touch with the ZenFit Tools physiology and engineering team.',
-    url: 'https://zenfittools.com/contact',
+    name: `Contact ${SITE_NAME}`,
+    description: 'Get in touch with the ZenFit Tools support and engineering team.',
+    url: getCanonicalUrl('/contact'),
     mainEntity: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
+      name: SITE_NAME,
       email: officialEmail,
       contactPoint: {
         '@type': 'ContactPoint',
@@ -95,15 +96,15 @@ export const ContactPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Contact Support &amp; Scientific Research | ZenFit Tools</title>
+        <title>Contact Support &amp; Feedback | ZenFit Tools</title>
         <meta
           name="description"
-          content="Contact the ZenFit Tools sports science and physiology engineering team at zenfittools@gmail.com."
+          content={`Contact the ${SITE_NAME} support and engineering team at ${officialEmail}.`}
         />
-        <link rel="canonical" href="https://zenfittools.com/contact" />
+        <link rel="canonical" href={getCanonicalUrl('/contact')} />
         <meta property="og:title" content="Contact Support | ZenFit Tools" />
         <meta property="og:description" content="Official contact portal for ZenFit Tools." />
-        <meta property="og:url" content="https://zenfittools.com/contact" />
+        <meta property="og:url" content={getCanonicalUrl('/contact')} />
         <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
       </Head>
 

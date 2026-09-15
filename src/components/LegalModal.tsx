@@ -174,7 +174,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-start gap-3">
                 <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-900 font-medium leading-relaxed">
-                  CRITICAL MEDICAL DISCLOSURE: ZenFit Tools is an empirical mathematical and educational suite. It is NOT a medical device, clinical diagnostic instrument, or prescription health service.
+                  CRITICAL MEDICAL DISCLOSURE: ZenFit Tools is an empirical mathematical and educational suite. It is NOT a medical device, clinical diagnostic instrument, or prescription health service. Content is not medically reviewed and is provided strictly for educational and athletic estimation purposes.
                 </p>
               </div>
               <h4 className="text-lg font-bold text-slate-900">Health & Exercise Science Disclaimer</h4>
@@ -202,7 +202,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 <li><strong>Energy Burn:</strong> Ainsworth et al. Compendium of Physical Activities Metabolic Equivalent of Task (MET) library.</li>
               </ul>
               <p className="text-xs text-slate-500 pt-2">
-                Have questions about our mathematical proofs or physiological data models? Contact our science research team at <strong>zenfittools@gmail.com</strong>.
+                Have questions about our mathematical models or data calculations? Contact us at <strong>zenfittools@gmail.com</strong>.
               </p>
             </div>
           )}

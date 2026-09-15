@@ -60,6 +60,7 @@ import {
   downloadCsvFile,
   ExportInputState,
 } from '../utils/exportEngine';
+import { formatNumber } from '../utils/formatNumber';
 
 interface CalculatorWorkspaceProps {
   calc: CalculatorMeta;
@@ -1447,10 +1448,10 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         Total Daily Energy Expenditure (TDEE)
                       </span>
                       <div className="text-4xl sm:text-5xl font-extrabold text-slate-950 font-mono my-2">
-                        {res.tdee.toLocaleString()} <span className="text-xl font-normal text-slate-600">kcal/day</span>
+                        {formatNumber(res.tdee)} <span className="text-xl font-normal text-slate-600">kcal/day</span>
                       </div>
                       <p className="text-xs text-slate-600">
-                        Basal Metabolic Rate: <strong className="text-slate-900">{res.bmr.toLocaleString()} kcal</strong> ({res.bmrFormula})
+                        Basal Metabolic Rate: <strong className="text-slate-900">{formatNumber(res.bmr)} kcal</strong> ({res.bmrFormula})
                       </p>
                     </div>
 
@@ -1513,7 +1514,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         Target Caloric Allocation
                       </span>
                       <div className="text-4xl sm:text-5xl font-extrabold text-slate-950 font-mono my-2">
-                        {res.calories.toLocaleString()} <span className="text-xl font-normal text-slate-600">kcal</span>
+                        {formatNumber(res.calories)} <span className="text-xl font-normal text-slate-600">kcal</span>
                       </div>
                     </div>
 
@@ -1947,7 +1948,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         Calculated Exercise Calorie Burn
                       </span>
                       <div className="text-5xl font-extrabold text-slate-950 font-mono my-2">
-                        {res.totalCalories.toLocaleString()} <span className="text-xl font-normal text-slate-600">kcal</span>
+                        {formatNumber(res.totalCalories)} <span className="text-xl font-normal text-slate-600">kcal</span>
                       </div>
                       <p className="text-xs text-slate-600">
                         Rate of burn: <strong>{res.calPerMinute} kcal / minute</strong> ({item.met} METs)
@@ -2083,7 +2084,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         Target Daily Recomposition Calories
                       </span>
                       <div className="text-5xl font-extrabold text-slate-950 font-mono my-2">
-                        {res.targetDailyCalories.toLocaleString()} <span className="text-xl font-normal text-slate-600">kcal</span>
+                        {formatNumber(res.targetDailyCalories)} <span className="text-xl font-normal text-slate-600">kcal</span>
                       </div>
                       <p className="text-xs text-slate-600">
                         Strategy: <strong>{res.strategyName}</strong> · Daily Protein Anchor: <strong>{res.dailyProteinGrams}g</strong>
@@ -2258,23 +2259,54 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
             </div>
           </div>
 
-          {/* Section 3: Important Planning Assumptions & Safety Disclosures */}
-          <div className="border-t border-slate-100 pt-8">
-            <div className="flex items-center gap-2 mb-4">
+          {/* Section 3: Limitations, Clinical Boundary Conditions & Safety Disclosures */}
+          <div className="border-t border-slate-100 pt-8 space-y-6">
+            <div className="flex items-center gap-2">
               <span className="p-2 bg-amber-500/10 text-amber-600 rounded-xl">
                 <AlertTriangle className="w-5 h-5" />
               </span>
               <h3 className="text-xl font-extrabold text-slate-900">
-                Important Planning Assumptions &amp; Safety Disclosures
+                Formula Limitations, Safety Guidance &amp; Doctor Consultation
               </h3>
             </div>
-            <div className="p-5 bg-amber-50/60 border border-amber-200 rounded-2xl space-y-2 text-xs text-amber-950">
-              {calc.safetyDisclosures.map((disclosure, idx) => (
-                <p key={idx} className="leading-relaxed flex items-start gap-2">
-                  <span className="font-bold shrink-0">•</span>
-                  <span>{disclosure}</span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Formula & Population Limitations */}
+              <div className="p-5 bg-amber-50/70 border border-amber-200 rounded-2xl space-y-3">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-amber-700" />
+                  Formula Limitations &amp; Population Assumptions
+                </h4>
+                <div className="space-y-2 text-xs text-amber-950">
+                  {calc.safetyDisclosures.map((disclosure, idx) => (
+                    <p key={idx} className="leading-relaxed flex items-start gap-2">
+                      <span className="font-bold shrink-0 text-amber-700">•</span>
+                      <span>{disclosure}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              {/* When to Consult a Doctor */}
+              <div className="p-5 bg-rose-50/70 border border-rose-200 rounded-2xl space-y-3">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-rose-900 flex items-center gap-1.5">
+                  <Heart className="w-4 h-4 text-rose-600" />
+                  When to Consult a Physician
+                </h4>
+                <p className="text-xs text-rose-950 leading-relaxed">
+                  Always consult a licensed medical professional before implementing significant changes to your caloric intake, fasting routine, hydration targets, or strenuous exercise programming. Seek immediate medical evaluation if you experience unexplained chest discomfort, irregular heartbeats, shortness of breath, dizziness, syncope, or if you have pre-existing cardiovascular, metabolic, renal, or endocrine conditions.
                 </p>
-              ))}
+              </div>
+            </div>
+
+            {/* Explicit Non-Medical Disclaimer */}
+            <div className="p-4 bg-slate-100 border border-slate-200 rounded-2xl text-xs text-slate-700 leading-relaxed flex items-start gap-3">
+              <span className="px-2 py-0.5 rounded bg-slate-200 text-slate-800 font-bold text-[10px] uppercase shrink-0 mt-0.5">
+                Educational Scope
+              </span>
+              <p>
+                <strong>Not medically reviewed.</strong> The results and estimates generated by this calculator are derived strictly from published population formulas and sports science research. They are intended for general athletic education and personal informational purposes only, and must never be construed as clinical diagnosis, medical prescription, or specialized healthcare advice.
+              </p>
             </div>
           </div>
 

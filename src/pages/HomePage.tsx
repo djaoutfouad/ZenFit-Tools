@@ -7,6 +7,7 @@ import { CalculatorCard } from '../components/CalculatorCard';
 import { AdSenseSlot } from '../components/AdSenseSlot';
 import { CALCULATORS_CATALOG, CATEGORIES_CATALOG } from '../data/calculatorsData';
 import { CalculatorCategory } from '../types';
+import { getCanonicalUrl, SITE_NAME, CONTACT_EMAIL } from '../config/site';
 
 export const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,22 +29,22 @@ export const HomePage: React.FC = () => {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'ZenFit Tools',
-    url: 'https://zenfittools.com/',
+    name: SITE_NAME,
+    url: getCanonicalUrl('/'),
     description:
-      'Precision sports science, metabolic rate, and human performance analytics suite with 19 dedicated client-side calculators.',
+      'Educational sports science, metabolic rate, and human performance analytics suite with 19 dedicated client-side calculators based on published formulas.',
     publisher: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
-      email: 'zenfittools@gmail.com',
+      name: SITE_NAME,
+      email: CONTACT_EMAIL,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://zenfittools.com/icon.png',
+        url: getCanonicalUrl('/icon.png'),
       },
     },
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://zenfittools.com/?q={search_term_string}',
+      target: `${getCanonicalUrl('/')}?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   };
@@ -54,15 +55,15 @@ export const HomePage: React.FC = () => {
         <title>ZenFit Tools | Elite Health, Nutrition &amp; Biohacking Calculators</title>
         <meta
           name="description"
-          content="Explore 19 validated sports medicine, metabolic, and anthropometric calculators. Instant client-side precision, peer-reviewed formulas, and zero server latency."
+          content="Explore 19 educational sports science, metabolic, and anthropometric calculators based on published formulas. Instant client-side estimates and clear methodology."
         />
-        <link rel="canonical" href="https://zenfittools.com/" />
+        <link rel="canonical" href={getCanonicalUrl('/')} />
         <meta property="og:title" content="ZenFit Tools | Elite Health, Nutrition & Biohacking Calculators" />
         <meta
           property="og:description"
-          content="Explore 19 validated sports medicine, metabolic, and anthropometric calculators with instant client-side execution."
+          content="Explore 19 educational sports science, metabolic, and anthropometric calculators based on published formulas."
         />
-        <meta property="og:url" content="https://zenfittools.com/" />
+        <meta property="og:url" content={getCanonicalUrl('/')} />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Head>

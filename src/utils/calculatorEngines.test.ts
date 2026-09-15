@@ -33,6 +33,7 @@ import {
 } from './calculatorEngines';
 
 import { validateCalculatorInputs } from './calculatorValidation';
+import { formatNumber, containsEasternOrPersianDigits } from './formatNumber';
 
 interface TestLogEntry {
   toolName: string;
@@ -101,7 +102,28 @@ export function runFullTestSuite() {
   assert(recompSurplus.targetDailyCalories === 2592, 'Body Recomposition', '+8% Surplus Target = 2592', `Expected 2592, got ${recompSurplus.targetDailyCalories}`, { tdee: 2400, preference: 'slight_surplus' });
 
   // -------------------------------------------------------------
-  // TESTS 4 - 19: All 19 Calculators under Normal, Boundary, and Invalid Inputs
+  // TEST 4: Global English Number Formatting & Eastern/Persian Numeral Prohibition
+  // -------------------------------------------------------------
+  const fmtZero = formatNumber(0);
+  assert(fmtZero === '0', 'Number Formatting', 'Zero format', `Expected '0', got '${fmtZero}'`, { val: 0 });
+
+  const fmtLarge = formatNumber(1234567.89);
+  assert(fmtLarge === '1,234,567.89', 'Number Formatting', 'Large number en-US separators', `Expected '1,234,567.89', got '${fmtLarge}'`, { val: 1234567.89 });
+
+  const hasArabicDigits = containsEasternOrPersianDigits('٠١٢٣٤٥٦٧٨٩');
+  assert(hasArabicDigits === true, 'Number Formatting', 'Eastern Arabic digits detected', 'Regex correctly caught ٠١٢٣٤٥٦٧٨٩', {});
+
+  const hasPersianDigits = containsEasternOrPersianDigits('۰۱۲۳۴۵۶۷۸۹');
+  assert(hasPersianDigits === true, 'Number Formatting', 'Persian digits detected', 'Regex correctly caught ۰۱۲۳۴۵۶۷۸۹', {});
+
+  const fmtClean1 = !containsEasternOrPersianDigits(fmtLarge);
+  assert(fmtClean1, 'Number Formatting', 'Output contains no Eastern Arabic or Persian digits', `Verified for '${fmtLarge}'`, { val: fmtLarge });
+
+  const fmtClean2 = !containsEasternOrPersianDigits(formatNumber(2400));
+  assert(fmtClean2, 'Number Formatting', 'TDEE 2400 contains only Western English digits', `Verified for '${formatNumber(2400)}'`, { val: 2400 });
+
+  // -------------------------------------------------------------
+  // TESTS 5 - 23: All 19 Calculators under Normal, Boundary, and Invalid Inputs
   // -------------------------------------------------------------
 
   // 1. TDEE

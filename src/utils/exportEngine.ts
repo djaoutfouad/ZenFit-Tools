@@ -21,6 +21,7 @@ import {
   calculateHRR,
   EXERCISE_MET_LIST,
 } from './calculatorEngines';
+import { formatNumber } from './formatNumber';
 
 export interface ExportInputState {
   gender: 'male' | 'female';
@@ -119,7 +120,7 @@ export function generateExportData(
 ): ExportPayload {
   const now = new Date();
   const isoTimestamp = now.toISOString();
-  const localFormatted = now.toLocaleString();
+  const localFormatted = now.toLocaleString('en-US');
   const dateFormatted = isoTimestamp.replace('T', ' ').substring(0, 19) + ' UTC';
   const fileDateStamp = isoTimestamp.substring(0, 10);
   const filenameBase = `zenfit_${calc.id}_${fileDateStamp}`;
@@ -134,7 +135,7 @@ export function generateExportData(
       calculator: calc.title,
       section,
       parameter,
-      value,
+      value: typeof value === 'number' ? formatNumber(value) : value,
       unit,
     });
   };
@@ -186,13 +187,13 @@ export function generateExportData(
   // Compute calculator results
   if (calc.id === 'tdee') {
     const res = calculateTDEE(s.gender, s.age, s.heightCm, s.weightKg, s.activityMultiplier, s.bodyFatPct);
-    textLines.push(`• Basal Metabolic Rate (BMR):        ${res.bmr.toLocaleString()} kcal/day`);
+    textLines.push(`• Basal Metabolic Rate (BMR):        ${formatNumber(res.bmr)} kcal/day`);
     textLines.push(`  Formula Used:                      ${res.bmrFormula}`);
-    textLines.push(`• Total Daily Energy Exp (TDEE):     ${res.tdee.toLocaleString()} kcal/day`);
-    textLines.push(`• Maintenance Caloric Level:         ${res.maintenance.toLocaleString()} kcal/day`);
-    textLines.push(`• Moderate Cutting Deficit (-500):   ${res.cutting.toLocaleString()} kcal/day`);
-    textLines.push(`• Aggressive Cutting Deficit (-750): ${res.aggressiveCutting.toLocaleString()} kcal/day`);
-    textLines.push(`• Lean Bulking Target (+300):        ${res.leanBulking.toLocaleString()} kcal/day`);
+    textLines.push(`• Total Daily Energy Exp (TDEE):     ${formatNumber(res.tdee)} kcal/day`);
+    textLines.push(`• Maintenance Caloric Level:         ${formatNumber(res.maintenance)} kcal/day`);
+    textLines.push(`• Moderate Cutting Deficit (-500):   ${formatNumber(res.cutting)} kcal/day`);
+    textLines.push(`• Aggressive Cutting Deficit (-750): ${formatNumber(res.aggressiveCutting)} kcal/day`);
+    textLines.push(`• Lean Bulking Target (+300):        ${formatNumber(res.leanBulking)} kcal/day`);
     textLines.push('');
     textLines.push('Energy Burn Breakdown:');
     textLines.push(`- BMR (Basal Metabolism):            ${res.breakdown.bmr} kcal`);
@@ -211,7 +212,7 @@ export function generateExportData(
     addCsvRow('Result', 'EAT (Gym)', res.breakdown.eat, 'kcal');
   } else if (calc.id === 'macros') {
     const res = calculateMacros(s.macroCalories, s.macroGoal, s.weightKg, s.macroMeals);
-    textLines.push(`• Caloric Budget:       ${res.calories.toLocaleString()} kcal/day`);
+    textLines.push(`• Caloric Budget:       ${formatNumber(res.calories)} kcal/day`);
     textLines.push(`• Dietary Protocol:     ${s.macroGoal.replace('_', ' ').toUpperCase()}`);
     textLines.push(`• Daily Meals:          ${s.macroMeals} meals/day`);
     textLines.push(`• Protein Target:       ${res.proteinGrams}g (${res.proteinCalories} kcal - ${res.proteinPct}%)`);
@@ -398,7 +399,7 @@ export function generateExportData(
     const res = calculateCaloriesBurned(item.met, s.exerciseDurationMin, s.weightKg);
     textLines.push(`• Exercise Selected:         ${item.name} (${item.met} METs)`);
     textLines.push(`• Duration:                  ${s.exerciseDurationMin} minutes`);
-    textLines.push(`• Total Calorie Expenditure: ${res.totalCalories.toLocaleString()} kcal`);
+    textLines.push(`• Total Calorie Expenditure: ${formatNumber(res.totalCalories)} kcal`);
     textLines.push(`• Rate of Burn:              ${res.calPerMinute} kcal/minute`);
 
     addCsvRow('Result', 'Exercise Name', item.name);
@@ -451,7 +452,7 @@ export function generateExportData(
     const leanGainDisp = unitSystem === 'metric' ? `${res.projectedLeanGainKg} kg` : `${Math.round(res.projectedLeanGainKg * 2.20462 * 10) / 10} lbs`;
 
     textLines.push(`• Strategy:                  ${res.strategyName}`);
-    textLines.push(`• Target Daily Calories:     ${res.targetDailyCalories.toLocaleString()} kcal/day`);
+    textLines.push(`• Target Daily Calories:     ${formatNumber(res.targetDailyCalories)} kcal/day`);
     textLines.push(`• Daily Protein Anchor:      ${res.dailyProteinGrams}g`);
     textLines.push(`• 12-Week Projected Fat Loss: -${fatLossDisp}`);
     textLines.push(`• 12-Week Est. Muscle Gain:  +${leanGainDisp}`);

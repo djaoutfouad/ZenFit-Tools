@@ -6,6 +6,7 @@ import { CALCULATORS_CATALOG, CATEGORIES_CATALOG } from '../data/calculatorsData
 import { CalculatorCard } from '../components/CalculatorCard';
 import { AdSenseSlot } from '../components/AdSenseSlot';
 import { CategoryMeta } from '../types';
+import { getCanonicalUrl, SITE_NAME } from '../config/site';
 
 interface CategoryPageProps {
   category?: CategoryMeta;
@@ -33,16 +34,16 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `${category.title} Calculators | ZenFit Tools`,
+    name: `${category.title} Calculators | ${SITE_NAME}`,
     description: category.shortDescription,
-    url: `https://zenfittools.com${category.routePath}`,
+    url: getCanonicalUrl(category.routePath),
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: categoryCalculators.map((c, idx) => ({
         '@type': 'ListItem',
         position: idx + 1,
         name: c.title,
-        url: `https://zenfittools.com${c.routePath}`,
+        url: getCanonicalUrl(c.routePath),
       })),
     },
   };
@@ -55,19 +56,19 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://zenfittools.com/',
+        item: getCanonicalUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Categories',
-        item: 'https://zenfittools.com/',
+        item: getCanonicalUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: category.title,
-        item: `https://zenfittools.com${category.routePath}`,
+        item: getCanonicalUrl(category.routePath),
       },
     ],
   };
@@ -75,12 +76,12 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
   return (
     <>
       <Head>
-        <title>{`${category.title} Calculators & Clinical Guides | ZenFit Tools`}</title>
+        <title>{`${category.title} Calculators & Guides | ${SITE_NAME}`}</title>
         <meta name="description" content={category.shortDescription} />
-        <link rel="canonical" href={`https://zenfittools.com${category.routePath}`} />
-        <meta property="og:title" content={`${category.title} Calculators | ZenFit Tools`} />
+        <link rel="canonical" href={getCanonicalUrl(category.routePath)} />
+        <meta property="og:title" content={`${category.title} Calculators | ${SITE_NAME}`} />
         <meta property="og:description" content={category.shortDescription} />
-        <meta property="og:url" content={`https://zenfittools.com${category.routePath}`} />
+        <meta property="og:url" content={getCanonicalUrl(category.routePath)} />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(collectionSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
@@ -167,13 +168,13 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
                   Physiological Foundations: {category.title}
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Clinical standards, peer-reviewed accuracy, and biometric parameters
+                  Scientific standards, published formulas, and estimated parameters
                 </p>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Calculators within the {category.title} division are built strictly according to peer-reviewed clinical cohorts. All mathematical engines run client-side to protect your personal biometric data with zero telemetry or remote storage.
+              Calculators within the {category.title} category are based on published sports science formulas and population cohorts. All mathematical models run client-side to protect your personal privacy with zero server-side storage.
             </p>
 
             <div className="pt-2">
@@ -181,7 +182,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
                 to="/methodology"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700"
               >
-                <span>Review peer-reviewed citations &amp; clinical references</span>
+                <span>Review published citations &amp; scientific methodology</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>

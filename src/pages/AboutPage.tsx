@@ -2,31 +2,32 @@ import React from 'react';
 import { Head } from 'vite-react-ssg';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Award, BookOpen, HeartPulse, Home, ChevronRight, Mail, Users, FileCheck2 } from 'lucide-react';
+import { getCanonicalUrl, SITE_NAME, CONTACT_EMAIL } from '../config/site';
 
 export const AboutPage: React.FC = () => {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
-    name: 'About ZenFit Tools & Editorial Board',
-    description: 'Learn about the scientific methodology, physiological standards, and editorial integrity behind ZenFit Tools.',
-    url: 'https://zenfittools.com/about',
+    name: `About ${SITE_NAME}`,
+    description: 'Learn about the scientific methodology, physiological formulas, and educational standards behind ZenFit Tools.',
+    url: getCanonicalUrl('/about'),
     publisher: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
-      url: 'https://zenfittools.com',
-      email: 'zenfittools@gmail.com',
+      name: SITE_NAME,
+      url: getCanonicalUrl('/'),
+      email: CONTACT_EMAIL,
     },
   };
 
   return (
     <>
       <Head>
-        <title>About Us & Scientific Editorial Board | ZenFit Tools</title>
+        <title>About Us &amp; Educational Mission | ZenFit Tools</title>
         <meta
           name="description"
-          content="Learn about the scientific methodology, physiological standards, and evidence-based editorial integrity behind ZenFit Tools."
+          content="Learn about the scientific methodology, published physiological formulas, and educational standards behind ZenFit Tools."
         />
-        <link rel="canonical" href="https://zenfittools.com/about" />
+        <link rel="canonical" href={getCanonicalUrl('/about')} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Head>
 
@@ -37,69 +38,72 @@ export const AboutPage: React.FC = () => {
             <span>Home</span>
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="font-bold text-slate-900">About & Editorial Board</span>
+          <span className="font-bold text-slate-900">About &amp; Educational Standards</span>
         </nav>
 
         <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-10">
           <header className="border-b border-slate-100 pb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-bold uppercase tracking-wider mb-3">
-              Institutional Transparency & Standards
+              Transparency &amp; Educational Standards
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">About ZenFit Tools</h1>
             <p className="text-sm sm:text-base text-slate-600 mt-3 max-w-3xl leading-relaxed">
-              ZenFit Tools is a high-precision physiological analytics platform engineered to bridge peer-reviewed sports science, clinical nutrition research, and day-to-day fitness programming.
+              ZenFit Tools is an educational physiological analytics platform engineered to help athletes and fitness enthusiasts understand published sports science formulas, metabolic models, and body composition estimates.
             </p>
           </header>
 
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <Award className="w-5 h-5 text-amber-500" />
-              Our Scientific Mission & Integrity
+              Our Educational Mission
             </h2>
             <p className="text-sm text-slate-700 leading-relaxed">
-              In an online wellness space dominated by arbitrary fitness trends and opaque estimation tools, ZenFit Tools operates on strict algorithmic transparency. Every formula implemented in our suite of 19 specialized calculators is directly adopted from validated cohorts published in peer-reviewed scientific journals, including the American Journal of Clinical Nutrition, the British Journal of Sports Medicine, and the Journal of the American College of Cardiology.
+              In an online fitness space full of black-box algorithms and unsubstantiated claims, ZenFit Tools emphasizes transparent mathematics. Every equation in our suite of 19 specialized calculators is directly derived from published sports science and clinical nutrition literature, including research published in the American Journal of Clinical Nutrition, British Journal of Sports Medicine, and Medicine &amp; Science in Sports &amp; Exercise.
             </p>
           </section>
 
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
               <ShieldCheck className="w-6 h-6 text-amber-600" />
-              <h3 className="font-bold text-slate-900 text-sm">Client-Side Biometric Security</h3>
+              <h3 className="font-bold text-slate-900 text-sm">Client-Side Biometric Computation</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Your physiological inputs execute strictly inside your local browser. No personal health records are sent to remote servers.
+                Calculations run entirely in your local web browser. No personal biometric or physiological inputs are transmitted or stored on remote calculation servers.
               </p>
             </div>
             <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
               <FileCheck2 className="w-6 h-6 text-amber-600" />
-              <h3 className="font-bold text-slate-900 text-sm">Peer-Reviewed Equations</h3>
+              <h3 className="font-bold text-slate-900 text-sm">Published Equations</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Calculators explicitly display their underlying formulas along with academic citations and clinical boundary conditions.
+                Calculators explicitly display their underlying formulas, methodological context, scientific citations, and physiological boundary conditions.
               </p>
             </div>
             <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
               <HeartPulse className="w-6 h-6 text-amber-600" />
-              <h3 className="font-bold text-slate-900 text-sm">Educational Scope Notice</h3>
+              <h3 className="font-bold text-slate-900 text-sm">Educational Scope &amp; Safety Notice</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Calculations are theoretical empirical models and are accompanied by safety disclosures advising medical consultation.
+                Calculations represent theoretical population models and statistical estimates. <span className="font-bold text-slate-900">Not medically reviewed.</span> Not intended as medical or diagnostic advice.
               </p>
             </div>
           </section>
 
           <section className="border-t border-slate-100 pt-8 space-y-4">
             <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-amber-500" />
-              Editorial Board & Scientific Review Policy
+              <BookOpen className="w-5 h-5 text-amber-500" />
+              Methodology &amp; Quality Guidelines
             </h2>
             <p className="text-sm text-slate-700 leading-relaxed">
-              Our editorial contributors and content engineers review calculator formulas against updated guidelines established by the American College of Sports Medicine (ACSM), the International Society of Sports Nutrition (ISSN), and the National Strength and Conditioning Association (NSCA).
+              Our tools benchmark formulas against guidelines and normative data established by recognized sports science organizations, including the American College of Sports Medicine (ACSM) and the International Society of Sports Nutrition (ISSN).
             </p>
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed">
+              <strong>Medical Disclaimer:</strong> ZenFit Tools does not provide medical, diagnostic, or therapeutic services. Content and computation results are for educational purposes only. Always consult a qualified physician or healthcare provider regarding any health condition, diet, fasting protocol, or exercise regimen.
+            </div>
           </section>
 
           <footer className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <span>Direct Scientific Review & Partnership Inquiries:</span>
-            <a href="mailto:zenfittools@gmail.com" className="font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1.5">
+            <span>Direct Inquiries &amp; Feedback:</span>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1.5">
               <Mail className="w-4 h-4" />
-              zenfittools@gmail.com
+              {CONTACT_EMAIL}
             </a>
           </footer>
         </div>

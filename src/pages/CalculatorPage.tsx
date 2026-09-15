@@ -19,6 +19,7 @@ import { CalculatorCard } from '../components/CalculatorCard';
 import { ContactModal } from '../components/ContactModal';
 import { useUnit } from '../context/UnitContext';
 import { CalculatorMeta } from '../types';
+import { getCanonicalUrl, SITE_NAME, CONTACT_EMAIL } from '../config/site';
 
 interface CalculatorPageProps {
   calc?: CalculatorMeta;
@@ -63,16 +64,16 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: calc.title,
-    url: `https://zenfittools.com${calc.routePath}`,
+    url: getCanonicalUrl(calc.routePath),
     description: calc.shortDescription,
     applicationCategory: 'HealthApplication',
     operatingSystem: 'All',
     browserRequirements: 'Requires JavaScript. Requires HTML5.',
     author: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
-      url: 'https://zenfittools.com/about',
-      email: 'zenfittools@gmail.com',
+      name: SITE_NAME,
+      url: getCanonicalUrl('/about'),
+      email: CONTACT_EMAIL,
     },
     offers: {
       '@type': 'Offer',
@@ -81,9 +82,9 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
     },
     publisher: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
-      email: 'zenfittools@gmail.com',
-      url: 'https://zenfittools.com/',
+      name: SITE_NAME,
+      email: CONTACT_EMAIL,
+      url: getCanonicalUrl('/'),
     },
   };
 
@@ -108,19 +109,19 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://zenfittools.com/',
+        item: getCanonicalUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: categoryMeta?.title || 'Calculators',
-        item: `https://zenfittools.com${categoryMeta?.routePath || '/'}`,
+        item: getCanonicalUrl(categoryMeta?.routePath || '/'),
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: calc.title,
-        item: `https://zenfittools.com${calc.routePath}`,
+        item: getCanonicalUrl(calc.routePath),
       },
     ],
   };
@@ -128,12 +129,12 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
   return (
     <>
       <Head>
-        <title>{`${calc.title} | ZenFit Tools`}</title>
+        <title>{`${calc.title} | ${SITE_NAME}`}</title>
         <meta name="description" content={calc.shortDescription} />
-        <link rel="canonical" href={`https://zenfittools.com${calc.routePath}`} />
-        <meta property="og:title" content={`${calc.title} | ZenFit Tools`} />
+        <link rel="canonical" href={getCanonicalUrl(calc.routePath)} />
+        <meta property="og:title" content={`${calc.title} | ${SITE_NAME}`} />
         <meta property="og:description" content={calc.shortDescription} />
-        <meta property="og:url" content={`https://zenfittools.com${calc.routePath}`} />
+        <meta property="og:url" content={getCanonicalUrl(calc.routePath)} />
         <meta property="og:type" content="article" />
         <script type="application/ld+json">{JSON.stringify(webAppSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

@@ -14,6 +14,7 @@ import {
 import { LEGAL_DOCS, LegalDoc } from '../data/legalDocsData';
 import { AdSenseSlot } from '../components/AdSenseSlot';
 import { LegalDocType } from '../types';
+import { getCanonicalUrl, SITE_NAME, CONTACT_EMAIL } from '../config/site';
 
 interface LegalPageProps {
   docType?: LegalDocType;
@@ -47,25 +48,25 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: `${doc.title} | ZenFit Tools`,
+    name: `${doc.title} | ${SITE_NAME}`,
     description: doc.metaDescription,
-    url: `https://zenfittools.com${doc.routePath}`,
+    url: getCanonicalUrl(doc.routePath),
     publisher: {
       '@type': 'Organization',
-      name: 'ZenFit Tools',
-      email: 'zenfittools@gmail.com',
+      name: SITE_NAME,
+      email: CONTACT_EMAIL,
     },
   };
 
   return (
     <>
       <Head>
-        <title>{`${doc.title} | ZenFit Tools`}</title>
+        <title>{`${doc.title} | ${SITE_NAME}`}</title>
         <meta name="description" content={doc.metaDescription} />
-        <link rel="canonical" href={`https://zenfittools.com${doc.routePath}`} />
-        <meta property="og:title" content={`${doc.title} | ZenFit Tools`} />
+        <link rel="canonical" href={getCanonicalUrl(doc.routePath)} />
+        <meta property="og:title" content={`${doc.title} | ${SITE_NAME}`} />
         <meta property="og:description" content={doc.metaDescription} />
-        <meta property="og:url" content={`https://zenfittools.com${doc.routePath}`} />
+        <meta property="og:url" content={getCanonicalUrl(doc.routePath)} />
         <meta property="og:type" content="article" />
         <script type="application/ld+json">{JSON.stringify(webPageSchema)}</script>
       </Head>

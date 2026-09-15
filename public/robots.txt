@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zenfittools.com/sitemap.xml
+Sitemap: https://zenfit-tools.pages.dev/sitemap.xml
