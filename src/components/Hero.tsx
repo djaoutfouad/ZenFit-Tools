@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Flame, Zap, ShieldCheck, Activity, Award } from 'lucide-react';
 import { CalculatorCategory } from '../types';
+import { ZenFitEmblem } from './ZenFitLogo';
 
 interface HeroProps {
   searchQuery: string;
@@ -43,8 +44,8 @@ export const Hero: React.FC<HeroProps> = ({
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center">
         {/* Elite Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wide uppercase mb-6 shadow-sm">
-          <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wide uppercase mb-6 shadow-sm">
+          <ZenFitEmblem className="w-4 h-4" />
           <span>Gym-Tech Physiological Architecture · 2026 Edition</span>
         </div>
 

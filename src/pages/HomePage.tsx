@@ -39,7 +39,7 @@ export const HomePage: React.FC = () => {
       email: CONTACT_EMAIL,
       logo: {
         '@type': 'ImageObject',
-        url: getCanonicalUrl('/icon.png'),
+        url: getCanonicalUrl('/logo.svg'),
       },
     },
     potentialAction: {

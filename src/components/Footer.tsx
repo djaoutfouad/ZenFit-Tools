@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Dumbbell, Mail, ShieldCheck, Heart } from 'lucide-react';
+import { Mail, ShieldCheck, Heart } from 'lucide-react';
 import { CALCULATORS_CATALOG, CATEGORIES_CATALOG } from '../data/calculatorsData';
 import { AdSenseSlot } from './AdSenseSlot';
+import { ZenFitLogo } from './ZenFitLogo';
 
 interface FooterProps {
   onOpenContact?: () => void;
@@ -36,14 +37,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand & About */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center shadow-md shadow-amber-500/20">
-                <Dumbbell className="w-4 h-4 text-slate-950 stroke-[2.5]" />
-              </div>
-              <span className="text-lg font-extrabold tracking-tight font-sans">
-                ZenFit<span className="text-amber-400">.Tools</span>
-              </span>
-            </div>
+            <Link to="/" className="inline-block group">
+              <ZenFitLogo size="sm" showSubtitle={false} showBadge={false} />
+            </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
               Precision health, nutrition, and biohacking analytics suite engineered for athletes, coaches, and sports science enthusiasts. 100% browser-based calculations designed to keep your metrics private on your device.
             </p>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Dumbbell, Scale, Mail, ShieldAlert, Layers, ChevronDown, BookOpen } from 'lucide-react';
+import { Scale, Mail, ShieldAlert, Layers, ChevronDown, BookOpen } from 'lucide-react';
 import { useUnit } from '../context/UnitContext';
 import { CATEGORIES_CATALOG } from '../data/calculatorsData';
+import { ZenFitLogo } from './ZenFitLogo';
 
 interface HeaderProps {
   onOpenContact?: () => void;
@@ -18,23 +19,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <Dumbbell className="w-5 h-5 text-slate-950 stroke-[2.5]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-extrabold tracking-tight text-white font-sans">
-                  ZenFit<span className="text-amber-400">.Tools</span>
-                </span>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
-                  19 Elite Tools
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 hidden sm:block">
-                Physiological &amp; Biohacking Analytics
-              </p>
-            </div>
+          <Link to="/" className="flex items-center group">
+            <ZenFitLogo size="md" />
           </Link>
         </div>
 
