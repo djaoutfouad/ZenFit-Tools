@@ -60,7 +60,11 @@ import {
   downloadCsvFile,
   ExportInputState,
 } from '../utils/exportEngine';
-import { formatNumber } from '../utils/formatNumber';
+import {
+  formatNumber,
+  sanitizeNumberInput,
+  sanitizeTimeInput,
+} from '../utils/formatNumber';
 
 interface CalculatorWorkspaceProps {
   calc: CalculatorMeta;
@@ -374,7 +378,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
       <div className="max-w-6xl mx-auto">
         {/* Workspace Breadcrumbs & Top Meta */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
             <span className="uppercase tracking-wider">ZenFit Tools</span>
             <span>/</span>
             <span className="capitalize text-amber-600 font-bold">{calc.category.replace('_', ' ')}</span>
@@ -395,6 +399,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
             </span>
             <button
               onClick={onToggleUnit}
+              aria-label={`Switch unit system to ${unitSystem === 'metric' ? 'Imperial (lb/in)' : 'Metric (kg/cm)'}`}
               className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-300 rounded-full text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors shadow-xs"
             >
               <Scale className="w-3.5 h-3.5 text-amber-600" />
@@ -426,7 +431,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <Zap className="w-4 h-4 text-amber-500" />
                 Input Parameters
               </h3>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
                 {unitSystem === 'metric' ? 'Metric' : 'Imperial'}
               </span>
             </div>
@@ -476,19 +481,21 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-age">Age</label>
-                    <span id="age-display" className="text-amber-600 font-mono">{age} yrs</span>
+                    <span id="age-display" className="text-amber-600 font-mono tabular-nums lining-nums">{age} yrs</span>
                   </div>
                   <input
                     id="input-age"
                     name="age"
                     type="range"
+                    dir="ltr"
+                    lang="en"
                     min={15}
                     max={85}
                     value={age}
                     aria-label="Age in years"
                     aria-describedby="age-display"
-                    onChange={(e) => setAge(Number(e.target.value))}
-                    className="w-full accent-amber-500 cursor-pointer"
+                    onChange={(e) => setAge(sanitizeNumberInput(e.target.value, 30))}
+                    className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                   />
                   {validationResult.fieldErrors.age && (
                     <p id="error-age" className="text-xs text-rose-600 mt-1" role="alert">
@@ -503,7 +510,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-weight">Body Weight</label>
-                    <span className="text-amber-600 font-mono">
+                    <span className="text-amber-600 font-mono tabular-nums lining-nums">
                       {weight} {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                   </div>
@@ -512,16 +519,18 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-weight"
                       name="weight"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={0.5}
                       value={weight}
                       aria-label={`Body Weight in ${unitSystem === 'metric' ? 'kilograms' : 'pounds'}`}
                       aria-describedby={validationResult.fieldErrors.weight ? 'error-weight' : undefined}
-                      onChange={(e) => setWeight(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setWeight(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.weight ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
-                    <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
+                    <span className="text-xs font-bold text-slate-600 uppercase min-w-[36px]">
                       {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                   </div>
@@ -538,7 +547,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-height">Height</label>
-                    <span className="text-amber-600 font-mono">
+                    <span className="text-amber-600 font-mono tabular-nums lining-nums">
                       {height} {unitSystem === 'metric' ? 'cm' : 'in'}
                     </span>
                   </div>
@@ -547,16 +556,18 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-height"
                       name="height"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={1}
                       value={height}
                       aria-label={`Body Height in ${unitSystem === 'metric' ? 'centimeters' : 'inches'}`}
                       aria-describedby={validationResult.fieldErrors.height ? 'error-height' : undefined}
-                      onChange={(e) => setHeight(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setHeight(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.height ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
-                    <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
+                    <span className="text-xs font-bold text-slate-600 uppercase min-w-[36px]">
                       {unitSystem === 'metric' ? 'cm' : 'in'}
                     </span>
                   </div>
@@ -573,20 +584,22 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-body-fat">Body Fat Percentage (Optional / Estimate)</label>
-                    <span id="body-fat-display" className="text-amber-600 font-mono">{bodyFatPct}%</span>
+                    <span id="body-fat-display" className="text-amber-600 font-mono tabular-nums lining-nums">{bodyFatPct}%</span>
                   </div>
                   <input
                     id="input-body-fat"
                     name="bodyFatPct"
                     type="range"
+                    dir="ltr"
+                    lang="en"
                     min={4}
                     max={45}
                     step={0.5}
                     value={bodyFatPct}
                     aria-label="Body Fat Percentage"
                     aria-describedby="body-fat-display"
-                    onChange={(e) => setBodyFatPct(Number(e.target.value))}
-                    className="w-full accent-amber-500 cursor-pointer"
+                    onChange={(e) => setBodyFatPct(sanitizeNumberInput(e.target.value, 15))}
+                    className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                   />
                   {validationResult.fieldErrors.bodyFatPct && (
                     <p id="error-body-fat" className="text-xs text-rose-600 mt-1" role="alert">
@@ -607,7 +620,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     name="activityMultiplier"
                     aria-label="Physical Activity Level"
                     value={activityMultiplier}
-                    onChange={(e) => setActivityMultiplier(Number(e.target.value))}
+                    onChange={(e) => setActivityMultiplier(sanitizeNumberInput(e.target.value, 1.55))}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                   >
                     <option value={1.2}>Sedentary (Desk job, little to no exercise)</option>
@@ -630,12 +643,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-macro-calories"
                       name="macroCalories"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={50}
                       value={macroCalories}
                       aria-label="Target Daily Calories in kcal"
                       aria-describedby={validationResult.fieldErrors.macroCalories ? 'error-macro-cal' : undefined}
-                      onChange={(e) => setMacroCalories(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setMacroCalories(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.macroCalories ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -673,7 +688,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       name="macroMeals"
                       aria-label="Daily Meals Split"
                       value={macroMeals}
-                      onChange={(e) => setMacroMeals(Number(e.target.value))}
+                      onChange={(e) => setMacroMeals(sanitizeNumberInput(e.target.value, 4))}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                     >
                       <option value={3}>3 Meals / Day</option>
@@ -701,11 +716,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-neck-circ"
                       name="neckCirc"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={0.2}
                       value={neckCirc}
                       aria-label={`Neck Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                      onChange={(e) => setNeckCirc(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setNeckCirc(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.neckCirc ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -723,11 +740,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-waist-circ"
                       name="waistCirc"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={0.5}
                       value={waistCirc}
                       aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                      onChange={(e) => setWaistCirc(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setWaistCirc(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -746,11 +765,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         id="input-hip-circ"
                         name="hipCirc"
                         type="number"
+                        dir="ltr"
+                        lang="en"
                         step={0.5}
                         value={hipCirc}
                         aria-label={`Hip Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                        onChange={(e) => setHipCirc(Number(e.target.value))}
-                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        onChange={(e) => setHipCirc(sanitizeNumberInput(e.target.value))}
+                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                           validationResult.fieldErrors.hipCirc ? 'border-rose-500' : 'border-slate-300'
                         }`}
                       />
@@ -775,11 +796,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-lift-weight"
                       name="liftWeight"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={2.5}
                       value={liftWeight}
                       aria-label={`Weight Lifted in ${unitSystem === 'metric' ? 'kg' : 'lbs'}`}
-                      onChange={(e) => setLiftWeight(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setLiftWeight(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.liftWeight ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -792,19 +815,21 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-lift-reps">Reps Completed (1 - 15)</label>
-                      <span id="reps-display" className="text-amber-600 font-mono">{liftReps} reps</span>
+                      <span id="reps-display" className="text-amber-600 font-mono tabular-nums lining-nums">{liftReps} reps</span>
                     </div>
                     <input
                       id="input-lift-reps"
                       name="liftReps"
                       type="range"
+                      dir="ltr"
+                      lang="en"
                       min={1}
                       max={15}
                       value={liftReps}
                       aria-label="Repetitions Completed (1 to 15)"
                       aria-describedby="reps-display"
-                      onChange={(e) => setLiftReps(Number(e.target.value))}
-                      className="w-full accent-amber-500 cursor-pointer"
+                      onChange={(e) => setLiftReps(sanitizeNumberInput(e.target.value, 5))}
+                      className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                     />
                     {validationResult.fieldErrors.liftReps && (
                       <p id="error-lift-reps" className="text-xs text-rose-600 mt-1" role="alert">
@@ -820,19 +845,21 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-resting-hr">Resting Heart Rate (Measured in Morning)</label>
-                    <span id="resting-hr-display" className="text-amber-600 font-mono">{restingHeartRate} BPM</span>
+                    <span id="resting-hr-display" className="text-amber-600 font-mono tabular-nums lining-nums">{restingHeartRate} BPM</span>
                   </div>
                   <input
                     id="input-resting-hr"
                     name="restingHeartRate"
                     type="range"
+                    dir="ltr"
+                    lang="en"
                     min={40}
                     max={100}
                     value={restingHeartRate}
                     aria-label="Resting Heart Rate in Beats Per Minute"
                     aria-describedby="resting-hr-display"
-                    onChange={(e) => setRestingHeartRate(Number(e.target.value))}
-                    className="w-full accent-amber-500 cursor-pointer"
+                    onChange={(e) => setRestingHeartRate(sanitizeNumberInput(e.target.value, 62))}
+                    className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                   />
                   {validationResult.fieldErrors.restingHeartRate && (
                     <p id="error-resting-hr" className="text-xs text-rose-600 mt-1" role="alert">
@@ -853,11 +880,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-run-distance"
                       name="runDistance"
                       type="number"
+                      dir="ltr"
+                      lang="en"
                       step={0.1}
                       value={runDistance}
                       aria-label={`Running Distance in ${unitSystem === 'metric' ? 'km' : 'miles'}`}
-                      onChange={(e) => setRunDistance(Number(e.target.value))}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setRunDistance(sanitizeNumberInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.runDistance ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -876,12 +905,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         id="input-run-hours"
                         name="runHours"
                         type="number"
+                        dir="ltr"
+                        lang="en"
                         min={0}
                         max={24}
                         value={runHours}
                         aria-label="Running Time Hours"
-                        onChange={(e) => setRunHours(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                        onChange={(e) => setRunHours(sanitizeNumberInput(e.target.value))}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -892,12 +923,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         id="input-run-minutes"
                         name="runMinutes"
                         type="number"
+                        dir="ltr"
+                        lang="en"
                         min={0}
                         max={59}
                         value={runMinutes}
                         aria-label="Running Time Minutes"
-                        onChange={(e) => setRunMinutes(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                        onChange={(e) => setRunMinutes(sanitizeNumberInput(e.target.value))}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -908,12 +941,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         id="input-run-seconds"
                         name="runSeconds"
                         type="number"
+                        dir="ltr"
+                        lang="en"
                         min={0}
                         max={59}
                         value={runSeconds}
                         aria-label="Running Time Seconds"
-                        onChange={(e) => setRunSeconds(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                        onChange={(e) => setRunSeconds(sanitizeNumberInput(e.target.value))}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -955,10 +990,12 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-fast-start-time"
                       name="fastStartTime"
                       type="time"
+                      dir="ltr"
+                      lang="en"
                       value={fastStartTime}
                       aria-label="Fasting Start Time"
-                      onChange={(e) => setFastStartTime(e.target.value)}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setFastStartTime(sanitizeTimeInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.fastStartTime ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -977,20 +1014,22 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-workout-duration">Daily Exercise Duration</label>
-                      <span id="workout-duration-display" className="text-amber-600 font-mono">{workoutDuration} mins</span>
+                      <span id="workout-duration-display" className="text-amber-600 font-mono tabular-nums lining-nums">{workoutDuration} mins</span>
                     </div>
                     <input
                       id="input-workout-duration"
                       name="workoutDuration"
                       type="range"
+                      dir="ltr"
+                      lang="en"
                       min={0}
                       max={180}
                       step={15}
                       value={workoutDuration}
                       aria-label="Daily Exercise Duration in Minutes"
                       aria-describedby="workout-duration-display"
-                      onChange={(e) => setWorkoutDuration(Number(e.target.value))}
-                      className="w-full accent-amber-500 cursor-pointer"
+                      onChange={(e) => setWorkoutDuration(sanitizeNumberInput(e.target.value, 60))}
+                      className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                     />
                     {validationResult.fieldErrors.workoutDuration && (
                       <p id="error-workout-duration" className="text-xs text-rose-600 mt-1" role="alert">
@@ -1066,11 +1105,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     id="input-wrist-circ"
                     name="wristCirc"
                     type="number"
+                    dir="ltr"
+                    lang="en"
                     step={0.1}
                     value={wristCirc}
                     aria-label={`Wrist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setWristCirc(Number(e.target.value))}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                    onChange={(e) => setWristCirc(sanitizeNumberInput(e.target.value))}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.wristCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
                   />
@@ -1091,11 +1132,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     id="input-ankle-circ"
                     name="ankleCirc"
                     type="number"
+                    dir="ltr"
+                    lang="en"
                     step={0.1}
                     value={ankleCirc}
                     aria-label={`Ankle Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setAnkleCirc(Number(e.target.value))}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                    onChange={(e) => setAnkleCirc(sanitizeNumberInput(e.target.value))}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.ankleCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
                   />
@@ -1117,11 +1160,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     id="input-whtr-waist"
                     name="waistCirc"
                     type="number"
+                    dir="ltr"
+                    lang="en"
                     step={0.5}
                     value={waistCirc}
                     aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setWaistCirc(Number(e.target.value))}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                    onChange={(e) => setWaistCirc(sanitizeNumberInput(e.target.value))}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
                   />
@@ -1158,20 +1203,22 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-exercise-duration">Duration</label>
-                      <span id="exercise-dur-display" className="text-amber-600 font-mono">{exerciseDurationMin} mins</span>
+                      <span id="exercise-dur-display" className="text-amber-600 font-mono tabular-nums lining-nums">{exerciseDurationMin} mins</span>
                     </div>
                     <input
                       id="input-exercise-duration"
                       name="exerciseDurationMin"
                       type="range"
+                      dir="ltr"
+                      lang="en"
                       min={5}
                       max={180}
                       step={5}
                       value={exerciseDurationMin}
                       aria-label="Exercise Duration in Minutes"
                       aria-describedby="exercise-dur-display"
-                      onChange={(e) => setExerciseDurationMin(Number(e.target.value))}
-                      className="w-full accent-amber-500 cursor-pointer"
+                      onChange={(e) => setExerciseDurationMin(sanitizeNumberInput(e.target.value, 45))}
+                      className="w-full accent-amber-500 cursor-pointer tabular-nums lining-nums"
                     />
                     {validationResult.fieldErrors.exerciseDurationMin && (
                       <p id="error-exercise-dur" className="text-xs text-rose-600 mt-1" role="alert">
@@ -1228,10 +1275,12 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       id="input-sleep-time"
                       name="sleepTime"
                       type="time"
+                      dir="ltr"
+                      lang="en"
                       value={sleepTime}
                       aria-label={sleepMode === 'wake_at' ? 'Target Wake-Up Time' : 'Current Bedtime'}
-                      onChange={(e) => setSleepTime(e.target.value)}
-                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                      onChange={(e) => setSleepTime(sanitizeTimeInput(e.target.value))}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.sleepTime ? 'border-rose-500' : 'border-slate-300'
                       }`}
                     />
@@ -1274,7 +1323,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       name="proteinMeals"
                       aria-label="Daily Meal Boluses"
                       value={proteinMeals}
-                      onChange={(e) => setProteinMeals(Number(e.target.value))}
+                      onChange={(e) => setProteinMeals(sanitizeNumberInput(e.target.value, 4))}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
                     >
                       <option value={3}>3 Boluses (spaced ~5 hours)</option>
@@ -1297,7 +1346,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-recomp-tdee">Baseline Maintenance TDEE</label>
-                      <span className="text-amber-600 font-mono">{recompTdee} kcal</span>
+                      <span className="text-amber-600 font-mono tabular-nums lining-nums">{recompTdee} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <input
@@ -1306,18 +1355,20 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         aria-label="Baseline Maintenance Total Daily Energy Expenditure in kcal"
                         aria-describedby="recomp-tdee-help"
                         type="number"
+                        dir="ltr"
+                        lang="en"
                         step={50}
                         value={recompTdee}
-                        onChange={(e) => setRecompTdee(Number(e.target.value))}
-                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none ${
+                        onChange={(e) => setRecompTdee(sanitizeNumberInput(e.target.value))}
+                        className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                           validationResult.fieldErrors.recompTdee ? 'border-rose-500' : 'border-slate-300'
                         }`}
                       />
-                      <span className="text-xs font-bold text-slate-500 uppercase min-w-[36px]">
+                      <span className="text-xs font-bold text-slate-600 uppercase min-w-[36px]">
                         kcal
                       </span>
                     </div>
-                    <p id="recomp-tdee-help" className="text-[11px] text-slate-500 mt-1">
+                    <p id="recomp-tdee-help" className="text-[11px] text-slate-600 mt-1">
                       Tested standard baseline: 2400 kcal (Deficit target: 2040, Iso-caloric: 2400, Surplus target: 2592).
                     </p>
                     {validationResult.fieldErrors.recompTdee && (
@@ -1378,9 +1429,10 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     id="export-results-btn"
                     onClick={handleExportResults}
                     disabled={validationResult.hasErrors}
+                    aria-label="Export calculation results as TXT file"
                     className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
                       validationResult.hasErrors
-                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        ? 'bg-slate-200 text-slate-600 cursor-not-allowed'
                         : 'bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950'
                     }`}
                     title={
@@ -1396,23 +1448,25 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     id="quick-copy-summary-btn"
                     onClick={handleCopySummary}
                     disabled={validationResult.hasErrors}
+                    aria-label="Copy formatted text summary to clipboard"
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors shadow-2xs ${
                       validationResult.hasErrors
-                        ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                        ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                     }`}
                     title={validationResult.hasErrors ? 'Input errors detected' : 'Copy Formatted Text Summary to Clipboard'}
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-500" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-600" />}
                     <span>{copied ? 'Copied!' : 'Copy Summary'}</span>
                   </button>
                   <button
                     id="open-export-modal-btn"
                     onClick={() => setIsExportModalOpen(true)}
                     disabled={validationResult.hasErrors}
+                    aria-label="Open CSV and Preview Export Modal"
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors shadow-2xs ${
                       validationResult.hasErrors
-                        ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                        ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                     }`}
                     title={validationResult.hasErrors ? 'Input errors detected' : 'More export options (CSV, preview)'}
@@ -1459,22 +1513,22 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
                         <span className="text-[10px] uppercase font-bold text-emerald-700 block">Cutting (-500)</span>
                         <span className="text-lg font-bold font-mono text-slate-900">{res.cutting}</span>
-                        <span className="text-[10px] text-slate-400 block">kcal/day</span>
+                        <span className="text-[10px] text-slate-600 block">kcal/day</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
                         <span className="text-[10px] uppercase font-bold text-rose-700 block">Aggressive (-750)</span>
                         <span className="text-lg font-bold font-mono text-slate-900">{res.aggressiveCutting}</span>
-                        <span className="text-[10px] text-slate-400 block">kcal/day</span>
+                        <span className="text-[10px] text-slate-600 block">kcal/day</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
                         <span className="text-[10px] uppercase font-bold text-blue-700 block">Maintenance</span>
                         <span className="text-lg font-bold font-mono text-slate-900">{res.maintenance}</span>
-                        <span className="text-[10px] text-slate-400 block">kcal/day</span>
+                        <span className="text-[10px] text-slate-600 block">kcal/day</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
                         <span className="text-[10px] uppercase font-bold text-amber-700 block">Lean Bulk (+300)</span>
                         <span className="text-lg font-bold font-mono text-slate-900">{res.leanBulking}</span>
-                        <span className="text-[10px] text-slate-400 block">kcal/day</span>
+                        <span className="text-[10px] text-slate-600 block">kcal/day</span>
                       </div>
                     </div>
 
@@ -1484,19 +1538,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       </h4>
                       <div className="grid grid-cols-4 gap-2 text-center text-xs">
                         <div>
-                          <span className="text-slate-500 block">BMR</span>
+                          <span className="text-slate-600 block">BMR</span>
                           <span className="font-bold text-slate-900">{res.breakdown.bmr} kcal</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">TEF (Food)</span>
+                          <span className="text-slate-600 block">TEF (Food)</span>
                           <span className="font-bold text-slate-900">{res.breakdown.tef} kcal</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">NEAT (Steps)</span>
+                          <span className="text-slate-600 block">NEAT (Steps)</span>
                           <span className="font-bold text-slate-900">{res.breakdown.neat} kcal</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">EAT (Gym)</span>
+                          <span className="text-slate-600 block">EAT (Gym)</span>
                           <span className="font-bold text-slate-900">{res.breakdown.eat} kcal</span>
                         </div>
                       </div>
@@ -1572,13 +1626,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Fat Mass</span>
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Fat Mass</span>
                         <div className="text-2xl font-bold font-mono text-slate-900 my-1">
                           {unitSystem === 'metric' ? `${res.fatMassKg} kg` : `${Math.round(res.fatMassKg * 2.20462)} lbs`}
                         </div>
                       </div>
                       <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Lean Body Mass</span>
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block">Lean Body Mass</span>
                         <div className="text-2xl font-bold font-mono text-slate-900 my-1">
                           {unitSystem === 'metric' ? `${res.leanMassKg} kg` : `${Math.round(res.leanMassKg * 2.20462)} lbs`}
                         </div>
@@ -1620,7 +1674,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                               <td className="p-2.5 font-bold font-mono text-amber-600">{row.pct}%</td>
                               <td className="p-2.5 font-mono text-slate-900">{row.weight} {unitSystem === 'metric' ? 'kg' : 'lbs'}</td>
                               <td className="p-2.5 font-mono text-slate-700">{row.targetReps}</td>
-                              <td className="p-2.5 text-slate-500">{row.stimulus}</td>
+                              <td className="p-2.5 text-slate-600">{row.stimulus}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -1688,9 +1742,9 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         {res.racePredictions.map((race) => (
                           <div key={race.distance} className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                            <span className="text-[11px] font-bold text-slate-500 block">{race.distance}</span>
+                            <span className="text-[11px] font-bold text-slate-600 block">{race.distance}</span>
                             <span className="text-base font-bold font-mono text-slate-900 block">{race.predictedTime}</span>
-                            <span className="text-[10px] text-slate-400 font-mono block">{race.predictedPace}</span>
+                            <span className="text-[10px] text-slate-600 font-mono block">{race.predictedPace}</span>
                           </div>
                         ))}
                       </div>
@@ -1723,14 +1777,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         <div key={st.hoursRange} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                           <div>
                             <span className="text-xs font-bold text-slate-900 block">{st.name}</span>
-                            <span className="text-[11px] text-slate-500">{st.marker}</span>
+                            <span className="text-[11px] text-slate-600">{st.marker}</span>
                           </div>
                           <span className="text-xs font-mono font-bold text-amber-600 shrink-0">
                             {st.hoursRange}
                           </span>
                         </div>
                       ))}
-                      <p className="text-[11px] text-slate-500 p-2.5 bg-slate-50 border border-slate-200 rounded-xl mt-2 leading-relaxed">
+                      <p className="text-[11px] text-slate-600 p-2.5 bg-slate-50 border border-slate-200 rounded-xl mt-2 leading-relaxed">
                         This is an educational fasting-time estimator. Autophagy occurs at different baseline levels and cannot be directly measured by this calculator. Human timing is uncertain and varies with health, age, sex, nutrition, sleep, activity, and other factors. The displayed milestones are general educational context, not medical measurements or recommendations.
                       </p>
                     </div>
@@ -1756,11 +1810,11 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="grid grid-cols-2 gap-3 text-center">
                       <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-[11px] font-bold text-slate-500 block uppercase">Hourly Intake</span>
+                        <span className="text-[11px] font-bold text-slate-600 block uppercase">Hourly Intake</span>
                         <span className="text-lg font-bold font-mono text-slate-900">~{res.hourlyRecommendationMl} ml / hr</span>
                       </div>
                       <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-[11px] font-bold text-slate-500 block uppercase">Sodium Guideline</span>
+                        <span className="text-[11px] font-bold text-slate-600 block uppercase">Sodium Guideline</span>
                         <span className="text-xs font-bold text-amber-700">{res.sodiumGuidelineMg}</span>
                       </div>
                     </div>
@@ -1817,13 +1871,13 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="grid grid-cols-2 gap-3 text-center">
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-[11px] font-bold text-slate-500 block uppercase">Lean Mass</span>
+                        <span className="text-[11px] font-bold text-slate-600 block uppercase">Lean Mass</span>
                         <span className="text-lg font-bold font-mono text-slate-900">
                           {unitSystem === 'metric' ? `${res.lbmKg} kg` : `${Math.round(res.lbmKg * 2.20462)} lbs`}
                         </span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-[11px] font-bold text-slate-500 block uppercase">Raw FFMI</span>
+                        <span className="text-[11px] font-bold text-slate-600 block uppercase">Raw FFMI</span>
                         <span className="text-lg font-bold font-mono text-slate-900">{res.ffmi}</span>
                       </div>
                     </div>
@@ -1852,19 +1906,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
                       <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Devine (1974)</span>
+                        <span className="text-slate-600 block">Devine (1974)</span>
                         <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.devineKg} kg` : `${Math.round(res.devineKg * 2.20462)} lbs`}</span>
                       </div>
                       <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Robinson (1983)</span>
+                        <span className="text-slate-600 block">Robinson (1983)</span>
                         <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.robinsonKg} kg` : `${Math.round(res.robinsonKg * 2.20462)} lbs`}</span>
                       </div>
                       <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Miller (1983)</span>
+                        <span className="text-slate-600 block">Miller (1983)</span>
                         <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.millerKg} kg` : `${Math.round(res.millerKg * 2.20462)} lbs`}</span>
                       </div>
                       <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Hamwi (1964)</span>
+                        <span className="text-slate-600 block">Hamwi (1964)</span>
                         <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.hamwiKg} kg` : `${Math.round(res.hamwiKg * 2.20462)} lbs`}</span>
                       </div>
                     </div>
@@ -1894,19 +1948,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       </h4>
                       <div className="grid grid-cols-3 gap-2 text-center text-xs">
                         <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                          <span className="text-slate-500 block">Chest</span>
+                          <span className="text-slate-600 block">Chest</span>
                           <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.maxMeasurementsCm.chest} cm` : `${Math.round(res.maxMeasurementsCm.chest / 2.54 * 10) / 10} in`}</span>
                         </div>
                         <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                          <span className="text-slate-500 block">Biceps</span>
+                          <span className="text-slate-600 block">Biceps</span>
                           <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.maxMeasurementsCm.biceps} cm` : `${Math.round(res.maxMeasurementsCm.biceps / 2.54 * 10) / 10} in`}</span>
                         </div>
                         <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                          <span className="text-slate-500 block">Thighs</span>
+                          <span className="text-slate-600 block">Thighs</span>
                           <span className="font-bold font-mono text-slate-900">{unitSystem === 'metric' ? `${res.maxMeasurementsCm.thigh} cm` : `${Math.round(res.maxMeasurementsCm.thigh / 2.54 * 10) / 10} in`}</span>
                         </div>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl leading-relaxed">
+                      <p className="text-[11px] text-slate-600 mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl leading-relaxed">
                         These are approximate reference estimates based on selected models. They are not a confirmed genetic limit, diagnosis, prediction, or guarantee. Individual results vary substantially with genetics, age, training history, nutrition, health, and measurement error.
                       </p>
                     </div>
@@ -1936,10 +1990,10 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <p className="text-slate-700">
                         {res.clinicalInsight}
                       </p>
-                      <p className="text-slate-500">
+                      <p className="text-slate-600">
                         Recommended healthy waist boundary for your height: <strong>{unitSystem === 'metric' ? `${res.targetWaistCm.min} - ${res.targetWaistCm.max} cm` : `${Math.round(res.targetWaistCm.min / 2.54)} - ${Math.round(res.targetWaistCm.max / 2.54)} inches`}</strong>.
                       </p>
-                      <p className="text-[11px] text-slate-500 pt-1 border-t border-slate-200 leading-relaxed">
+                      <p className="text-[11px] text-slate-600 pt-1 border-t border-slate-200 leading-relaxed">
                         WHtR is a screening indicator associated with cardiometabolic risk. It does not directly measure visceral fat and does not provide a diagnosis. Discuss concerning results with a qualified healthcare professional.
                       </p>
                     </div>
@@ -1979,7 +2033,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <span className="text-xs uppercase tracking-widest font-bold text-amber-800">
                         {sleepMode === 'wake_at' ? 'Recommended Bedtimes' : 'Optimal Wake-Up Times'}
                       </span>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-slate-600 mt-1">
                         An approximate sleep-cycle model. Individual sleep cycles vary, so this result is educational and not a medical assessment.
                       </p>
                     </div>
@@ -1996,7 +2050,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         >
                           <div>
                             <span className="text-sm font-bold font-mono">{t.formattedTime}</span>
-                            <span className="text-[11px] text-slate-500 block">{t.description}</span>
+                            <span className="text-[11px] text-slate-600 block">{t.description}</span>
                           </div>
                           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 shrink-0">
                             {t.cycles} Cycles
@@ -2026,19 +2080,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
                     <div className="grid grid-cols-2 gap-3 text-center text-xs">
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Mifflin-St Jeor</span>
+                        <span className="text-slate-600 block">Mifflin-St Jeor</span>
                         <span className="font-bold font-mono text-base text-slate-900">{res.mifflinStJeor} kcal</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Revised Harris-Benedict</span>
+                        <span className="text-slate-600 block">Revised Harris-Benedict</span>
                         <span className="font-bold font-mono text-base text-slate-900">{res.harrisBenedict} kcal</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Schofield (WHO)</span>
+                        <span className="text-slate-600 block">Schofield (WHO)</span>
                         <span className="font-bold font-mono text-base text-slate-900">{res.schofieldWHO} kcal</span>
                       </div>
                       <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                        <span className="text-slate-500 block">Katch-McArdle (LBM)</span>
+                        <span className="text-slate-600 block">Katch-McArdle (LBM)</span>
                         <span className="font-bold font-mono text-base text-slate-900">{res.katchMcArdle ?? 'N/A'} kcal</span>
                       </div>
                     </div>
@@ -2070,11 +2124,11 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         <div key={m.mealNumber} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                           <div>
                             <span className="text-xs font-bold text-slate-900 block">{m.title}</span>
-                            <span className="text-[11px] text-slate-500">{m.timingWindow}</span>
+                            <span className="text-[11px] text-slate-600">{m.timingWindow}</span>
                           </div>
                           <div className="text-right">
                             <span className="text-sm font-bold font-mono text-amber-600 block">{m.proteinGrams}g</span>
-                            <span className="text-[10px] text-slate-400 font-mono">~{m.leucineEstimateGrams}g Leucine</span>
+                            <span className="text-[10px] text-slate-600 font-mono">~{m.leucineEstimateGrams}g Leucine</span>
                           </div>
                         </div>
                       ))}
@@ -2139,7 +2193,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                         <div key={z.zone} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                           <div>
                             <span className="text-xs font-bold text-slate-900 block">{z.zone}</span>
-                            <span className="text-[11px] text-slate-500">{z.hrrPctRange}</span>
+                            <span className="text-[11px] text-slate-600">{z.hrrPctRange}</span>
                           </div>
                           <span className="text-xs font-mono font-bold text-amber-600 shrink-0">
                             {z.range}
@@ -2170,6 +2224,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <button
                     id="export-card-results-btn"
                     onClick={handleExportResults}
+                    aria-label="Export calculation results as downloadable TXT file"
                     className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
                     title="Export calculation results as a downloadable .txt file"
                   >
@@ -2179,6 +2234,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <button
                     id="export-card-copy-btn"
                     onClick={handleCopySummary}
+                    aria-label="Copy formatted summary text"
                     className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold transition-all shadow-2xs"
                     title="Copy Formatted Summary"
                   >
@@ -2188,6 +2244,7 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <button
                     id="export-card-csv-btn"
                     onClick={handleDownloadCsv}
+                    aria-label="Download RFC 4180 CSV spreadsheet file"
                     className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold transition-all shadow-2xs"
                     title="Download RFC 4180 CSV File"
                   >
@@ -2198,10 +2255,11 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-6">
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 mt-6">
               <span>In-Browser Computation</span>
               <button
                 onClick={onOpenContact}
+                aria-label="Inquire about this calculator tool"
                 className="text-amber-600 hover:text-amber-700 font-semibold"
               >
                 Inquire about this tool
@@ -2341,13 +2399,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <button
                       type="button"
                       onClick={() => toggleFaq(idx)}
+                      aria-expanded={isExpanded}
+                      aria-label={`Toggle FAQ: ${faq.question}`}
                       className="w-full text-left px-5 py-4 bg-slate-50 hover:bg-slate-100/80 flex items-center justify-between gap-4 font-bold text-sm text-slate-900 transition-colors"
                     >
                       <span>{faq.question}</span>
                       {isExpanded ? (
                         <ChevronUp className="w-4 h-4 text-amber-600 shrink-0" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                        <ChevronDown className="w-4 h-4 text-slate-600 shrink-0" />
                       )}
                     </button>
                     {isExpanded && (

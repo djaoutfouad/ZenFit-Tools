@@ -37,10 +37,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand & About */}
           <div className="lg:col-span-1 space-y-4">
-            <Link to="/" className="inline-block group">
+            <Link to="/" aria-label="ZenFit Tools Home" className="inline-block group">
               <ZenFitLogo size="sm" showSubtitle={false} showBadge={false} />
             </Link>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-300 leading-relaxed">
               Precision health, nutrition, and biohacking analytics suite engineered for athletes, coaches, and sports science enthusiasts. 100% browser-based calculations designed to keep your metrics private on your device.
             </p>
             <div className="pt-2">
@@ -62,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             >
               Metabolism &amp; Diet →
             </Link>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-slate-300">
               {metabolismCalcs.map((calc) => (
                 <li key={calc.id}>
                   <Link
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             >
               Body Composition →
             </Link>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-slate-300">
               {bodyCompCalcs.map((calc) => (
                 <li key={calc.id}>
                   <Link
@@ -106,7 +106,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             >
               Cardio &amp; Strength →
             </Link>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-slate-300">
               {performanceCalcs.map((calc) => (
                 <li key={calc.id}>
                   <Link
@@ -128,7 +128,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             >
               Biohacking &amp; Recovery →
             </Link>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-slate-300">
               {biohackingCalcs.map((calc) => (
                 <li key={calc.id}>
                   <Link
@@ -144,7 +144,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
         </div>
 
         {/* Global Compliance & Trust Disclaimers */}
-        <div className="pt-8 border-t border-slate-800/80 space-y-4 text-xs text-slate-400">
+        <div className="pt-8 border-t border-slate-800/80 space-y-4 text-xs text-slate-300">
           <div className="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
@@ -152,7 +152,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-800/60 text-[11px] text-slate-400">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-800/60 text-[11px] text-slate-300">
             <div className="flex items-center gap-2">
               <span>© {currentYear} ZenFit Tools. All rights reserved.</span>
               <span className="hidden sm:inline">•</span>
@@ -160,7 +160,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
             </div>
 
             {/* Static Legal Page Links */}
-            <div className="flex flex-wrap items-center gap-4 text-slate-400">
+            <div className="flex flex-wrap items-center gap-4 text-slate-300">
               <Link to="/about/" className="hover:text-amber-400 transition-colors">
                 About Us
               </Link>

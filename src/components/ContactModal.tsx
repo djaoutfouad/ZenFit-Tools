@@ -100,13 +100,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({
             </span>
             <div>
               <h3 className="text-lg font-bold text-slate-900">Contact Official Support</h3>
-              <p className="text-xs text-slate-500">ZenFit Tools Team · zenfittools@gmail.com</p>
+              <p className="text-xs text-slate-600">ZenFit Tools Team · zenfittools@gmail.com</p>
             </div>
           </div>
           <button
             id="close-contact-modal-btn"
             onClick={onClose}
-            className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
+            className="p-2 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors"
             aria-label="Close contact modal"
           >
             <X className="w-5 h-5" />
@@ -145,11 +145,12 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
               <div className="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
                 <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-slate-500" />
+                  <Mail className="w-4 h-4 text-slate-600" />
                   <span className="text-sm font-mono font-medium text-slate-800">zenfittools@gmail.com</span>
                 </div>
                 <button
                   onClick={handleCopyEmail}
+                  aria-label="Copy official email address"
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
                 >
                   <Copy className="w-3.5 h-3.5" />
@@ -168,7 +169,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
               <button
                 onClick={() => setStatus('idle')}
-                className="w-full py-2 text-xs text-slate-500 hover:text-slate-800 font-medium text-center"
+                className="w-full py-2 text-xs text-slate-600 hover:text-slate-800 font-medium text-center"
               >
                 Edit Message Again
               </button>
@@ -248,7 +249,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </button>
               </div>
 
-              <p className="text-[11px] text-center text-slate-500">
+              <p className="text-[11px] text-center text-slate-600">
                 Official inquiries can also be emailed directly to <strong className="text-slate-700">zenfittools@gmail.com</strong>
               </p>
             </form>

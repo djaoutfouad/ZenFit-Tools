@@ -80,15 +80,15 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
         {/* Breadcrumb Navigation */}
         <nav
           aria-label="Breadcrumbs"
-          className="flex items-center gap-2 text-xs text-slate-500 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200"
+          className="flex items-center gap-2 text-xs text-slate-600 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200"
         >
           <Link to="/" className="flex items-center gap-1 text-slate-600 hover:text-amber-600 font-semibold">
             <Home className="w-3.5 h-3.5" />
             <span>Home</span>
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-400">Legal &amp; Compliance</span>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+          <span className="text-slate-600">Legal &amp; Compliance</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
           <span className="font-bold text-slate-900">{doc.title}</span>
         </nav>
 
@@ -121,10 +121,10 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
                   {doc.title}
                 </h1>
-                <p className="text-xs text-slate-400 mt-0.5">{doc.effectiveDate}</p>
+                <p className="text-xs text-slate-600 mt-0.5">{doc.effectiveDate}</p>
               </div>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-600">
               Official ZenFit Tools Documentation · Official contact: <strong>zenfittools@gmail.com</strong>
             </p>
           </header>
@@ -165,7 +165,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
             ))}
           </div>
 
-          <footer className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <footer className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
             <span>Questions or legal compliance requests?</span>
             <a
               href="mailto:zenfittools@gmail.com"

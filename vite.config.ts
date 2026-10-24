@@ -21,6 +21,17 @@ export default defineConfig(() => {
       script: 'async',
       formatting: 'none',
       dirStyle: 'nested',
+      onPageRendered(_route: string, renderedHTML: string) {
+        // Ensure <meta charset="UTF-8"> and <meta name="viewport"> are the very first elements immediately after <head> (within first 100 bytes for W3C)
+        let html = renderedHTML
+          .replace(/<meta\s+charset=["']?utf-8["']?\s*\/?>\s*/gi, '')
+          .replace(/<meta\s+name=["']viewport["'][^>]*>\s*/gi, '');
+        html = html.replace(
+          /<head>/i,
+          '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+        );
+        return html;
+      },
       includedRoutes() {
         return [
           '/',

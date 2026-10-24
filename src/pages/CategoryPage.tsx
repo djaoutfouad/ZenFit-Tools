@@ -98,15 +98,15 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
           {/* Breadcrumbs */}
           <nav
             aria-label="Breadcrumbs"
-            className="inline-flex items-center gap-2 text-xs text-slate-400 mb-6 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
+            className="inline-flex items-center gap-2 text-xs text-slate-300 mb-6 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
           >
             <Link to="/" className="hover:text-amber-400 flex items-center gap-1 font-semibold">
               <Home className="w-3.5 h-3.5" />
               <span>Home</span>
             </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-            <span className="text-slate-400">Categories</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+            <span className="text-slate-300">Categories</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
             <span className="text-amber-400 font-bold">{category.title}</span>
           </nav>
 
@@ -170,7 +170,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
                 <h3 className="text-lg font-bold text-slate-900">
                   Physiological Foundations: {category.title}
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-600">
                   Scientific standards, published formulas, and estimated parameters
                 </p>
               </div>

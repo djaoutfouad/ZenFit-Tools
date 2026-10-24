@@ -113,13 +113,13 @@ export const ContactPage: React.FC = () => {
         {/* Breadcrumbs */}
         <nav
           aria-label="Breadcrumbs"
-          className="flex items-center gap-2 text-xs text-slate-500 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200"
+          className="flex items-center gap-2 text-xs text-slate-600 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200"
         >
           <Link to="/" className="flex items-center gap-1 text-slate-600 hover:text-amber-600 font-semibold">
             <Home className="w-3.5 h-3.5" />
             <span>Home</span>
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
           <span className="font-bold text-slate-900">Contact Us</span>
         </nav>
 
@@ -133,21 +133,22 @@ export const ContactPage: React.FC = () => {
 
               <div>
                 <h2 className="text-xl font-bold text-white">Direct Communication</h2>
-                <p className="text-xs text-slate-400 mt-1">Official ZenFit Tools Helpdesk</p>
+                <p className="text-xs text-slate-300 mt-1">Official ZenFit Tools Helpdesk</p>
               </div>
 
               <div className="pt-2 border-t border-slate-800 space-y-2">
                 <p className="text-xs text-slate-300">Official Inquiries &amp; Reviewers:</p>
                 <button
                   onClick={handleCopyEmail}
+                  aria-label="Copy official email address"
                   className="w-full py-2 px-3 rounded-xl bg-slate-900 border border-slate-700 text-xs text-amber-300 font-mono flex items-center justify-between hover:border-amber-500/60 transition-colors"
                 >
                   <span className="truncate">{officialEmail}</span>
-                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-300" />}
                 </button>
               </div>
 
-              <div className="space-y-3 pt-2 text-xs text-slate-400">
+              <div className="space-y-3 pt-2 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-amber-400" />
                   <span>Response within 24-48 hours</span>
@@ -163,7 +164,7 @@ export const ContactPage: React.FC = () => {
           {/* Form */}
           <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
             <h1 className="text-2xl font-extrabold text-slate-900 mb-2">Send Us a Message</h1>
-            <p className="text-xs text-slate-500 mb-6">
+            <p className="text-xs text-slate-600 mb-6">
               Have questions about formula accuracy, citation requests, or feature feedback? We respond promptly.
             </p>
 
@@ -204,11 +205,12 @@ export const ContactPage: React.FC = () => {
 
                 <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-amber-200">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-slate-500" />
+                    <Mail className="w-4 h-4 text-slate-600" />
                     <span className="text-xs font-mono font-medium text-slate-800">{officialEmail}</span>
                   </div>
                   <button
                     onClick={handleCopyEmail}
+                    aria-label="Copy official email address"
                     className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition-colors"
                   >
                     <Copy className="w-3.5 h-3.5" />
@@ -228,7 +230,7 @@ export const ContactPage: React.FC = () => {
 
                 <button
                   onClick={() => setStatus('idle')}
-                  className="text-xs text-slate-500 hover:text-slate-800 block text-center w-full font-medium"
+                  className="text-xs text-slate-600 hover:text-slate-800 block text-center w-full font-medium"
                 >
                   Return to form
                 </button>
@@ -301,7 +303,7 @@ export const ContactPage: React.FC = () => {
                   <Send className="w-4 h-4" />
                   <span>{status === 'sending' ? 'Dispatching Message...' : 'Send Message'}</span>
                 </button>
-                <p className="text-[11px] text-slate-500 text-center mt-3">
+                <p className="text-[11px] text-slate-600 text-center mt-3">
                   Calculator inputs are processed locally in your browser. Contact-form submissions are handled by EmailJS as described in our Privacy Policy.
                 </p>
               </form>

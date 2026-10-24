@@ -63,6 +63,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
     <Link
       id={`calc-card-${calc.id}`}
       to={calc.routePath}
+      aria-label={`Open ${calc.title}`}
       className={`group rounded-3xl border p-6 transition-all duration-300 ease-out flex flex-col justify-between block focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
         isSelected
           ? 'bg-amber-500/5 border-amber-500 shadow-md ring-2 ring-amber-400/20'
@@ -77,8 +78,8 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
           </div>
           <div className="flex items-center gap-2">
             {calc.readTime && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 group-hover:text-slate-700 transition-colors">
-                <Clock className="w-3 h-3 text-slate-400 group-hover:text-amber-600 transition-colors" />
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 group-hover:text-slate-700 transition-colors">
+                <Clock className="w-3 h-3 text-slate-600 group-hover:text-amber-600 transition-colors" />
                 <span>{calc.readTime}</span>
               </span>
             )}
@@ -121,7 +122,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
 
       {/* Footer Info & Action */}
       <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-        <span className="text-[11px] font-mono text-slate-400 truncate max-w-[200px]">
+        <span className="text-[11px] font-mono text-slate-600 truncate max-w-[200px]">
           {calc.formulaSummary}
         </span>
         <span

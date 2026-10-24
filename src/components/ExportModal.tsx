@@ -73,7 +73,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
                 Export Fitness Log &amp; Biometrics
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 {exportData.title} · {exportData.entriesCount} biometric data points
               </p>
             </div>
@@ -81,7 +81,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           <button
             id="close-export-modal-btn"
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            aria-label="Close export modal"
+            className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -120,6 +121,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             <button
               id="copy-export-content-btn"
               onClick={() => handleCopy(activeTab)}
+              aria-label={`Copy ${activeTab === 'text' ? 'summary text' : 'CSV spreadsheet'} to clipboard`}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 transition-all shadow-xs"
             >
               {(activeTab === 'text' ? copiedText : copiedCsv) ? (
@@ -129,7 +131,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5 text-slate-500" />
+                  <Copy className="w-3.5 h-3.5 text-slate-600" />
                   <span>Copy {activeTab === 'text' ? 'Summary' : 'CSV'}</span>
                 </>
               )}
@@ -137,6 +139,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             <button
               id="download-export-file-btn"
               onClick={() => handleDownload(activeTab === 'text' ? 'txt' : 'csv')}
+              aria-label={`Download ${activeTab === 'text' ? 'TXT' : 'CSV'} export file`}
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs"
             >
               <Download className="w-3.5 h-3.5 text-amber-400" />
@@ -159,7 +162,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         </div>
 
         {/* Footer info badges */}
-        <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-500">
+        <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-600">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />

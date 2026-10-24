@@ -68,14 +68,15 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Search Bar */}
         <div className="max-w-xl mx-auto relative mb-8">
           <div className="relative flex items-center">
-            <Search className="w-5 h-5 text-slate-400 absolute left-4 pointer-events-none" />
+            <Search className="w-5 h-5 text-slate-300 absolute left-4 pointer-events-none" />
             <input
               id="hero-calculator-search-input"
               type="text"
+              aria-label="Search fitness and nutrition calculators"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search by metric (e.g., TDEE, 1RM, Body Fat, Creatine, WHtR, Sleep)..."
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent shadow-xl backdrop-blur-md transition-all"
+              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent shadow-xl backdrop-blur-md transition-all"
             />
           </div>
         </div>
@@ -86,6 +87,7 @@ export const Hero: React.FC<HeroProps> = ({
             <button
               key={cat.id}
               id={`cat-filter-${cat.id}`}
+              aria-label={`Filter calculators by ${cat.label}`}
               onClick={() => onSelectCategory(cat.id)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
                 selectedCategory === cat.id
@@ -96,7 +98,7 @@ export const Hero: React.FC<HeroProps> = ({
               <span>{cat.label}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  selectedCategory === cat.id ? 'bg-amber-600/30 text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'
+                  selectedCategory === cat.id ? 'bg-amber-600/30 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
                 }`}
               >
                 {cat.count}
@@ -106,7 +108,7 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
 
         {/* Trust Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-4 border-t border-slate-800/60 text-xs text-slate-400">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-4 border-t border-slate-800/60 text-xs text-slate-300">
           <div className="flex items-center justify-center gap-1.5">
             <Zap className="w-3.5 h-3.5 text-amber-400" />
             <span>Instant Client-Side Math</span>

@@ -101,7 +101,7 @@ export const HomePage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="text-xs font-semibold text-slate-500 bg-white px-3 py-1.5 rounded-xl border border-slate-200 self-start sm:self-auto shadow-xs">
+              <div className="text-xs font-semibold text-slate-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 self-start sm:self-auto shadow-xs">
                 Showing {filteredCalculators.length} of {CALCULATORS_CATALOG.length} Tools
               </div>
             </div>
@@ -176,7 +176,7 @@ export const HomePage: React.FC = () => {
                 <h3 className="text-lg font-bold text-slate-900">
                   Educational Sports Science &amp; Published Research Standards
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-600">
                   Formulas derived from published literature including ACSM, ISSN, DoD, and PubMed references
                 </p>
               </div>
@@ -194,10 +194,10 @@ export const HomePage: React.FC = () => {
                 <span>Read Full Methodology &amp; Citations</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <span className="text-slate-300">•</span>
+              <span className="text-slate-400">•</span>
               <Link
                 to="/disclaimer/"
-                className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
               >
                 <span>Medical &amp; Clinical Disclosures</span>
               </Link>

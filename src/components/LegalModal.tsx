@@ -36,13 +36,13 @@ export const LegalModal: React.FC<LegalModalProps> = ({
             </span>
             <div>
               <h3 className="text-xl font-bold text-slate-900">Legal, Privacy & Compliance</h3>
-              <p className="text-xs text-slate-500">Official ZenFit Tools Documentation · zenfittools@gmail.com</p>
+              <p className="text-xs text-slate-600">Official ZenFit Tools Documentation · zenfittools@gmail.com</p>
             </div>
           </div>
           <button
             id="close-legal-modal-btn"
             onClick={onClose}
-            className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
+            className="p-2 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -118,7 +118,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           {activeDoc === 'privacy' && (
             <div id="content-privacy" className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900">Privacy Policy</h4>
-              <p className="text-xs text-slate-400">Effective Date: January 1, 2026 · Last Updated: September 2026</p>
+              <p className="text-xs text-slate-600">Effective Date: January 1, 2026 · Last Updated: September 2026</p>
               <p>
                 At <strong>ZenFit Tools</strong> (accessible via our digital properties, contact: <strong>zenfittools@gmail.com</strong>), the privacy of our visitors is of paramount importance. This Privacy Policy document outlines the types of personal and non-personal data collected, recorded, and processed in full compliance with the European General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA), and global privacy standards.
               </p>
@@ -140,7 +140,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           {activeDoc === 'terms' && (
             <div id="content-terms" className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900">Terms of Use</h4>
-              <p className="text-xs text-slate-400">Effective Date: January 1, 2026</p>
+              <p className="text-xs text-slate-600">Effective Date: January 1, 2026</p>
               <p>
                 Welcome to ZenFit Tools. By accessing or utilizing any of our 19 health, fitness, nutrition, and biohacking calculators, you agree to be bound by these Terms of Use and all applicable laws and regulations.
               </p>
@@ -158,7 +158,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           {activeDoc === 'cookies' && (
             <div id="content-cookies" className="space-y-4">
               <h4 className="text-lg font-bold text-slate-900">Cookie Policy</h4>
-              <p className="text-xs text-slate-400">Compliance with ePrivacy Directive & GDPR</p>
+              <p className="text-xs text-slate-600">Compliance with ePrivacy Directive & GDPR</p>
               <p>
                 Cookies are tiny data files stored in your web browser. ZenFit Tools uses minimal cookies necessary to preserve your user interface preferences (such as your chosen unit system: Metric vs. Imperial) in your browser’s localStorage.
               </p>
@@ -201,7 +201,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 <li><strong>Endurance Pacing:</strong> Pete Riegel (1981) fatigue exponent model (T2 = T1 × (D2/D1)^1.06).</li>
                 <li><strong>Energy Burn:</strong> Ainsworth et al. Compendium of Physical Activities Metabolic Equivalent of Task (MET) library.</li>
               </ul>
-              <p className="text-xs text-slate-500 pt-2">
+              <p className="text-xs text-slate-600 pt-2">
                 Have questions about our mathematical models or data calculations? Contact us at <strong>zenfittools@gmail.com</strong>.
               </p>
             </div>
@@ -210,7 +210,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
 
         {/* Modal Footer */}
         <div className="px-6 py-4 border-t border-slate-200 bg-slate-50/70 flex items-center justify-between">
-          <span className="text-xs text-slate-500">Official contact: zenfittools@gmail.com</span>
+          <span className="text-xs text-slate-600">Official contact: zenfittools@gmail.com</span>
           <button
             id="close-legal-bottom-btn"
             onClick={onClose}

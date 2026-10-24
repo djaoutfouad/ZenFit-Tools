@@ -33,7 +33,12 @@ import {
 } from './calculatorEngines';
 
 import { validateCalculatorInputs } from './calculatorValidation';
-import { formatNumber, containsEasternOrPersianDigits } from './formatNumber';
+import {
+  formatNumber,
+  containsEasternOrPersianDigits,
+  sanitizeNumberInput,
+  sanitizeTimeInput,
+} from './formatNumber';
 
 interface TestLogEntry {
   toolName: string;
@@ -102,7 +107,7 @@ export function runFullTestSuite() {
   assert(recompSurplus.targetDailyCalories === 2592, 'Body Recomposition', '+8% Surplus Target = 2592', `Expected 2592, got ${recompSurplus.targetDailyCalories}`, { tdee: 2400, preference: 'slight_surplus' });
 
   // -------------------------------------------------------------
-  // TEST 4: Global English Number Formatting & Eastern/Persian Numeral Prohibition
+  // TEST 4: Global English Number Formatting & Arabic/Persian Input Sanitization
   // -------------------------------------------------------------
   const fmtZero = formatNumber(0);
   assert(fmtZero === '0', 'Number Formatting', 'Zero format', `Expected '0', got '${fmtZero}'`, { val: 0 });
@@ -121,6 +126,18 @@ export function runFullTestSuite() {
 
   const fmtClean2 = !containsEasternOrPersianDigits(formatNumber(2400));
   assert(fmtClean2, 'Number Formatting', 'TDEE 2400 contains only Western English digits', `Verified for '${formatNumber(2400)}'`, { val: 2400 });
+
+  const sanArabic = sanitizeNumberInput('٧٨٫٥');
+  assert(sanArabic === 78.5, 'Input Sanitization', 'Eastern Arabic numerals + Arabic decimal (٧٨٫٥)', `Expected 78.5, got ${sanArabic}`, { raw: '٧٨٫٥' });
+
+  const sanPersian = sanitizeNumberInput('۱۸۰,۵');
+  assert(sanPersian === 180.5, 'Input Sanitization', 'Persian numerals + comma separator (۱۸۰,۵)', `Expected 180.5, got ${sanPersian}`, { raw: '۱۸۰,۵' });
+
+  const sanInvalid = sanitizeNumberInput('abc٫٫', 0);
+  assert(sanInvalid === 0 && !Number.isNaN(sanInvalid), 'Input Sanitization', 'Non-numeric input prevents NaN', `Expected 0, got ${sanInvalid}`, { raw: 'abc٫٫' });
+
+  const sanTime = sanitizeTimeInput('٢٠:٣٠');
+  assert(sanTime === '20:30', 'Input Sanitization', 'Eastern Arabic time input (٢٠:٣٠)', `Expected '20:30', got '${sanTime}'`, { raw: '٢٠:٣٠' });
 
   // -------------------------------------------------------------
   // TESTS 5 - 23: All 19 Calculators under Normal, Boundary, and Invalid Inputs

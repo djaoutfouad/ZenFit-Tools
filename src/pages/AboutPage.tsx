@@ -39,12 +39,12 @@ export const AboutPage: React.FC = () => {
       </Head>
 
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 text-xs text-slate-500 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200">
+        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 text-xs text-slate-600 mb-6 bg-white/60 px-4 py-2.5 rounded-2xl border border-slate-200">
           <Link className="flex items-center gap-1 text-slate-600 hover:text-amber-600 font-semibold" to="/">
             <Home className="w-3.5 h-3.5" />
             <span>Home</span>
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
           <span className="font-bold text-slate-900">About &amp; Educational Standards</span>
         </nav>
 
@@ -106,7 +106,7 @@ export const AboutPage: React.FC = () => {
             </div>
           </section>
 
-          <footer className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <footer className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
             <span>Direct Inquiries &amp; Feedback:</span>
             <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1.5">
               <Mail className="w-4 h-4" />
