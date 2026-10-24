@@ -13,10 +13,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
   const currentYear = 2026;
   const location = useLocation();
 
-  // Exclude ads from sensitive legal pages per AdSense 2026 guidelines
-  const isSensitiveLegalPage = ['/privacy', '/terms', '/cookies', '/disclaimer'].includes(
-    location.pathname
-  );
+  const isSensitiveLegalPage = [
+    '/privacy', '/terms', '/cookies', '/disclaimer',
+    '/privacy/', '/terms/', '/cookies/', '/disclaimer/'
+  ].includes(location.pathname);
 
   const metabolismCalcs = CALCULATORS_CATALOG.filter((c) => c.category === 'metabolism');
   const bodyCompCalcs = CALCULATORS_CATALOG.filter((c) => c.category === 'body_composition');
@@ -57,7 +57,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           {/* Category 1: Metabolism & Nutrition */}
           <div>
             <Link
-              to="/categories/metabolism-diet"
+              to="/categories/metabolism-diet/"
               className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 hover:text-amber-400 transition-colors"
             >
               Metabolism &amp; Diet →
@@ -79,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           {/* Category 2: Body Composition */}
           <div>
             <Link
-              to="/categories/body-composition"
+              to="/categories/body-composition/"
               className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 hover:text-amber-400 transition-colors"
             >
               Body Composition →
@@ -101,7 +101,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           {/* Category 3: Cardio & Strength */}
           <div>
             <Link
-              to="/categories/cardio-strength"
+              to="/categories/cardio-strength/"
               className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 hover:text-amber-400 transition-colors"
             >
               Cardio &amp; Strength →
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
           {/* Category 4: Biohacking & Recovery */}
           <div>
             <Link
-              to="/categories/biohacking-recovery"
+              to="/categories/biohacking-recovery/"
               className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 hover:text-amber-400 transition-colors"
             >
               Biohacking &amp; Recovery →
@@ -161,31 +161,31 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
             {/* Static Legal Page Links */}
             <div className="flex flex-wrap items-center gap-4 text-slate-400">
-              <Link to="/about" className="hover:text-amber-400 transition-colors">
+              <Link to="/about/" className="hover:text-amber-400 transition-colors">
                 About Us
               </Link>
               <span>•</span>
-              <Link to="/privacy" className="hover:text-amber-400 transition-colors">
+              <Link to="/privacy/" className="hover:text-amber-400 transition-colors">
                 Privacy Policy
               </Link>
               <span>•</span>
-              <Link to="/terms" className="hover:text-amber-400 transition-colors">
+              <Link to="/terms/" className="hover:text-amber-400 transition-colors">
                 Terms of Use
               </Link>
               <span>•</span>
-              <Link to="/cookies" className="hover:text-amber-400 transition-colors">
+              <Link to="/cookies/" className="hover:text-amber-400 transition-colors">
                 Cookie Policy
               </Link>
               <span>•</span>
-              <Link to="/disclaimer" className="hover:text-amber-400 transition-colors">
+              <Link to="/disclaimer/" className="hover:text-amber-400 transition-colors">
                 Medical Disclaimer
               </Link>
               <span>•</span>
-              <Link to="/methodology" className="hover:text-amber-400 transition-colors">
+              <Link to="/methodology/" className="hover:text-amber-400 transition-colors">
                 Scientific Methodology
               </Link>
               <span>•</span>
-              <Link to="/contact" className="hover:text-amber-400 transition-colors">
+              <Link to="/contact/" className="hover:text-amber-400 transition-colors">
                 Contact Us
               </Link>
             </div>

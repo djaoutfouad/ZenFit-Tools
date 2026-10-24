@@ -55,9 +55,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
           </div>
 
           <Link
-            to="/methodology"
+            to="/methodology/"
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
-              location.pathname === '/methodology'
+              location.pathname.startsWith('/methodology')
                 ? 'bg-slate-800 text-amber-400'
                 : 'text-slate-300 hover:text-white hover:bg-slate-900'
             }`}
@@ -93,8 +93,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
             </button>
           ) : (
             <Link
-              id="nav-contact-btn"
-              to="/contact"
+              id="nav-contact-link"
+              to="/contact/"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-amber-400" />
@@ -105,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
           {/* Disclaimer / Legal Link */}
           <Link
             id="nav-legal-btn"
-            to="/disclaimer"
+            to="/disclaimer/"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-colors"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-slate-400" />

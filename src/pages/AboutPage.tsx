@@ -22,12 +22,19 @@ export const AboutPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>About Us &amp; Educational Mission | ZenFit Tools</title>
+        <title>About ZenFit Tools - Evidence-Based Science Suite</title>
         <meta
           name="description"
-          content="Learn about the scientific methodology, published physiological formulas, and educational standards behind ZenFit Tools."
+          content="Learn about the scientific methodology, published physiological formulas, evidence-based research standards, and editorial integrity behind ZenFit Tools."
         />
-        <link rel="canonical" href={getCanonicalUrl('/about')} />
+        <link rel="canonical" href={getCanonicalUrl('/about/')} />
+        <meta property="og:title" content="About ZenFit Tools - Evidence-Based Science Suite" />
+        <meta
+          property="og:description"
+          content="Learn about the scientific methodology, published physiological formulas, evidence-based research standards, and editorial integrity behind ZenFit Tools."
+        />
+        <meta property="og:url" content={getCanonicalUrl('/about/')} />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Head>
 

@@ -405,9 +405,9 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
 
         {/* Calculator Header Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
             {calc.title}
-          </h2>
+          </h1>
           <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed mb-4">
             {calc.shortDescription}
           </p>

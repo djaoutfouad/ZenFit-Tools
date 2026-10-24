@@ -20,7 +20,7 @@ export const routes: RouteRecord[] = [
       },
       // 19 Dedicated Calculator Routes
       ...CALCULATORS_CATALOG.map((calc) => ({
-        path: calc.routePath.replace(/^\//, ''),
+        path: calc.routePath.replace(/^\//, '').replace(/\/$/, ''),
         element: <CalculatorPage calc={calc} />,
       })),
       {
@@ -29,7 +29,7 @@ export const routes: RouteRecord[] = [
       },
       // 4 Category Hub Routes
       ...CATEGORIES_CATALOG.map((cat) => ({
-        path: cat.routePath.replace(/^\//, ''),
+        path: cat.routePath.replace(/^\//, '').replace(/\/$/, ''),
         element: <CategoryPage category={cat} />,
       })),
       {

@@ -12,6 +12,7 @@ export interface LegalDoc {
   slug: string;
   routePath: string;
   title: string;
+  seoTitle?: string;
   metaDescription: string;
   effectiveDate: string;
   sections: LegalSection[];
@@ -21,9 +22,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
   privacy: {
     type: 'privacy',
     slug: 'privacy',
-    routePath: '/privacy',
+    routePath: '/privacy/',
     title: 'Privacy Policy',
-    metaDescription: 'ZenFit Tools privacy policy. Calculator inputs are processed in your browser to maintain data privacy.',
+    seoTitle: 'Privacy Policy & Biometric Data Security | ZenFit',
+    metaDescription: 'Read the official ZenFit Tools privacy policy. All physiological inputs and calculations run client-side in your browser for complete data privacy.',
     effectiveDate: 'Effective Date: January 1, 2026 · Last Updated: September 2026',
     sections: [
       {
@@ -57,9 +59,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
   terms: {
     type: 'terms',
     slug: 'terms',
-    routePath: '/terms',
+    routePath: '/terms/',
     title: 'Terms of Use',
-    metaDescription: 'Official terms of use for ZenFit Tools. Intellectual property, acceptable use, and limitation of liability.',
+    seoTitle: 'Terms of Use & Sports Science Guidelines | ZenFit',
+    metaDescription: 'Review the official terms of use and acceptable service guidelines governing the educational physiological calculators and content on ZenFit Tools.',
     effectiveDate: 'Effective Date: January 1, 2026',
     sections: [
       {
@@ -85,9 +88,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
   cookies: {
     type: 'cookies',
     slug: 'cookies',
-    routePath: '/cookies',
+    routePath: '/cookies/',
     title: 'Cookie Policy',
-    metaDescription: 'ZenFit Tools Cookie Policy under GDPR and the ePrivacy Directive. Understanding functional vs advertising cookies.',
+    seoTitle: 'Cookie Policy & User Data Transparency | ZenFit Tools',
+    metaDescription: 'Discover how ZenFit Tools utilizes minimal functional cookies to remember your preferred metric or imperial units and manage non-intrusive advertising.',
     effectiveDate: 'Effective Date: January 1, 2026',
     sections: [
       {
@@ -113,9 +117,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
   disclaimer: {
     type: 'disclaimer',
     slug: 'disclaimer',
-    routePath: '/disclaimer',
+    routePath: '/disclaimer/',
     title: 'Medical & Exercise Science Disclaimer',
-    metaDescription: 'Important health and medical disclaimer. ZenFit Tools provides mathematical estimations for educational purposes and is not a medical device.',
+    seoTitle: 'Medical & Exercise Science Disclaimer | ZenFit Tools',
+    metaDescription: 'Important medical and exercise science disclosure: ZenFit Tools provides empirical mathematical estimates for educational fitness purposes only.',
     effectiveDate: 'Effective Date: January 1, 2026 · Mandatory Notice',
     sections: [
       {
@@ -143,9 +148,10 @@ export const LEGAL_DOCS: Record<LegalDocType, LegalDoc> = {
   methodology: {
     type: 'methodology',
     slug: 'methodology',
-    routePath: '/methodology',
+    routePath: '/methodology/',
     title: 'Scientific Methodology & Formulas',
-    metaDescription: 'Scientific methodology, peer-reviewed equations, and biomechanical models powering the ZenFit Tools 19 calculators.',
+    seoTitle: 'Scientific Methodology & Research Models | ZenFit',
+    metaDescription: 'Explore the peer-reviewed sports science citations, metabolic formulas, and published physiological research models powering the ZenFit Tools platform.',
     effectiveDate: 'Peer-Reviewed Consensus · 2026 Edition',
     sections: [
       {

@@ -96,15 +96,16 @@ export const ContactPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Contact Support &amp; Feedback | ZenFit Tools</title>
+        <title>Contact ZenFit Tools - Direct Support &amp; Inquiries</title>
         <meta
           name="description"
-          content={`Contact the ${SITE_NAME} support and engineering team at ${officialEmail}.`}
+          content="Contact the ZenFit Tools support and engineering team for scientific inquiries, formula feedback, partnerships, and technical support assistance anytime."
         />
-        <link rel="canonical" href={getCanonicalUrl('/contact')} />
-        <meta property="og:title" content="Contact Support | ZenFit Tools" />
-        <meta property="og:description" content="Official contact portal for ZenFit Tools." />
-        <meta property="og:url" content={getCanonicalUrl('/contact')} />
+        <link rel="canonical" href={getCanonicalUrl('/contact/')} />
+        <meta property="og:title" content="Contact ZenFit Tools - Direct Support & Inquiries" />
+        <meta property="og:description" content="Contact the ZenFit Tools support and engineering team for scientific inquiries, formula feedback, partnerships, and technical support assistance anytime." />
+        <meta property="og:url" content={getCanonicalUrl('/contact/')} />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
       </Head>
 

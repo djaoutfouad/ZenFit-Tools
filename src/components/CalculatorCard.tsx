@@ -94,6 +94,20 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
           </div>
         </div>
 
+        {calc.personaImageUrl && (
+          <div className="mb-4 overflow-hidden rounded-2xl bg-slate-100 aspect-[16/10] relative border border-slate-100">
+            <img
+              src={calc.personaImageUrl}
+              alt={`${calc.title} Analytics`}
+              width={400}
+              height={260}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        )}
+
         {/* Title */}
         <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors duration-200 line-clamp-1">
           {calc.title}

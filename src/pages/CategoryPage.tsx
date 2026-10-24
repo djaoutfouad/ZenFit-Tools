@@ -31,11 +31,14 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
     (c) => c.category === category.id
   );
 
+  const pageTitle = category.seoTitle || `${category.title} Calculators | ${SITE_NAME}`;
+  const pageDesc = category.seoDescription || category.shortDescription;
+
   const collectionSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `${category.title} Calculators | ${SITE_NAME}`,
-    description: category.shortDescription,
+    name: pageTitle,
+    description: pageDesc,
     url: getCanonicalUrl(category.routePath),
     mainEntity: {
       '@type': 'ItemList',
@@ -76,11 +79,11 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
   return (
     <>
       <Head>
-        <title>{`${category.title} Calculators & Guides | ${SITE_NAME}`}</title>
-        <meta name="description" content={category.shortDescription} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
         <link rel="canonical" href={getCanonicalUrl(category.routePath)} />
-        <meta property="og:title" content={`${category.title} Calculators | ${SITE_NAME}`} />
-        <meta property="og:description" content={category.shortDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
         <meta property="og:url" content={getCanonicalUrl(category.routePath)} />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(collectionSchema)}</script>
@@ -130,7 +133,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
         <AdSenseSlot position="left_rail" />
 
         {/* CENTER CONTENT AREA */}
-        <main className="flex-1 w-full max-w-5xl min-w-0 py-6">
+        <div className="flex-1 w-full max-w-5xl min-w-0 py-6">
           <div className="flex items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
@@ -179,7 +182,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
 
             <div className="pt-2">
               <Link
-                to="/methodology"
+                to="/methodology/"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700"
               >
                 <span>Review published citations &amp; scientific methodology</span>
@@ -187,7 +190,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category: propCatego
               </Link>
             </div>
           </section>
-        </main>
+        </div>
 
         {/* RIGHT RAIL ADVERTISEMENT (AdSense Slot 2: 160x600 Sticky on xl screens) */}
         <AdSenseSlot position="right_rail" />

@@ -19,8 +19,13 @@ export const CONTACT_EMAIL = 'zenfittools@gmail.com';
 export function getCanonicalUrl(path: string = ''): string {
   const base = SITE_URL.endsWith('/') ? SITE_URL.slice(0, -1) : SITE_URL;
   if (!path || path === '/') {
-    return base;
+    return `${base}/`;
   }
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${base}${cleanPath}`;
+  // If path is a static asset with a file extension (e.g. .svg, .webp, .png, .jpg, .json, .xml, .txt), do not add trailing slash
+  if (/\.[a-zA-Z0-9]+$/.test(cleanPath)) {
+    return `${base}${cleanPath}`;
+  }
+  // Ensure strict trailing slash for all page routes
+  return cleanPath.endsWith('/') ? `${base}${cleanPath}` : `${base}${cleanPath}/`;
 }

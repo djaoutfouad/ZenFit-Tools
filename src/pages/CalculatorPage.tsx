@@ -59,20 +59,27 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
     }
   };
 
+  const pageTitle = calc.seoTitle || `${calc.title} | ${SITE_NAME}`;
+  const pageDesc = calc.seoDescription || calc.shortDescription;
+
   // Structured Data (SoftwareApplication + FAQPage)
   const webAppSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: calc.title,
+    headline: pageTitle,
     url: getCanonicalUrl(calc.routePath),
-    description: calc.shortDescription,
+    description: pageDesc,
     applicationCategory: 'HealthApplication',
     operatingSystem: 'All',
     browserRequirements: 'Requires JavaScript. Requires HTML5.',
+    softwareVersion: '2026.1',
+    isAccessibleForFree: true,
+    featureList: [calc.formulaSummary, ...(calc.scientificGuidelines || [])],
     author: {
       '@type': 'Organization',
       name: SITE_NAME,
-      url: getCanonicalUrl('/about'),
+      url: getCanonicalUrl('/about/'),
       email: CONTACT_EMAIL,
     },
     offers: {
@@ -129,11 +136,11 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
   return (
     <>
       <Head>
-        <title>{`${calc.title} | ${SITE_NAME}`}</title>
-        <meta name="description" content={calc.shortDescription} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
         <link rel="canonical" href={getCanonicalUrl(calc.routePath)} />
-        <meta property="og:title" content={`${calc.title} | ${SITE_NAME}`} />
-        <meta property="og:description" content={calc.shortDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
         <meta property="og:url" content={getCanonicalUrl(calc.routePath)} />
         <meta property="og:type" content="article" />
         <script type="application/ld+json">{JSON.stringify(webAppSchema)}</script>
@@ -150,7 +157,7 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
         <AdSenseSlot position="left_rail" />
 
         {/* CENTER CONTENT AREA */}
-        <main className="flex-1 w-full max-w-5xl min-w-0">
+        <div className="flex-1 w-full max-w-5xl min-w-0">
           {/* Dynamic Breadcrumbs Navigation */}
           <nav
             aria-label="Breadcrumbs"
@@ -245,7 +252,7 @@ export const CalculatorPage: React.FC<CalculatorPageProps> = ({ calc: propCalc }
               </div>
             </section>
           )}
-        </main>
+        </div>
 
         {/* RIGHT RAIL ADVERTISEMENT (AdSense Slot 2: 160x600 Sticky on xl screens) */}
         <AdSenseSlot position="right_rail" />

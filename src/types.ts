@@ -18,6 +18,8 @@ export interface CalculatorMeta {
   routePath: string;
   title: string;
   shortDescription: string;
+  seoTitle?: string;
+  seoDescription?: string;
   category: CalculatorCategory;
   badge: string;
   readTime?: string;
@@ -39,5 +41,7 @@ export interface CategoryMeta {
   routePath: string;
   title: string;
   shortDescription: string;
+  seoTitle?: string;
+  seoDescription?: string;
   badge: string;
 }

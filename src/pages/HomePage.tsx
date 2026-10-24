@@ -52,16 +52,16 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>ZenFit Tools | Elite Health, Nutrition &amp; Biohacking Calculators</title>
+        <title>ZenFit Tools - Elite Health &amp; Fitness Calculators</title>
         <meta
           name="description"
-          content="Explore 19 educational sports science, metabolic, and anthropometric calculators based on published formulas. Instant client-side estimates and clear methodology."
+          content="Explore 19 evidence-based fitness, metabolic, and nutrition calculators with peer-reviewed formulas to optimize your body composition and training targets."
         />
         <link rel="canonical" href={getCanonicalUrl('/')} />
-        <meta property="og:title" content="ZenFit Tools | Elite Health, Nutrition & Biohacking Calculators" />
+        <meta property="og:title" content="ZenFit Tools - Elite Health & Fitness Calculators" />
         <meta
           property="og:description"
-          content="Explore 19 educational sports science, metabolic, and anthropometric calculators based on published formulas."
+          content="Explore 19 evidence-based fitness, metabolic, and nutrition calculators with peer-reviewed formulas to optimize your body composition and training targets."
         />
         <meta property="og:url" content={getCanonicalUrl('/')} />
         <meta property="og:type" content="website" />
@@ -87,7 +87,7 @@ export const HomePage: React.FC = () => {
         <AdSenseSlot position="left_rail" />
 
         {/* CENTER CONTENT AREA */}
-        <main className="flex-1 w-full max-w-5xl min-w-0">
+        <div className="flex-1 w-full max-w-5xl min-w-0">
           {/* Quick-Access Grid of All 19 Calculators */}
           <section id="all-calculators-grid" className="py-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -188,7 +188,7 @@ export const HomePage: React.FC = () => {
 
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <Link
-                to="/methodology"
+                to="/methodology/"
                 className="inline-flex items-center gap-2 text-xs font-bold text-amber-600 hover:text-amber-700 transition-colors"
               >
                 <span>Read Full Methodology &amp; Citations</span>
@@ -196,14 +196,14 @@ export const HomePage: React.FC = () => {
               </Link>
               <span className="text-slate-300">•</span>
               <Link
-                to="/disclaimer"
+                to="/disclaimer/"
                 className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <span>Medical &amp; Clinical Disclosures</span>
               </Link>
             </div>
           </section>
-        </main>
+        </div>
 
         {/* RIGHT RAIL ADVERTISEMENT (AdSense Slot 2: 160x600 Sticky on xl screens) */}
         <AdSenseSlot position="right_rail" />

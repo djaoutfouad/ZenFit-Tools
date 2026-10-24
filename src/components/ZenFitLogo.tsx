@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 interface ZenFitEmblemProps {
   className?: string;
@@ -9,6 +9,17 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
   className = 'w-10 h-10',
   size,
 }) => {
+  const reactId = useId();
+  // Safe alphanumeric unique suffix for SVG definitions
+  const uid = reactId.replace(/[^a-zA-Z0-9_-]/g, '');
+
+  const outerGradId = `zf-gold-outer-${uid}`;
+  const innerGradId = `zf-gold-inner-${uid}`;
+  const hexBgId = `zf-hex-bg-${uid}`;
+  const barsGradId = `zf-gold-bars-${uid}`;
+  const helixGradId = `zf-gold-helix-${uid}`;
+  const glowFilterId = `zf-gold-glow-${uid}`;
+
   return (
     <svg
       viewBox="0 0 100 100"
@@ -20,7 +31,7 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
     >
       <defs>
         {/* Gold Metallic Outer Gradient */}
-        <linearGradient id="zfGoldHexOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id={outerGradId} x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#FFFBEB" />
           <stop offset="25%" stopColor="#F59E0B" />
           <stop offset="50%" stopColor="#D97706" />
@@ -29,7 +40,7 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
         </linearGradient>
 
         {/* Gold Metallic Inner Stroke Gradient */}
-        <linearGradient id="zfGoldHexInner" x1="100%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id={innerGradId} x1="100%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#FEF3C7" />
           <stop offset="30%" stopColor="#F59E0B" />
           <stop offset="70%" stopColor="#B45309" />
@@ -37,21 +48,21 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
         </linearGradient>
 
         {/* Deep Luxury Hexagon Background */}
-        <radialGradient id="zfHexBackground" cx="50%" cy="50%" r="50%">
+        <radialGradient id={hexBgId} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#1e1914" />
           <stop offset="75%" stopColor="#0c0a09" />
           <stop offset="100%" stopColor="#020617" />
         </radialGradient>
 
         {/* Gold Bars Gradient */}
-        <linearGradient id="zfGoldBars" x1="0%" y1="100%" x2="0%" y2="0%">
+        <linearGradient id={barsGradId} x1="0%" y1="100%" x2="0%" y2="0%">
           <stop offset="0%" stopColor="#78350F" stopOpacity="0.65" />
           <stop offset="50%" stopColor="#D97706" stopOpacity="0.85" />
           <stop offset="100%" stopColor="#FDE68A" />
         </linearGradient>
 
         {/* Glowing DNA Helix & Arrow Gradient */}
-        <linearGradient id="zfGoldHelix" x1="0%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id={helixGradId} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#FEF9C3" />
           <stop offset="20%" stopColor="#F59E0B" />
           <stop offset="50%" stopColor="#FDE68A" />
@@ -60,7 +71,7 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
         </linearGradient>
 
         {/* Soft Gold Drop Shadow Glow Filter */}
-        <filter id="zfGoldGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <filter id={glowFilterId} x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="#F59E0B" floodOpacity="0.35" />
         </filter>
       </defs>
@@ -68,51 +79,51 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
       {/* Hexagon Base Background */}
       <path
         d="M 50 5.5 Q 53 7 83.5 24.5 Q 87 26.5 87 31 L 87 69 Q 87 73.5 83.5 75.5 L 53 93 Q 50 94.5 47 93 L 16.5 75.5 Q 13 73.5 13 69 L 13 31 Q 13 26.5 16.5 24.5 L 47 7 Q 50 5.5 50 5.5 Z"
-        fill="url(#zfHexBackground)"
+        fill={`url(#${hexBgId})`}
       />
 
       {/* Rising Bar Chart Behind DNA (Left Ascending & Right Descending) */}
       <g opacity="0.85">
         {/* Left Ascending Bars */}
-        <rect x="20" y="58" width="3.2" height="15" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="25.5" y="50" width="3.2" height="23" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="31" y="42" width="3.2" height="31" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="36.5" y="34" width="3.2" height="39" rx="1.2" fill="url(#zfGoldBars)" />
+        <rect x="20" y="58" width="3.2" height="15" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="25.5" y="50" width="3.2" height="23" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="31" y="42" width="3.2" height="31" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="36.5" y="34" width="3.2" height="39" rx="1.2" fill={`url(#${barsGradId})`} />
 
         {/* Right Ascending/Symmetric Bars */}
-        <rect x="60.3" y="34" width="3.2" height="39" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="65.8" y="42" width="3.2" height="31" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="71.3" y="50" width="3.2" height="23" rx="1.2" fill="url(#zfGoldBars)" />
-        <rect x="76.8" y="58" width="3.2" height="15" rx="1.2" fill="url(#zfGoldBars)" />
+        <rect x="60.3" y="34" width="3.2" height="39" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="65.8" y="42" width="3.2" height="31" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="71.3" y="50" width="3.2" height="23" rx="1.2" fill={`url(#${barsGradId})`} />
+        <rect x="76.8" y="58" width="3.2" height="15" rx="1.2" fill={`url(#${barsGradId})`} />
       </g>
 
       {/* Central Bidirectional Arrow Stem & Heads */}
-      <g filter="url(#zfGoldGlow)">
+      <g filter={`url(#${glowFilterId})`}>
         {/* Top Upward Arrowhead */}
-        <polygon points="50,9 43,19 47.2,18.5 47.2,25 52.8,25 52.8,18.5 57,19" fill="url(#zfGoldHelix)" />
+        <polygon points="50,9 43,19 47.2,18.5 47.2,25 52.8,25 52.8,18.5 57,19" fill={`url(#${helixGradId})`} />
 
         {/* Bottom Downward Arrowhead */}
-        <polygon points="50,91 43,81 47.2,81.5 47.2,75 52.8,75 52.8,81.5 57,81" fill="url(#zfGoldHelix)" />
+        <polygon points="50,91 43,81 47.2,81.5 47.2,75 52.8,75 52.8,81.5 57,81" fill={`url(#${helixGradId})`} />
 
         {/* Central Vertical Vector Axis */}
-        <line x1="50" y1="23" x2="50" y2="77" stroke="url(#zfGoldHelix)" strokeWidth="1.8" strokeDasharray="2 1.5" opacity="0.6" />
+        <line x1="50" y1="23" x2="50" y2="77" stroke={`url(#${helixGradId})`} strokeWidth="1.8" strokeDasharray="2 1.5" opacity="0.6" />
 
         {/* DNA Horizontal Base-Pair Rungs */}
-        <line x1="43.5" y1="30" x2="56.5" y2="30" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="44" y1="36" x2="56" y2="36" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="43.5" y1="30" x2="56.5" y2="30" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="44" y1="36" x2="56" y2="36" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
         <circle cx="50" cy="41" r="1.3" fill="#FFFBEB" />
-        <line x1="44" y1="46" x2="56" y2="46" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="43.5" y1="52" x2="56.5" y2="52" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="44" y1="58" x2="56" y2="58" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="44" y1="46" x2="56" y2="46" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="43.5" y1="52" x2="56.5" y2="52" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="44" y1="58" x2="56" y2="58" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
         <circle cx="50" cy="63" r="1.3" fill="#FFFBEB" />
-        <line x1="44" y1="68" x2="56" y2="68" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="43.5" y1="74" x2="56.5" y2="74" stroke="url(#zfGoldHelix)" strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="44" y1="68" x2="56" y2="68" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="43.5" y1="74" x2="56.5" y2="74" stroke={`url(#${helixGradId})`} strokeWidth="1.6" strokeLinecap="round" />
 
         {/* DNA Strand 1 (Sine Wave A) */}
         <path
           d="M 50 25 C 38 29, 38 37, 50 41 C 62 45, 62 53, 50 57 C 38 61, 38 69, 50 73 C 58 75.5, 58 80, 50 83"
           fill="none"
-          stroke="url(#zfGoldHelix)"
+          stroke={`url(#${helixGradId})`}
           strokeWidth="2.6"
           strokeLinecap="round"
         />
@@ -121,7 +132,7 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
         <path
           d="M 50 25 C 62 29, 62 37, 50 41 C 38 45, 38 53, 50 57 C 62 61, 62 69, 50 73 C 42 75.5, 42 80, 50 83"
           fill="none"
-          stroke="url(#zfGoldHelix)"
+          stroke={`url(#${helixGradId})`}
           strokeWidth="2.6"
           strokeLinecap="round"
         />
@@ -131,17 +142,17 @@ export const ZenFitEmblem: React.FC<ZenFitEmblemProps> = ({
       <path
         d="M 50 5.5 Q 53 7 83.5 24.5 Q 87 26.5 87 31 L 87 69 Q 87 73.5 83.5 75.5 L 53 93 Q 50 94.5 47 93 L 16.5 75.5 Q 13 73.5 13 69 L 13 31 Q 13 26.5 16.5 24.5 L 47 7 Q 50 5.5 50 5.5 Z"
         fill="none"
-        stroke="url(#zfGoldHexOuter)"
+        stroke={`url(#${outerGradId})`}
         strokeWidth="4"
         strokeLinejoin="round"
-        filter="url(#zfGoldGlow)"
+        filter={`url(#${glowFilterId})`}
       />
 
       {/* Inner Subtle Accent Border */}
       <path
         d="M 50 9 Q 52.5 10.5 80.5 26.5 Q 83.5 28 83.5 32 L 83.5 68 Q 83.5 72 80.5 73.5 L 52.5 89.5 Q 50 91 47.5 89.5 L 19.5 73.5 Q 16.5 72 16.5 68 L 16.5 32 Q 16.5 28 19.5 26.5 L 47.5 10.5 Q 50 9 50 9 Z"
         fill="none"
-        stroke="url(#zfGoldHexInner)"
+        stroke={`url(#${innerGradId})`}
         strokeWidth="1.2"
         opacity="0.85"
       />

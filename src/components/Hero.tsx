@@ -30,13 +30,15 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <section className="relative w-full overflow-hidden bg-slate-950 text-white border-b border-slate-800">
-      {/* Gym-Tech Architectural Background Image */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-65 scale-105 transition-transform duration-1000"
-        style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=2070&auto=format&fit=crop")',
-        }}
-        aria-hidden="true"
+      {/* Gym-Tech Architectural Local WebP Background Image */}
+      <img
+        src="/images/hero-banner.webp"
+        alt="ZenFit Tools Sports Science and Gym Analytics"
+        width={1200}
+        height={600}
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 z-0 w-full h-full object-cover opacity-65 scale-105 pointer-events-none select-none transition-transform duration-1000"
       />
 
       {/* Architectural vignette gradient with subtle backdrop blur */}

@@ -21,9 +21,9 @@ export const RootLayout: React.FC = () => {
       <div className="min-h-screen flex flex-col bg-slate-100 font-sans text-slate-900 antialiased selection:bg-amber-500 selection:text-slate-950">
         <Header onOpenContact={() => setIsContactOpen(true)} />
 
-        <div className="flex-1">
+        <main id="main-content" role="main" className="flex-1">
           <Outlet />
-        </div>
+        </main>
 
         <Footer onOpenContact={() => setIsContactOpen(true)} />
 

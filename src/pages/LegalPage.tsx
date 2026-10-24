@@ -38,17 +38,19 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
   const isSensitive = ['privacy', 'terms', 'cookies', 'disclaimer'].includes(doc.type);
 
   const tabs: Array<{ type: LegalDocType; label: string; icon: React.ReactNode; path: string }> = [
-    { type: 'privacy', label: 'Privacy Policy', icon: <ShieldCheck className="w-4 h-4" />, path: '/privacy' },
-    { type: 'terms', label: 'Terms of Use', icon: <FileText className="w-4 h-4" />, path: '/terms' },
-    { type: 'cookies', label: 'Cookie Policy', icon: <Cookie className="w-4 h-4" />, path: '/cookies' },
-    { type: 'disclaimer', label: 'Medical Disclaimer', icon: <AlertTriangle className="w-4 h-4" />, path: '/disclaimer' },
-    { type: 'methodology', label: 'Scientific Methodology', icon: <BookOpen className="w-4 h-4" />, path: '/methodology' },
+    { type: 'privacy', label: 'Privacy Policy', icon: <ShieldCheck className="w-4 h-4" />, path: '/privacy/' },
+    { type: 'terms', label: 'Terms of Use', icon: <FileText className="w-4 h-4" />, path: '/terms/' },
+    { type: 'cookies', label: 'Cookie Policy', icon: <Cookie className="w-4 h-4" />, path: '/cookies/' },
+    { type: 'disclaimer', label: 'Medical Disclaimer', icon: <AlertTriangle className="w-4 h-4" />, path: '/disclaimer/' },
+    { type: 'methodology', label: 'Scientific Methodology', icon: <BookOpen className="w-4 h-4" />, path: '/methodology/' },
   ];
+
+  const pageTitle = doc.seoTitle || `${doc.title} | ${SITE_NAME}`;
 
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: `${doc.title} | ${SITE_NAME}`,
+    name: pageTitle,
     description: doc.metaDescription,
     url: getCanonicalUrl(doc.routePath),
     publisher: {
@@ -61,10 +63,10 @@ export const LegalPage: React.FC<LegalPageProps> = ({ docType: propDocType }) =>
   return (
     <>
       <Head>
-        <title>{`${doc.title} | ${SITE_NAME}`}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={doc.metaDescription} />
         <link rel="canonical" href={getCanonicalUrl(doc.routePath)} />
-        <meta property="og:title" content={`${doc.title} | ${SITE_NAME}`} />
+        <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={doc.metaDescription} />
         <meta property="og:url" content={getCanonicalUrl(doc.routePath)} />
         <meta property="og:type" content="article" />
