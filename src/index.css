@@ -4,10 +4,16 @@
   --scale-102: 1.02;
 }
 
+input,
 input[type="number"],
+input[type="text"],
 input[type="range"],
 input[type="time"],
 .numeric-input,
 .tabular-nums.lining-nums {
-  font-variant-numeric: tabular-nums lining-nums;
+  direction: ltr !important;
+  font-variant-numeric: lining-nums tabular-nums !important;
+  font-feature-settings: "lnum" 1, "tnum" 1 !important;
+  -webkit-locale: "en-US" !important;
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useId } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   CalculatorMeta,
   UnitSystem,
@@ -63,8 +63,77 @@ import {
 import {
   formatNumber,
   sanitizeNumberInput,
+  sanitizeNumericString,
   sanitizeTimeInput,
+  toEnglishDigits,
 } from '../utils/formatNumber';
+
+interface LatinNumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'type'> {
+  value: number;
+  onValueChange: (val: number) => void;
+  step?: number;
+  min?: number;
+  max?: number;
+}
+
+/**
+ * Renders <input type="text" inputMode="decimal" dir="ltr" lang="en-US">
+ * instead of <input type="number"> so browsers with Arabic/Persian OS locales
+ * NEVER convert digits (e.g. 78 -> ٧٨ or 178 -> ١٧٨) in the native shadow DOM.
+ */
+const LatinNumberInput: React.FC<LatinNumberInputProps> = ({
+  value,
+  onValueChange,
+  step = 1,
+  min,
+  max,
+  inputMode = 'decimal',
+  ...rest
+}) => {
+  const [rawText, setRawText] = useState<string>(() => toEnglishDigits(value));
+
+  useEffect(() => {
+    if (sanitizeNumberInput(rawText) !== value) {
+      setRawText(toEnglishDigits(value));
+    }
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const cleaned = sanitizeNumericString(e.target.value);
+    setRawText(cleaned);
+    onValueChange(sanitizeNumberInput(cleaned));
+  };
+
+  const handleBlur = () => {
+    setRawText(toEnglishDigits(value));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const delta = e.key === 'ArrowUp' ? step : -step;
+      let nextVal = Math.round((value + delta) * 1000) / 1000;
+      if (typeof min === 'number') nextVal = Math.max(min, nextVal);
+      if (typeof max === 'number') nextVal = Math.min(max, nextVal);
+      setRawText(toEnglishDigits(nextVal));
+      onValueChange(nextVal);
+    }
+  };
+
+  return (
+    <input
+      {...rest}
+      type="text"
+      dir="ltr"
+      lang="en-US"
+      inputMode={inputMode}
+      value={rawText}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+    />
+  );
+};
 
 interface CalculatorWorkspaceProps {
   calc: CalculatorMeta;
@@ -488,7 +557,8 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     name="age"
                     type="range"
                     dir="ltr"
-                    lang="en"
+                    lang="en-US"
+                    inputMode="numeric"
                     min={15}
                     max={85}
                     value={age}
@@ -511,21 +581,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-weight">Body Weight</label>
                     <span className="text-amber-600 font-mono tabular-nums lining-nums">
-                      {weight} {unitSystem === 'metric' ? 'kg' : 'lbs'}
+                      {toEnglishDigits(weight)} {unitSystem === 'metric' ? 'kg' : 'lbs'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <input
+                    <LatinNumberInput
                       id="input-weight"
                       name="weight"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={0.5}
                       value={weight}
                       aria-label={`Body Weight in ${unitSystem === 'metric' ? 'kilograms' : 'pounds'}`}
                       aria-describedby={validationResult.fieldErrors.weight ? 'error-weight' : undefined}
-                      onChange={(e) => setWeight(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setWeight}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.weight ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -548,21 +616,19 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-height">Height</label>
                     <span className="text-amber-600 font-mono tabular-nums lining-nums">
-                      {height} {unitSystem === 'metric' ? 'cm' : 'in'}
+                      {toEnglishDigits(height)} {unitSystem === 'metric' ? 'cm' : 'in'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <input
+                    <LatinNumberInput
                       id="input-height"
                       name="height"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={1}
                       value={height}
                       aria-label={`Body Height in ${unitSystem === 'metric' ? 'centimeters' : 'inches'}`}
                       aria-describedby={validationResult.fieldErrors.height ? 'error-height' : undefined}
-                      onChange={(e) => setHeight(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setHeight}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.height ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -584,14 +650,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-body-fat">Body Fat Percentage (Optional / Estimate)</label>
-                    <span id="body-fat-display" className="text-amber-600 font-mono tabular-nums lining-nums">{bodyFatPct}%</span>
+                    <span id="body-fat-display" className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(bodyFatPct)}%</span>
                   </div>
                   <input
                     id="input-body-fat"
                     name="bodyFatPct"
                     type="range"
                     dir="ltr"
-                    lang="en"
+                    lang="en-US"
+                    inputMode="decimal"
                     min={4}
                     max={45}
                     step={0.5}
@@ -639,17 +706,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <label htmlFor="input-macro-calories" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Target Daily Calories
                     </label>
-                    <input
+                    <LatinNumberInput
                       id="input-macro-calories"
                       name="macroCalories"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="numeric"
                       step={50}
                       value={macroCalories}
                       aria-label="Target Daily Calories in kcal"
                       aria-describedby={validationResult.fieldErrors.macroCalories ? 'error-macro-cal' : undefined}
-                      onChange={(e) => setMacroCalories(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setMacroCalories}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.macroCalories ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -712,16 +777,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <label htmlFor="input-neck-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Neck Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                     </label>
-                    <input
+                    <LatinNumberInput
                       id="input-neck-circ"
                       name="neckCirc"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={0.2}
                       value={neckCirc}
                       aria-label={`Neck Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                      onChange={(e) => setNeckCirc(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setNeckCirc}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.neckCirc ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -736,16 +799,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <label htmlFor="input-waist-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Waist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                     </label>
-                    <input
+                    <LatinNumberInput
                       id="input-waist-circ"
                       name="waistCirc"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={0.5}
                       value={waistCirc}
                       aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                      onChange={(e) => setWaistCirc(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setWaistCirc}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -761,16 +822,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <label htmlFor="input-hip-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Hip Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                       </label>
-                      <input
+                      <LatinNumberInput
                         id="input-hip-circ"
                         name="hipCirc"
-                        type="number"
-                        dir="ltr"
-                        lang="en"
+                        inputMode="decimal"
                         step={0.5}
                         value={hipCirc}
                         aria-label={`Hip Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                        onChange={(e) => setHipCirc(sanitizeNumberInput(e.target.value))}
+                        onValueChange={setHipCirc}
                         className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                           validationResult.fieldErrors.hipCirc ? 'border-rose-500' : 'border-slate-300'
                         }`}
@@ -792,16 +851,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <label htmlFor="input-lift-weight" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Weight Lifted ({unitSystem === 'metric' ? 'kg' : 'lbs'})
                     </label>
-                    <input
+                    <LatinNumberInput
                       id="input-lift-weight"
                       name="liftWeight"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={2.5}
                       value={liftWeight}
                       aria-label={`Weight Lifted in ${unitSystem === 'metric' ? 'kg' : 'lbs'}`}
-                      onChange={(e) => setLiftWeight(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setLiftWeight}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.liftWeight ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -815,14 +872,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-lift-reps">Reps Completed (1 - 15)</label>
-                      <span id="reps-display" className="text-amber-600 font-mono tabular-nums lining-nums">{liftReps} reps</span>
+                      <span id="reps-display" className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(liftReps)} reps</span>
                     </div>
                     <input
                       id="input-lift-reps"
                       name="liftReps"
                       type="range"
                       dir="ltr"
-                      lang="en"
+                      lang="en-US"
+                      inputMode="numeric"
                       min={1}
                       max={15}
                       value={liftReps}
@@ -845,14 +903,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     <label htmlFor="input-resting-hr">Resting Heart Rate (Measured in Morning)</label>
-                    <span id="resting-hr-display" className="text-amber-600 font-mono tabular-nums lining-nums">{restingHeartRate} BPM</span>
+                    <span id="resting-hr-display" className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(restingHeartRate)} BPM</span>
                   </div>
                   <input
                     id="input-resting-hr"
                     name="restingHeartRate"
                     type="range"
                     dir="ltr"
-                    lang="en"
+                    lang="en-US"
+                    inputMode="numeric"
                     min={40}
                     max={100}
                     value={restingHeartRate}
@@ -876,16 +935,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                     <label htmlFor="input-run-distance" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Distance ({unitSystem === 'metric' ? 'Kilometers' : 'Miles'})
                     </label>
-                    <input
+                    <LatinNumberInput
                       id="input-run-distance"
                       name="runDistance"
-                      type="number"
-                      dir="ltr"
-                      lang="en"
+                      inputMode="decimal"
                       step={0.1}
                       value={runDistance}
                       aria-label={`Running Distance in ${unitSystem === 'metric' ? 'km' : 'miles'}`}
-                      onChange={(e) => setRunDistance(sanitizeNumberInput(e.target.value))}
+                      onValueChange={setRunDistance}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                         validationResult.fieldErrors.runDistance ? 'border-rose-500' : 'border-slate-300'
                       }`}
@@ -901,17 +958,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <label htmlFor="input-run-hours" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Hours
                       </label>
-                      <input
+                      <LatinNumberInput
                         id="input-run-hours"
                         name="runHours"
-                        type="number"
-                        dir="ltr"
-                        lang="en"
+                        inputMode="numeric"
                         min={0}
                         max={24}
                         value={runHours}
                         aria-label="Running Time Hours"
-                        onChange={(e) => setRunHours(sanitizeNumberInput(e.target.value))}
+                        onValueChange={setRunHours}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
@@ -919,17 +974,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <label htmlFor="input-run-minutes" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Minutes
                       </label>
-                      <input
+                      <LatinNumberInput
                         id="input-run-minutes"
                         name="runMinutes"
-                        type="number"
-                        dir="ltr"
-                        lang="en"
+                        inputMode="numeric"
                         min={0}
                         max={59}
                         value={runMinutes}
                         aria-label="Running Time Minutes"
-                        onChange={(e) => setRunMinutes(sanitizeNumberInput(e.target.value))}
+                        onValueChange={setRunMinutes}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
@@ -937,17 +990,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                       <label htmlFor="input-run-seconds" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                         Seconds
                       </label>
-                      <input
+                      <LatinNumberInput
                         id="input-run-seconds"
                         name="runSeconds"
-                        type="number"
-                        dir="ltr"
-                        lang="en"
+                        inputMode="numeric"
                         min={0}
                         max={59}
                         value={runSeconds}
                         aria-label="Running Time Seconds"
-                        onChange={(e) => setRunSeconds(sanitizeNumberInput(e.target.value))}
+                        onValueChange={setRunSeconds}
                         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
@@ -984,15 +1035,17 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   </div>
                   <div>
                     <label htmlFor="input-fast-start-time" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Fasting Start Time (Last Evening Meal)
+                      Fasting Start Time (24h HH:MM)
                     </label>
                     <input
                       id="input-fast-start-time"
                       name="fastStartTime"
-                      type="time"
+                      type="text"
                       dir="ltr"
-                      lang="en"
-                      value={fastStartTime}
+                      lang="en-US"
+                      inputMode="numeric"
+                      placeholder="20:00"
+                      value={toEnglishDigits(fastStartTime)}
                       aria-label="Fasting Start Time"
                       onChange={(e) => setFastStartTime(sanitizeTimeInput(e.target.value))}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
@@ -1014,14 +1067,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-workout-duration">Daily Exercise Duration</label>
-                      <span id="workout-duration-display" className="text-amber-600 font-mono tabular-nums lining-nums">{workoutDuration} mins</span>
+                      <span id="workout-duration-display" className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(workoutDuration)} mins</span>
                     </div>
                     <input
                       id="input-workout-duration"
                       name="workoutDuration"
                       type="range"
                       dir="ltr"
-                      lang="en"
+                      lang="en-US"
+                      inputMode="numeric"
                       min={0}
                       max={180}
                       step={15}
@@ -1101,16 +1155,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <label htmlFor="input-wrist-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Wrist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
-                  <input
+                  <LatinNumberInput
                     id="input-wrist-circ"
                     name="wristCirc"
-                    type="number"
-                    dir="ltr"
-                    lang="en"
+                    inputMode="decimal"
                     step={0.1}
                     value={wristCirc}
                     aria-label={`Wrist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setWristCirc(sanitizeNumberInput(e.target.value))}
+                    onValueChange={setWristCirc}
                     className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.wristCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
@@ -1128,16 +1180,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <label htmlFor="input-ankle-circ" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Ankle Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
-                  <input
+                  <LatinNumberInput
                     id="input-ankle-circ"
                     name="ankleCirc"
-                    type="number"
-                    dir="ltr"
-                    lang="en"
+                    inputMode="decimal"
                     step={0.1}
                     value={ankleCirc}
                     aria-label={`Ankle Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setAnkleCirc(sanitizeNumberInput(e.target.value))}
+                    onValueChange={setAnkleCirc}
                     className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.ankleCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
@@ -1156,16 +1206,14 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <label htmlFor="input-whtr-waist" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Waist Circumference ({unitSystem === 'metric' ? 'cm' : 'in'})
                   </label>
-                  <input
+                  <LatinNumberInput
                     id="input-whtr-waist"
                     name="waistCirc"
-                    type="number"
-                    dir="ltr"
-                    lang="en"
+                    inputMode="decimal"
                     step={0.5}
                     value={waistCirc}
                     aria-label={`Waist Circumference in ${unitSystem === 'metric' ? 'cm' : 'inches'}`}
-                    onChange={(e) => setWaistCirc(sanitizeNumberInput(e.target.value))}
+                    onValueChange={setWaistCirc}
                     className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                       validationResult.fieldErrors.waistCirc ? 'border-rose-500' : 'border-slate-300'
                     }`}
@@ -1203,14 +1251,15 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-exercise-duration">Duration</label>
-                      <span id="exercise-dur-display" className="text-amber-600 font-mono tabular-nums lining-nums">{exerciseDurationMin} mins</span>
+                      <span id="exercise-dur-display" className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(exerciseDurationMin)} mins</span>
                     </div>
                     <input
                       id="input-exercise-duration"
                       name="exerciseDurationMin"
                       type="range"
                       dir="ltr"
-                      lang="en"
+                      lang="en-US"
+                      inputMode="numeric"
                       min={5}
                       max={180}
                       step={5}
@@ -1269,15 +1318,17 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   </div>
                   <div>
                     <label htmlFor="input-sleep-time" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      {sleepMode === 'wake_at' ? 'Target Wake-Up Time' : 'Current Bedtime'}
+                      {sleepMode === 'wake_at' ? 'Target Wake-Up Time (24h HH:MM)' : 'Current Bedtime (24h HH:MM)'}
                     </label>
                     <input
                       id="input-sleep-time"
                       name="sleepTime"
-                      type="time"
+                      type="text"
                       dir="ltr"
-                      lang="en"
-                      value={sleepTime}
+                      lang="en-US"
+                      inputMode="numeric"
+                      placeholder="07:00"
+                      value={toEnglishDigits(sleepTime)}
                       aria-label={sleepMode === 'wake_at' ? 'Target Wake-Up Time' : 'Current Bedtime'}
                       onChange={(e) => setSleepTime(sanitizeTimeInput(e.target.value))}
                       className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
@@ -1346,20 +1397,18 @@ export const CalculatorWorkspace: React.FC<CalculatorWorkspaceProps> = ({
                   <div>
                     <div className="flex justify-between text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       <label htmlFor="input-recomp-tdee">Baseline Maintenance TDEE</label>
-                      <span className="text-amber-600 font-mono tabular-nums lining-nums">{recompTdee} kcal</span>
+                      <span className="text-amber-600 font-mono tabular-nums lining-nums">{toEnglishDigits(recompTdee)} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <input
+                      <LatinNumberInput
                         id="input-recomp-tdee"
                         name="recompTdee"
                         aria-label="Baseline Maintenance Total Daily Energy Expenditure in kcal"
                         aria-describedby="recomp-tdee-help"
-                        type="number"
-                        dir="ltr"
-                        lang="en"
+                        inputMode="numeric"
                         step={50}
                         value={recompTdee}
-                        onChange={(e) => setRecompTdee(sanitizeNumberInput(e.target.value))}
+                        onValueChange={setRecompTdee}
                         className={`w-full px-3.5 py-2.5 rounded-xl border bg-white text-sm font-semibold text-slate-900 tabular-nums lining-nums focus:ring-2 focus:ring-amber-500 focus:outline-none ${
                           validationResult.fieldErrors.recompTdee ? 'border-rose-500' : 'border-slate-300'
                         }`}
