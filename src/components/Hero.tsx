@@ -29,7 +29,7 @@ export const Hero: React.FC<HeroProps> = ({
   ];
 
   return (
-    <section className="relative w-full overflow-hidden bg-slate-950 text-white border-b border-slate-800">
+    <section className="relative w-full max-w-5xl mx-auto overflow-hidden bg-slate-950 text-white border-b border-slate-800">
       {/* Gym-Tech Architectural Local WebP Background Image */}
       <img
         src="/images/hero-banner.webp"
